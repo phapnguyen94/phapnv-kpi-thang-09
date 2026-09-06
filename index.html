@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Dashboard KPI tháng 09/2026 từ dữ liệu bán hàng thực tế" />
+  <title>Dashboard KPI • Tháng 09/2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">K</span><div><strong>KPI Pulse</strong><small>Sales Operations</small></div></div>
+      <nav id="nav" aria-label="Điều hướng dashboard">
+        <button class="nav-item active" data-view="overview"><span><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>Tổng quan</button>
+        <button class="nav-item" data-view="growth"><span><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8M15 7h5v5"/></svg></span>Tăng doanh số</button>
+        <button class="nav-item" data-view="mbs"><span><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7zM8 12l2.5 2.5L16 9"/></svg></span>Tracking MBS</button>
+        <button class="nav-item" data-view="display"><span><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span>Trưng bày</button>
+        <button class="nav-item" data-view="mcp"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>MCP</button>
+        <button class="nav-item" data-view="aso"><span><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>Doanh số & ASO</button>
+      </nav>
+      <div class="sidebar-note"><span class="live-dot"></span><div><strong>Dữ liệu workbook</strong><small>Cập nhật 05/09/2026</small></div></div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <button id="menuButton" class="menu-button" aria-label="Mở menu">☰</button>
+        <div><p class="eyebrow">BÁO CÁO ĐIỀU HÀNH</p><h1 id="pageTitle">Tổng quan KPI</h1></div>
+        <div class="date-chip"><span>◷</span><div><small>Kỳ báo cáo</small><strong>Tháng 09/2026</strong></div></div>
+      </header>
+      <section class="filterbar" aria-label="Bộ lọc">
+        <label><span>Team / SS</span><select id="teamFilter"></select></label>
+        <label><span>Đại diện KD</span><select id="repFilter"></select></label>
+        <label><span>Phường / Xã</span><select id="wardFilter"></select></label>
+        <label class="search-wrap"><span>Tìm kiếm</span><input id="searchInput" type="search" placeholder="Tên KH, mã KH..." /></label>
+        <button id="resetFilters" class="ghost-button">Đặt lại</button>
+      </section>
+      <div id="content" class="content" aria-live="polite"></div>
+    </main>
+  </div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
