@@ -22,7 +22,7 @@
         <button class="nav-item" data-view="mcp"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>MCP</button>
         <button class="nav-item" data-view="aso"><span><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>Doanh số & ASO</button>
       </nav>
-      <div class="sidebar-note"><span class="live-dot"></span><div><strong>Dữ liệu workbook</strong><small>Cập nhật 05/09/2026</small></div></div>
+      <div class="sidebar-note"><span class="live-dot"></span><div><strong>Dữ liệu workbook</strong><small id="updatedDate">Đang tải dữ liệu...</small></div></div>
     </aside>
     <main>
       <header class="topbar">
@@ -31,11 +31,12 @@
         <div class="date-chip"><span>◷</span><div><small>Kỳ báo cáo</small><strong>Tháng 09/2026</strong></div></div>
       </header>
       <section class="filterbar" aria-label="Bộ lọc">
-        <label><span>Team / SS</span><select id="teamFilter"></select></label>
+        <label><span>Phạm vi review</span><select id="teamFilter" disabled></select></label>
         <label><span>Đại diện KD</span><select id="repFilter"></select></label>
         <label><span>Phường / Xã</span><select id="wardFilter"></select></label>
+        <label><span>Thứ</span><select id="dayFilter"></select></label>
         <label class="search-wrap"><span>Tìm kiếm</span><input id="searchInput" type="search" placeholder="Tên KH, mã KH..." /></label>
-        <button id="resetFilters" class="ghost-button">Đặt lại</button>
+        <button id="resetFilters" class="ghost-button" type="button" title="Xóa các bộ lọc đang chọn">↺ Đặt lại</button>
       </section>
       <div id="content" class="content" aria-live="polite"></div>
     </main>
