@@ -1,7 +1,7 @@
 const DATA = window.KPI_DATA;
 const PHAP_TEAM = DATA.meta.team || 'Nguyễn Văn Pháp';
-const state = { view: 'overview', team: PHAP_TEAM, rep: '', ward: '', day: '', search: '', mcpUnpurchased: true, growthProgram: 'seasoning' };
-const titles = { overview:'Tổng quan KPI', growth:'Tăng doanh số', mbs:'Tracking MBS', display:'Tracking trưng bày', mcp:'Danh sách MCP', aso:'Doanh số & ASO' };
+const state = { view: 'overview', team: PHAP_TEAM, rep: '', ward: '', day: '', search: '', mcpUnpurchased: true, growthProgram: 'seasoning', comboProgram: 'all' };
+const titles = { overview:'Tổng quan KPI', growth:'Tăng doanh số', combo:'Combo mở mới', mbs:'Tracking MBS', display:'Tracking trưng bày', mcp:'Danh sách MCP', aso:'Doanh số & ASO' };
 const el = id => document.getElementById(id);
 const fmtNumber = n => new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(Math.ceil(Number(n)||0));
 const fmtMoney = n => fmtNumber(n)+' đ';
@@ -29,7 +29,7 @@ function matches(d){
   if(state.day && !String(d.routeDay||'').split(',').map(v=>v.trim()).includes(state.day)) return false;
   if(state.search){
     const q=state.search.toLocaleLowerCase('vi');
-    if(![d.rep,d.customer,d.customerCode,d.ward,d.program].some(v=>String(v||'').toLocaleLowerCase('vi').includes(q))) return false;
+    if(![d.rep,d.customer,d.customerCode,d.address,d.ward,d.program,d.coreDetail,d.npp].some(v=>String(v||'').toLocaleLowerCase('vi').includes(q))) return false;
   }
   return true;
 }
@@ -83,6 +83,27 @@ function renderGrowth(){
  el('content').innerHTML=intro('Tăng doanh số','Ba chương trình được tách riêng để theo dõi đến từng cửa hàng',rows.length)+`<div class="subtabs">${Object.entries(programs).map(([k,v])=>`<button data-program="${k}" class="${state.growthProgram===k?'active':''}">${v.label}</button>`).join('')}</div><div class="cards">${metricCard('CHỈ TIÊU '+p.label.toUpperCase(),fmtMoney(t),`${rows.length} cửa hàng`,null,'◎')}${metricCard('THỰC HIỆN',fmtMoney(a),status(ach),ach,'↗')}${metricCard('KH ĐẠT',passed,`${rows.length-passed} KH chưa đạt`,passed/(rows.length||1),'✓')}${metricCard('CÒN LẠI',fmtMoney(Math.max(t-a,0)),'Khoảng cách đến mục tiêu',null,'◷')}</div>`+table(['Mã KH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','Đại diện KD','Chỉ tiêu','Thực hiện','Còn lại','% đạt'],rows.slice(0,1500).map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person">${esc(d.customer)}</td><td class="muted">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${esc(d.rep)}</td><td class="money">${fmtFull(d[tk])}</td><td class="money">${fmtFull(d[ak])}</td><td class="money">${fmtFull(Math.max(d[tk]-d[ak],0))}</td><td><strong class="${color(d[pk])}">${fmtPct(d[pk])}</strong></td></tr>`));
  document.querySelectorAll('[data-program]').forEach(b=>b.onclick=()=>{state.growthProgram=b.dataset.program;render()});
 }
+function renderCombo(){
+ const allRows=filtered();
+ const programs={
+  all:{label:'Tất cả chương trình'},
+  comboHpcTocs:{label:'Combo HPC + TOCS'},
+  comboHpcChante:{label:'HPC Chanté Active +20k'},
+  comboCanuTocs:{label:'Combo Canu + TOCS'},
+  comboCoreTocs:{label:'Ngành core + TOCS'},
+  newOrder200k:{label:'Đơn hàng mở mới 200k'}
+ };
+ const rows=state.comboProgram==='all'?allRows:allRows.filter(d=>d[state.comboProgram]);
+ const stats=Object.entries(programs).filter(([key])=>key!=='all').map(([key,item])=>({key,label:item.label,count:allRows.filter(d=>d[key]).length}));
+ const maxCount=Math.max(...stats.map(item=>item.count),1);
+ const yes=value=>`<span class="combo-check ${value?'yes':'no'}">${value?'✓':'—'}</span>`;
+ el('content').innerHTML=intro('Combo mở mới • NPP Tâm Hạnh','Danh sách khách hàng thuộc Team SS Nguyễn Văn Pháp, ghép địa chỉ và lịch viếng thăm theo mã khách hàng',rows.length,'khách hàng')+
+ `<div class="subtabs combo-tabs">${Object.entries(programs).map(([key,item])=>`<button data-combo-program="${key}" class="${state.comboProgram===key?'active':''}">${item.label}</button>`).join('')}</div>`+
+ `<div class="cards combo-cards">${metricCard('KH ĐANG HIỂN THỊ',fmtNumber(rows.length),state.comboProgram==='all'?'Tất cả khách hàng Team SS Pháp':programs[state.comboProgram].label,null,'◎')}${metricCard('COMBO HPC + TOCS',fmtNumber(stats[0].count),'Khách hàng được áp dụng',stats[0].count/(allRows.length||1),'H')}${metricCard('HPC CHANTÉ +20K',fmtNumber(stats[1].count),'Khách hàng được áp dụng',stats[1].count/(allRows.length||1),'C')}${metricCard('ĐƠN MỞ MỚI 200K',fmtNumber(stats[4].count),'Khách hàng được áp dụng',stats[4].count/(allRows.length||1),'₫')}</div>`+
+ `<section class="panel combo-analysis"><div class="panel-head"><div><h3>Phân bổ theo từng chương trình Combo</h3><span class="panel-note">Số khách hàng trong phạm vi bộ lọc hiện tại</span></div><span class="badge">NPP Tâm Hạnh</span></div><div class="combo-program-list">${stats.map(item=>`<button data-combo-program="${item.key}" class="combo-program-row"><span>${esc(item.label)}</span><div class="bar"><i style="width:${item.count/maxCount*100}%"></i></div><strong>${fmtNumber(item.count)} KH</strong></button>`).join('')}</div></section>`+
+ table(['Mã KH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','DDKD','HPC + TOCS','HPC Chanté +20k','Canu + TOCS','Core + TOCS','Chi tiết ngành core','ĐH mở mới 200k'],rows.map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person">${esc(d.customer)}</td><td class="muted">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${esc(d.rep)}</td><td>${yes(d.comboHpcTocs)}</td><td>${yes(d.comboHpcChante)}</td><td>${yes(d.comboCanuTocs)}</td><td>${yes(d.comboCoreTocs)}</td><td class="muted">${esc(d.coreDetail)}</td><td>${yes(d.newOrder200k)}</td></tr>`));
+ document.querySelectorAll('[data-combo-program]').forEach(button=>button.onclick=()=>{state.comboProgram=button.dataset.comboProgram;render()});
+}
 function renderMbs(){
  const rows=filtered(),t=rows.reduce((s,d)=>s+d.target,0),a=rows.reduce((s,d)=>s+d.actual,0),ach=t?a/t:0,reward=rows.reduce((s,d)=>s+d.estimatedReward,0),passed=rows.filter(d=>d.rewardEligible).length;
  el('content').innerHTML=intro('Tracking chương trình MBS','Doanh số nền tảng, thực hiện, điều kiện ngành hàng và thưởng dự kiến',passed,'KH đạt thưởng')+`<div class="cards">${metricCard('DOANH SỐ NỀN TẢNG',fmtMoney(t),'Cơ sở tính điều kiện chương trình',null,'◎')}${metricCard('DOANH SỐ THỰC HIỆN',fmtMoney(a),status(ach),ach,'↗')}${metricCard('KH ĐẠT THƯỞNG',passed,'Đủ toàn bộ điều kiện chương trình',null,'◇')}${metricCard('THƯỞNG DỰ KIẾN',fmtMoney(reward),'Theo điều kiện hiện tại',null,'₫')}</div>`+table(['Mã CH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','DDKD','Loại HV','DS nền tảng','DS thực hiện','% DS','Duy trì','Mở mới','Kết quả','Điều kiện còn thiếu'],rows.map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person">${esc(d.customer)}</td><td class="muted">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${esc(d.rep)}</td><td>${esc(d.memberType)}</td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td>${esc(d.maintenance)}</td><td>${esc(d.newBrand)}</td><td><span class="status-pill ${d.rewardEligible?'green':'red'}">${esc(d.rewardStatus)}</span></td><td class="muted">${esc(d.missing)}</td></tr>`));
@@ -103,7 +124,7 @@ function renderAso(){
  const wardDetails=groups.map((g,gi)=>`<details class="ward-group" open><summary><div class="ward-title"><span class="ward-icon">⌖</span><div><strong>${esc(g.ward)}</strong><small>${g.reps.length} DDKD • MCP ${fmtNumber(g.mcpOff+g.mcpOn)}</small></div></div><div class="ward-kpis"><span><small>Chỉ tiêu</small><strong>${fmtMoney(g.target)}</strong></span><span><small>Thực hiện</small><strong>${fmtMoney(g.actual)}</strong></span><span><small>Tiến độ</small><strong class="${color(g.achievement)}">${fmtPct(g.achievement)}</strong></span><b class="chevron">⌄</b></div></summary><div class="ward-table"><table><thead><tr><th>DDKD</th><th>Mã</th><th>MCP OFF</th><th>MCP ON</th><th>Chỉ tiêu DS</th><th>Thực hiện DS</th><th>% DS</th><th>PC 4 Line</th><th>% PC</th><th>LPPC</th><th>Mức LPPC</th></tr></thead><tbody>${[...g.reps].sort((a,b)=>b.actual-a.actual).map(d=>`<tr><td class="person">${esc(d.rep)}</td><td>${esc(d.code)}</td><td>${fmtNumber(d.mcpOff)}</td><td>${fmtNumber(d.mcpOn)}</td><td class="money">${fmtMoney(d.target)}</td><td class="money">${fmtMoney(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td>${fmtNumber(d.pcActual)} / ${fmtNumber(d.pcTarget)}</td><td>${fmtPct(d.pcAchievement)}</td><td>${fmtNumber(d.lppc)}</td><td>${esc(d.lppcLevel)}</td></tr>`).join('')}</tbody></table></div></details>`).join('');
  el('content').innerHTML=intro('Dashboard Doanh số & ASO','Phân cấp Phường → DDKD, nhấn từng phường để thu gọn hoặc mở chi tiết',rows.length)+`<div class="cards">${metricCard('MCP OFF',fmtNumber(mcpOff),`${fmtNumber(mcpOn)} MCP ON`,null,'◎')}${metricCard('CHỈ TIÊU DOANH SỐ',fmtMoney(target),`${groups.length} phường • ${rows.length} DDKD`,null,'◫')}${metricCard('THỰC HIỆN DOANH SỐ',fmtMoney(actual),status(ach),ach,'↗')}${metricCard('PC 4 LINE',`${fmtNumber(pcActual)} / ${fmtNumber(pcTarget)}`,`Hoàn thành ${fmtPct(pcAch)}`,pcAch,'◇')}</div><section class="panel aso-chart"><div class="panel-head"><div><h3>Phân tích Target – Actual theo phường</h3><span class="panel-note">Tỷ lệ giữ số thập phân từ dữ liệu nguồn</span></div><div class="chart-legend"><span><i class="target-swatch"></i>Chỉ tiêu</span><span><i class="actual-swatch"></i>Thực hiện</span></div></div><div class="comparison-chart">${groups.map((g,i)=>`<div class="compare-row"><div class="compare-name"><b>${i+1}</b><span>${esc(g.ward)}</span></div><div class="compare-bars"><div class="compare-line target-line"><i style="width:${Math.max(g.target/maxScale*100,2)}%"></i><strong>${fmtMoney(g.target)}</strong></div><div class="compare-line actual-line"><i style="width:${Math.max(g.actual/maxScale*100,2)}%"></i><strong>${fmtMoney(g.actual)} • ${fmtPct(g.achievement)}</strong></div></div></div>`).join('')}</div></section><section class="ward-section"><div class="ward-section-head"><div><span class="section-icon">⌖</span><div><h3>Chi tiết theo phường</h3><p>Mở từng phường để xem DDKD và toàn bộ chỉ số</p></div></div><span>${groups.length} phường</span></div>${wardDetails}</section>`;
 }
-function render(){ syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`Cập nhật ${DATA.meta.updated}`; ({overview:renderOverview,growth:renderGrowth,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso}[state.view])(); el('content').insertAdjacentHTML('afterbegin',greeting()); }
+function render(){ syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`Cập nhật ${DATA.meta.updated}`; ({overview:renderOverview,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso}[state.view])(); el('content').insertAdjacentHTML('afterbegin',greeting()); }
 
 function showToast(message){
  let toast=el('dashboardToast');
@@ -123,12 +144,12 @@ function showToast(message){
  showToast.timer=setTimeout(()=>toast.classList.remove('show'),2200);
 }
 
-document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;state.rep='';state.ward='';state.day='';state.search='';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render()});
+document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render()});
 el('repFilter').onchange=e=>{state.rep=e.target.value;state.ward='';render()};
 el('wardFilter').onchange=e=>{state.ward=e.target.value;render()};
 el('dayFilter').onchange=e=>{state.day=e.target.value;render()};
 el('searchInput').oninput=e=>{state.search=e.target.value;render()};
-el('resetFilters').onclick=()=>{const hadFilters=Boolean(state.rep||state.ward||state.day||state.search);state.team=PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';el('searchInput').value='';render();showToast(hadFilters?'Đã xóa toàn bộ bộ lọc':'Bộ lọc đang ở trạng thái mặc định')};
+el('resetFilters').onclick=()=>{const hadFilters=Boolean(state.rep||state.ward||state.day||state.search||state.comboProgram!=='all');state.team=PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';el('searchInput').value='';render();showToast(hadFilters?'Đã xóa toàn bộ bộ lọc':'Bộ lọc đang ở trạng thái mặc định')};
 el('menuButton').onclick=()=>document.querySelector('.sidebar').classList.toggle('open');
 
 render();
