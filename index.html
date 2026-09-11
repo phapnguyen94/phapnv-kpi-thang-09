@@ -214,6 +214,12 @@ body{background-color:#eef3f9;background-image:linear-gradient(rgba(28,74,127,.0
 @media(max-width:900px){.monthly-ward-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.focus-button{height:34px;padding:0 9px;font-size:9px}}
 @media(max-width:540px){.sidebar{padding-left:8px;padding-right:8px}.brand{display:none}.sidebar nav{gap:4px}.nav-item{padding:4px 7px;font-size:9px;gap:5px}.nav-item span{width:28px;height:28px}.topbar{gap:8px}.page-heading{min-width:0}.topbar h1{overflow:hidden;font-size:18px;white-space:nowrap;text-overflow:ellipsis}.header-actions{margin-left:auto}.focus-button{font-size:0;width:36px;padding:0}.focus-button:first-letter{font-size:16px}.monthly-ward-grid{grid-template-columns:1fr}.monthly-ward-card{min-height:165px}.focus-mode .topbar{height:58px}.focus-mode .content{padding:14px 10px 28px}.focus-mode .section-intro{display:none}}
 
+/* V25: always-visible focus control */
+.focus-button{position:fixed;right:24px;bottom:22px;z-index:900;height:48px;padding:0 18px;border:1px solid rgba(255,255,255,.42);border-radius:15px;background:linear-gradient(135deg,#176fe0,#078f88);color:#fff;font-size:12px;box-shadow:0 15px 34px rgba(16,77,145,.3)}
+.focus-button:hover{transform:translateY(-2px);border-color:#fff;box-shadow:0 18px 38px rgba(13,91,151,.38)}
+.focus-mode .focus-button{background:linear-gradient(135deg,#0b776e,#075b71);border-color:rgba(255,255,255,.5)}
+@media(max-width:540px){.focus-button{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));width:auto;height:44px;padding:0 14px;font-size:11px;border-radius:13px}.focus-button:first-letter{font-size:14px}}
+
 </style>
 </head>
 <body>
