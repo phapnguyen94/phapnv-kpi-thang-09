@@ -970,6 +970,65 @@ body.theme-original{--blue:#3868ff;--blue2:#7658ed;--cyan:#32b6af;--text:#112a50
 
 [data-view="growth"] .subtabs button{display:flex;align-items:center;gap:7px}[data-view="growth"] .subtabs .ui-icon,.review360-list-row>b>.ui-icon{width:17px;height:17px;flex-shrink:0}.review360-list-row>b{display:flex;align-items:center;gap:7px}.growth-tracking-table th{white-space:normal;min-width:85px}.growth-tracking-table td{vertical-align:middle}
 
+.member-condition-filters{margin-bottom:20px}
+.member-condition-select{display:grid;gap:6px;max-width:440px;min-width:240px}
+.member-condition-select>span{font-size:11px;color:#536884;font-weight:800}
+.member-condition-select select{width:100%;min-height:42px;border:1px solid #cad8ee;border-radius:10px;background:#f8faff;color:#25436a;font:700 12px system-ui;padding:9px 30px 9px 12px}
+.member-condition-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 12px}
+.member-condition-card{min-width:0;text-align:left;background:#f6f9ff;color:#25436a;border:1px solid #d9e3f3;border-radius:13px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:13px}
+.member-condition-card>span{display:flex;gap:8px;align-items:flex-start;font-size:12px;font-weight:800;line-height:1.55}
+.member-condition-card .ui-icon{width:19px;height:19px;flex:0 0 19px;color:#436fc9}
+.member-condition-card>strong{font-size:26px;line-height:1.2;color:#234474;letter-spacing:-.5px}
+.member-condition-card>strong>small{font-size:11px;letter-spacing:0;color:#677f9d}
+.member-condition-card.active{border-color:#4679da;background:#edf4ff;box-shadow:inset 0 3px #4679da,0 4px 12px #244c8b08}
+.member-condition-card:hover{border-color:#4679da}
+.member-condition-note{margin:0;color:#536884;font-size:12px;line-height:1.7}
+.member-condition-note b{color:#294c85}
+.section-focus-tools{display:flex;justify-content:flex-end;gap:8px;margin:0 0 9px;position:relative;z-index:1}
+.table-panel>.section-focus-tools{padding:11px 16px 0;margin:0}
+.section-focus-button{display:inline-flex;align-items:center;justify-content:center;min-height:28px;border:1px solid #d5e0f2;border-radius:8px;background:#f6f9ff;color:#335b99;font:750 11px system-ui;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.section-focus-button:hover{background:#eaf2ff;border-color:#789fe3}
+.focus-in-summary{margin:0!important;flex-shrink:0}
+.section-focus-dialog{width:min(1600px,calc(100vw - 24px));height:90vh;height:min(92dvh,1000px);max-width:none;max-height:none;padding:0;border:1px solid #d8e3f3;border-radius:18px;background:#f4f7fc;color:#223d65;box-shadow:0 24px 100px #0c23484d}
+.section-focus-dialog[open]{display:flex;flex-direction:column}
+.section-focus-dialog::backdrop{background:#0b173bbb;backdrop-filter:blur(3px)}
+.section-focus-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 22px;background:#fff;border-bottom:1px solid #dde5f2;flex-shrink:0}
+.section-focus-header>div{min-width:0}
+.section-focus-header small{display:block;color:#5476af;font:800 10px system-ui;letter-spacing:1px}
+.section-focus-header h2{margin:5px 0 0;font:850 20px system-ui;color:#203e70;line-height:1.35;overflow-wrap:anywhere}
+.section-focus-close{border:1px solid #cbd8ec;border-radius:10px;background:#eaf1ff;color:#274e91;font:800 12px system-ui;padding:11px 15px;flex-shrink:0;cursor:pointer}
+.section-focus-close:hover{background:#dbe8ff}
+.section-focus-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:20px}
+.section-focus-content>.focus-section-target{margin:0!important;width:100%!important;max-width:none!important;min-width:0!important;grid-column:auto!important}
+.focus-section-target>.section-focus-tools,.focus-section-target>summary>.section-focus-tools{display:none}
+.section-focus-content .table-scroll{max-height:none!important;height:auto!important;overflow:auto!important}
+.section-focus-content .metric-card,.section-focus-content .foundation-card,.section-focus-content .member-summary-card{max-width:none!important}
+.section-focus-content .metric-value{overflow:visible!important;text-overflow:clip!important;white-space:normal!important;overflow-wrap:anywhere}
+body.section-focusing{overflow:hidden}
+@media(max-width:720px){
+ .member-condition-grid{grid-template-columns:1fr;gap:9px}
+ .member-condition-card{padding:13px;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+ .member-condition-card>span{flex:1;font-size:12px}
+ .member-condition-card>strong{font-size:22px;flex-shrink:0}
+ .member-condition-select{min-width:0;max-width:none;width:100%}
+ .member-condition-select select{font-size:16px}
+ .section-focus-tools{margin-bottom:7px}
+ .section-focus-button{min-height:32px;font-size:11px}
+ .section-focus-dialog{width:calc(100vw - 12px);height:calc(100vh - 12px);height:calc(100dvh - 12px);border-radius:12px}
+ .section-focus-header{padding:13px 12px;gap:8px}
+ .section-focus-header h2{font-size:16px}
+ .section-focus-close{padding:9px 10px;font-size:11px}
+ .section-focus-content{padding:10px}
+ .focus-in-summary{align-self:center}
+}
+
+.export-dashboard-bar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 18px;margin:0 0 22px;border:1px solid #d6e4de;border-radius:12px;background:#f8fcfa;color:#294a3d}
+.export-dashboard-bar b,.export-dashboard-bar small{display:block}.export-dashboard-bar b{font-size:13px;font-weight:850}.export-dashboard-bar small{font-size:11px;margin-top:4px;color:#5c786d}
+.excel-export-button{background:#197148;color:#fff;border:1px solid #197148;border-radius:9px;padding:10px 13px;font:800 12px system-ui;cursor:pointer;white-space:nowrap;min-height:36px}
+.excel-export-button:hover{background:#135e3b;border-color:#135e3b}.excel-export-button.small{background:#edf8f0;color:#1d6b44;border-color:#cce4d5;font-size:11px;min-height:28px;padding:5px 9px}
+.section-focus-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}.section-focus-export[hidden]{display:none!important}
+@media(max-width:720px){.export-dashboard-bar{align-items:stretch;flex-direction:column;padding:13px;gap:11px}.export-dashboard-bar .excel-export-button{width:100%;font-size:12px}.section-focus-actions{gap:5px}.section-focus-actions .excel-export-button{font-size:10px;padding:9px 8px}.section-focus-actions .section-focus-close{font-size:10px;padding:9px 8px}.section-focus-tools{flex-wrap:wrap}}
+
 </style>
 </head>
 <body class="theme-original">
@@ -1023,7 +1082,7 @@ let PHAP_TEAM = DATA.meta.team || 'Nguyễn Văn Pháp';
 let BONUS_TEAM = DATA.meta.bonusTeam || 'Lê Ngọc Dự';
 let BONUS_SCOPE = `Team SS ${PHAP_TEAM} + SS Dự`;
 const LPPC_TARGET = 5.0;
-const state = { month: MONTH_KEYS[MONTH_KEYS.length-1], view: 'overview', team: PHAP_TEAM, rep: '', ward: '', day: '', search: '', mcpUnpurchased: true, mcpHistory: 'all', mcpProgram: 'all', mcpChannel: 'all', growthProgram: 'seasoning', comboProgram: 'all', bonusProgram: 'seasoning' };
+const state = { month: MONTH_KEYS[MONTH_KEYS.length-1], view: 'overview', team: PHAP_TEAM, rep: '', ward: '', day: '', search: '', mcpUnpurchased: true, mcpHistory: 'all', mcpProgram: 'all', mcpChannel: 'all', growthProgram: 'seasoning', comboProgram: 'all', bonusProgram: 'seasoning', mbsCondition:'all' };
 const titles = { overview:'Tổng quan KPI', review:'Review 360°', bonus:'Bonus DDKD', monthly:'Chỉ tiêu – Thực hiện theo tháng', growth:'Gắn kết & Tăng doanh số', combo:'Combo mở mới', mbs:'Hội Viên Doanh Nhân Masan', display:'Tracking trưng bày', mcp:'Danh sách MCP', aso:'Doanh số & ASO' };
 const el = id => document.getElementById(id);
 const fmtNumber = n => new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(Math.ceil(Number(n)||0));
@@ -1122,7 +1181,7 @@ function visualIdentity(label,fallback='grid'){
  if(/kenh|quay|cua hang/.test(text))return{icon:'store',accent:'cyan'};
  return{icon:fallback,accent:'blue'};
 }
-function decoratePanels(){
+function decoratePanelIcons(){
  document.querySelectorAll('.panel-head h3,.table-head h3,.section-intro h2,.salary-command-head h3,.review360-health h3,.review360-priorities h3,.review360-section h3').forEach(h=>{
   if(h.querySelector('.section-glyph'))return;
   const identity=visualIdentity(h.textContent);
@@ -1383,6 +1442,205 @@ function renderMonthly(){
  document.querySelectorAll('[data-ward-pick]').forEach(button=>button.onclick=()=>{state.ward=state.ward===button.dataset.wardPick?'':button.dataset.wardPick;render()});
 }
 
+const MEMBER_CONDITIONS=[
+ {key:'all',label:'Tất cả hội viên',note:'Xem toàn bộ hội viên trong phạm vi đang lọc.'},
+ {key:'category-only',label:'Đạt CAT/BRAND · Chưa đạt doanh số',note:'Đã đủ điều kiện CAT/BRAND; cần hoàn thành doanh số nền tảng.'},
+ {key:'sales-only',label:'Đạt doanh số · Chưa đạt CAT/BRAND',note:'Đã đạt doanh số nền tảng; cần hoàn thiện duy trì / mở mới CAT hoặc BRAND.'}
+];
+function memberFlag(value){return value===true||value===1||value==='1'}
+function memberConditionMatch(row,key){
+ const sales=memberFlag(row.salesEligible),category=memberFlag(row.catBrandEligible);
+ return key==='category-only'?category&&!sales:key==='sales-only'?sales&&!category:true;
+}
+function memberConditionControls(rows){
+ const active=MEMBER_CONDITIONS.find(p=>p.key===state.mbsCondition)||MEMBER_CONDITIONS[0];
+ const count=key=>new Set(rows.filter(r=>memberConditionMatch(r,key)).map(r=>codeKey(r.customerCode))).size;
+ return `<section class="panel member-condition-filters"><div class="panel-head"><div><h3>Lọc theo điều kiện hội viên</h3><span class="panel-note">Kết hợp với DDKD, phường / xã, thứ và tìm kiếm phía trên</span></div><label class="member-condition-select"><span>Nhóm khách hàng</span><select id="memberConditionFilter" aria-label="Lọc nhóm hội viên theo điều kiện">${MEMBER_CONDITIONS.map(p=>`<option value="${p.key}" ${active.key===p.key?'selected':''}>${esc(p.label)}</option>`).join('')}</select></label></div><div class="member-condition-grid">${MEMBER_CONDITIONS.map(p=>`<button type="button" class="member-condition-card ${p.key===active.key?'active':''}" data-member-condition="${p.key}" aria-pressed="${p.key===active.key}"><span>${uiIcon(p.key==='category-only'?'layers':p.key==='sales-only'?'trend':'store')}${esc(p.label)}</span><strong>${fmtNumber(count(p.key))}<small> KH</small></strong></button>`).join('')}</div><p class="member-condition-note"><b>Đang xem: ${esc(active.label)}.</b> ${esc(active.note)} Các ô tổng quan và bảng chi tiết được tính lại theo nhóm này.</p></section>`;
+}
+function bindMemberConditionFilter(){
+ const change=key=>{state.mbsCondition=MEMBER_CONDITIONS.some(p=>p.key===key)?key:'all';render()};
+ document.querySelectorAll('[data-member-condition]').forEach(button=>button.onclick=()=>change(button.dataset.memberCondition));
+ const select=el('memberConditionFilter');if(select)select.onchange=event=>change(event.target.value);
+}
+
+let sectionFocus=null;
+const SECTION_FOCUS_SELECTOR='section,.panel,.metric-card,.foundation-card,.member-summary-card,.salary-review-card,.cat-summary-box,details,.mbs-ward-grid article,.salary-command';
+function focusSectionName(node){
+ const title=node.querySelector('h3,h4,h2,.metric-top>span,.foundation-card header>span,.salary-review-card header>span,.ward-title strong,summary strong,header>span');
+ return title?.textContent.trim()||'Chi tiết đang xem';
+}
+function bindSectionFocus(){
+ document.querySelectorAll('#content,#customer360Modal,.section-focus-content').forEach(root=>{
+  root.querySelectorAll(SECTION_FOCUS_SELECTOR).forEach((node,index)=>{
+   if(node.tagName==='BUTTON'||node.querySelector(':scope > .section-focus-tools,:scope > summary > .section-focus-tools'))return;
+   const title=focusSectionName(node);
+   node.dataset.focusSection=`${state.view}:${root.id||'focus'}:${index}:${title}`;
+   const tools=document.createElement('div');tools.className='section-focus-tools';
+   const button=document.createElement('button');button.type='button';button.className='section-focus-button';
+   button.textContent='⛶ Tập trung';button.setAttribute('aria-label',`Tập trung: ${title}`);
+   button.title=`Mở riêng ${title}`;button.onclick=event=>{event.preventDefault();event.stopPropagation();openSectionFocus(node,button)};
+   tools.append(button);
+   const summary=node.tagName==='DETAILS'?node.querySelector(':scope > summary'):null;
+   if(summary){tools.classList.add('focus-in-summary');summary.append(tools)}else node.prepend(tools);
+  });
+ });
+}
+function closeSectionFocus(restoreFocus=true){
+ if(!sectionFocus)return;
+ const previous=sectionFocus;sectionFocus=null;
+ previous.marker.replaceWith(previous.node);
+ previous.node.classList.remove('focus-section-target');
+ if(previous.initialOpen!==undefined)previous.node.open=previous.initialOpen;
+ previous.dialog.remove();document.body.classList.remove('section-focusing');
+ if(restoreFocus&&previous.trigger?.isConnected)previous.trigger.focus({preventScroll:true});
+}
+function openSectionFocus(node,trigger=null){
+ if(!node?.isConnected)return;
+ closeSectionFocus(false);
+ const title=focusSectionName(node),marker=document.createComment('section-focus-position');
+ node.before(marker);
+ const dialog=document.createElement('dialog');dialog.className='section-focus-dialog';
+ dialog.setAttribute('aria-label',`Tập trung: ${title}`);
+ dialog.innerHTML=`<header class="section-focus-header"><div><small>CHẾ ĐỘ TẬP TRUNG</small><h2>${esc(title)}</h2></div><div class="section-focus-actions"><button type="button" class="excel-export-button section-focus-export">⇩ Xuất Excel</button><button type="button" class="section-focus-close">✕ Quay lại</button></div></header><div class="section-focus-content"></div>`;
+ dialog.querySelector('.section-focus-content').append(node);node.classList.add('focus-section-target');
+ const initialOpen=node.tagName==='DETAILS'?node.open:undefined;
+ sectionFocus={node,marker,dialog,trigger,key:node.dataset.focusSection,initialOpen};
+ if(initialOpen!==undefined)node.open=true;
+ dialog.querySelector('.section-focus-close').onclick=()=>closeSectionFocus();
+ const exportButton=dialog.querySelector('.section-focus-export');if(exportButton){exportButton.hidden=!collectExportTables(node).length;exportButton.onclick=()=>exportDashboardTables(node)}
+ dialog.addEventListener('cancel',event=>{event.preventDefault();closeSectionFocus()});
+ dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeSectionFocus()});
+ document.body.append(dialog);document.body.classList.add('section-focusing');
+ dialog.showModal();dialog.querySelector('.section-focus-close').focus({preventScroll:true});scheduleNumberFit();
+}
+function decoratePanels(){decoratePanelIcons();bindSectionFocus();bindExcelExports()}
+
+function exportFilterSummary(){
+ const filters=[DATA.meta.periodLabel,`Team: ${state.team||'SS Pháp + SS Dự'}`,`DDKD: ${state.rep||'Tất cả'}`,`Phường: ${state.ward||'Tất cả'}`,`Thứ: ${state.day||'Tất cả'}`];
+ if(state.search)filters.push(`Tìm kiếm: ${state.search}`);
+ if(state.view==='mbs')filters.push(MEMBER_CONDITIONS.find(p=>p.key===state.mbsCondition)?.label||'Tất cả hội viên');
+ if(state.view==='growth')filters.push(growthPrograms().find(p=>p.key===state.growthProgram)?.label||'');
+ if(state.view==='bonus')filters.push(selectedBonusProgram().label);
+ if(state.view==='combo')filters.push(comboProgramDefinitions().find(p=>p.key===state.comboProgram)?.label||'Tất cả Combo');
+ if(state.view==='mcp')filters.push(`Kênh: ${state.mcpChannel==='all'?'ON + OFF':state.mcpChannel}`,state.mcpUnpurchased?'Chưa mua tháng này':'Tất cả trạng thái mua',MCP_PROGRAMS.find(p=>p.key===state.mcpProgram)?.label||'Tất cả chương trình');
+ if(state.view==='monthly')for(const key of ['monthlyDetailMonth','monthlySub','monthlyBrand','monthlyAso','monthlyTrendAso','subStart','subEnd'])if(state[key]&&state[key]!=='all')filters.push(`${({monthlyDetailMonth:'Tháng chi tiết',monthlySub:'Ngành hàng',monthlyBrand:'Nhãn hàng',monthlyAso:'Nhóm ASO',monthlyTrendAso:'ASO biểu đồ',subStart:'Từ tháng',subEnd:'Đến tháng'})[key]}: ${state[key]}`);
+ return filters.filter(Boolean).join(' · ');
+}
+function exportToolbar(){return `<div class="export-dashboard-bar"><div><b>Xuất dữ liệu chi tiết</b><small>Tải Excel đúng các bảng và điều kiện đang xem</small></div><button id="exportFilteredExcel" type="button" class="excel-export-button">⇩ Xuất Excel theo bộ lọc</button></div>`}
+function collectExportTables(scope=el('content')){
+ const tables=[],seen=new Set();
+ const visit=root=>{
+  if(root.matches?.('table')&&!seen.has(root)){seen.add(root);tables.push(root)}
+  root.querySelectorAll('table').forEach(t=>{if(!seen.has(t)){seen.add(t);tables.push(t)}});
+  root.querySelectorAll('template').forEach(t=>visit(t.content));
+ };
+ visit(scope);
+ if(scope===el('content')&&sectionFocus?.marker.parentElement?.closest('#content'))visit(sectionFocus.node);
+ return tables;
+}
+function excelPlainCell(cell){
+ const copy=cell.cloneNode(true);
+ copy.querySelectorAll('svg,.view360-mark,.section-focus-tools').forEach(n=>n.remove());
+ return (cell.matches?.('.address-cell')&&cell.title?cell.title:copy.textContent).replace(/\s+/g,' ').trim();
+}
+function excelTypedValue(value,header=''){
+ const text=String(value??'').trim();
+ if(/(?:^|\s)mã(?:\s|$)|mã kh|mã ch|mã ddkd|mã_pos|code|outlet|điện thoại/i.test(header)||/^0\d/.test(text))return text;
+ const clean=text.replace(/[\u00a0\u202f]/g,' ').replace(/[−–]/g,'-').replace(/^[▲▼]\s*/,'');
+ const match=clean.match(/^([+-]?\d+(?:\.\d{3})*(?:,\d+)?)\s*(%|đ|₫)?$/i);
+ if(!match)return text;
+ const number=Number(match[1].replace(/\./g,'').replace(',','.'));
+ if(!Number.isFinite(number)||Math.abs(number)>Number.MAX_SAFE_INTEGER)return text;
+ return {value:match[2]==='%'?number/100:number,style:match[2]==='%'?3:match[2]?2:4};
+}
+function excelGrid(rows,spreadHeaders=false){
+ const grid=[];
+ rows.forEach((row,r)=>{
+  grid[r]??=[];let col=0;
+  Array.from(row.cells).forEach(cell=>{
+   while(grid[r][col]!==undefined)col++;
+   const value=excelPlainCell(cell),rs=Math.max(1,cell.rowSpan||1),cs=Math.max(1,cell.colSpan||1);
+   for(let dr=0;dr<rs;dr++){grid[r+dr]??=[];for(let dc=0;dc<cs;dc++)grid[r+dr][col+dc]=spreadHeaders||dc===0?value:'';}
+   col+=cs;
+  });
+ });return grid;
+}
+function excelTableModel(table,index){
+ const heads=excelGrid(Array.from(table.tHead?.rows||[]),true);
+ const bodies=excelGrid(Array.from(table.tBodies).flatMap(b=>Array.from(b.rows)));
+ const foot=excelGrid(Array.from(table.tFoot?.rows||[]));
+ const width=Math.max(1,...[...heads,...bodies,...foot].map(r=>r.length));
+ const headers=Array.from({length:width},(_,col)=>{
+  const labels=heads.map(row=>row[col]).filter(Boolean);
+  return [...new Set(labels)].join(' • ')||`Cột ${col+1}`;
+ });
+ const parent=table.closest('.panel,details,section');
+ const caption=parent?.querySelector('h3,h4,summary')?.textContent.replace(/⛶ Tập trung|⇩ Xuất Excel/g,'').trim();
+ return {name:caption||`${titles[state.view]} ${index+1}`,headers,rows:[...bodies,...foot].map(row=>headers.map((h,i)=>excelTypedValue(row[i]??'',h)))};
+}
+function excelXml(value){return String(value??'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'').slice(0,32767).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;')}
+function excelColumn(index){let name='';for(let i=index+1;i>0;i=Math.floor((i-1)/26))name=String.fromCharCode(65+(i-1)%26)+name;return name}
+function excelZip(files){
+ const encoder=new TextEncoder(),parts=[],central=[];let offset=0;
+ const crc=bytes=>{let c=0xffffffff;for(const b of bytes){c^=b;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0)}return(c^0xffffffff)>>>0};
+ const header=(size,values)=>{const b=new Uint8Array(size),v=new DataView(b.buffer);for(const [at,n,len]of values)len===2?v.setUint16(at,n,true):v.setUint32(at,n,true);return b};
+ for(const [path,xml]of files){
+  const name=encoder.encode(path),bytes=encoder.encode(xml),hash=crc(bytes);
+  const local=header(30,[[0,0x04034b50,4],[4,20,2],[6,0x800,2],[10,0,2],[12,33,2],[14,hash,4],[18,bytes.length,4],[22,bytes.length,4],[26,name.length,2]]);
+  parts.push(local,name,bytes);
+  central.push(header(46,[[0,0x02014b50,4],[4,20,2],[6,20,2],[8,0x800,2],[12,0,2],[14,33,2],[16,hash,4],[20,bytes.length,4],[24,bytes.length,4],[28,name.length,2],[42,offset,4]]),name);
+  offset+=local.length+name.length+bytes.length;
+ }
+ const centralSize=central.reduce((s,b)=>s+b.length,0);
+ const end=header(22,[[0,0x06054b50,4],[8,files.length,2],[10,files.length,2],[12,centralSize,4],[16,offset,4]]);
+ const out=new Uint8Array(offset+centralSize+end.length);let at=0;
+ for(const p of [...parts,...central,end]){out.set(p,at);at+=p.length}return out;
+}
+function buildDashboardXlsx(models,info){
+ const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main',doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+ const used=new Set(),sheets=models.map((m,i)=>{
+  const base=String(m.name||`Chi tiết ${i+1}`).replace(/[\[\]:*?\/\\]/g,' ').trim().slice(0,31)||`Chi tiết ${i+1}`;
+  let name=base,seq=2;while(used.has(name.toLocaleLowerCase('vi'))){const suffix=` (${seq++})`;name=base.slice(0,31-suffix.length)+suffix}used.add(name.toLocaleLowerCase('vi'));
+  return {...m,name};
+ });
+ const files=[];
+ const styles=`<styleSheet xmlns="${ns}"><numFmts count="3"><numFmt numFmtId="164" formatCode="#,##0 &quot;đ&quot;"/><numFmt numFmtId="165" formatCode="0.00%"/><numFmt numFmtId="166" formatCode="#,##0.##"/></numFmts><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FF25436A"/><sz val="15"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF25436A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center" wrapText="1"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="166" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"><alignment wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+ files.push(['xl/styles.xml',doc+styles]);
+ sheets.forEach((m,i)=>{
+  const n=m.headers.length,last=excelColumn(n-1),cell=(value,r,c,style=0)=>{
+   const ref=excelColumn(c)+r;
+   if(value&&typeof value==='object'&&typeof value.value==='number')return `<c r="${ref}" s="${value.style??4}"><v>${value.value}</v></c>`;
+   if(typeof value==='number')return `<c r="${ref}" s="4"><v>${value}</v></c>`;
+   return `<c r="${ref}" s="${style}" t="inlineStr"><is><t xml:space="preserve">${excelXml(value)}</t></is></c>`;
+  };
+  const rows=`<row r="1" ht="28" customHeight="1">${cell(m.name,1,0,5)}</row><row r="2" ht="24" customHeight="1">${cell(`${info.period} · Dữ liệu cập nhật ${info.updated}`,2,0)}</row><row r="3" ht="48" customHeight="1">${cell(info.filters,3,0)}</row><row r="5" ht="42" customHeight="1">${m.headers.map((h,c)=>cell(h,5,c,1)).join('')}</row>`+m.rows.map((row,r)=>`<row r="${r+6}">${row.map((v,c)=>cell(v,r+6,c)).join('')}</row>`).join('');
+  const widths=m.headers.map((h,c)=>`<col min="${c+1}" max="${c+1}" width="${/địa chỉ/i.test(h)?42:/khách hàng|ddkd|chương trình|nhãn hàng|điều kiện|chi tiết/i.test(h)?30:Math.max(16,Math.min(28,h.length+3))}" customWidth="1"/>`).join('');
+  files.push([`xl/worksheets/sheet${i+1}.xml`,doc+`<worksheet xmlns="${ns}"><dimension ref="A1:${last}${m.rows.length+5}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="5" topLeftCell="A6" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="18"/><cols>${widths}</cols><sheetData>${rows}</sheetData><autoFilter ref="A5:${last}${m.rows.length+5}"/>${n>1?`<mergeCells count="3"><mergeCell ref="A1:${last}1"/><mergeCell ref="A2:${last}2"/><mergeCell ref="A3:${last}3"/></mergeCells>`:''}</worksheet>`]);
+ });
+ files.push(['[Content_Types].xml',doc+`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`]);
+ files.push(['_rels/.rels',doc+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>']);
+ files.push(['xl/workbook.xml',doc+`<workbook xmlns="${ns}" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView/></bookViews><sheets>${sheets.map((s,i)=>`<sheet name="${excelXml(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`]);
+ files.push(['xl/_rels/workbook.xml.rels',doc+`<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`]);
+ return excelZip(files);
+}
+function exportDashboardTables(scope=el('content')){
+ try{
+  const tables=collectExportTables(scope);if(!tables.length){showToast('Mục này chưa có bảng chi tiết để xuất.');return}
+  const models=tables.map(excelTableModel),bytes=buildDashboardXlsx(models,{period:DATA.meta.periodLabel,updated:DATA.meta.updated,filters:exportFilterSummary()});
+  const blob=new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download=`KPI_${state.month}_${state.view}_${state.rep?normalizeLookup(state.rep):'theo_bo_loc'}.xlsx`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  showToast(`Đã xuất ${models.length} bảng Excel theo điều kiện đang xem.`);
+ }catch(error){console.error(error);showToast('Chưa xuất được Excel. Anh thử lại hoặc giảm phạm vi đang chọn.');}
+}
+function bindExcelExports(){
+ const main=el('exportFilteredExcel');if(main)main.onclick=()=>exportDashboardTables();
+ document.querySelectorAll('#content,#customer360Modal,.section-focus-content').forEach(root=>root.querySelectorAll('.panel,details').forEach(node=>{
+  if(!collectExportTables(node).length||node.querySelector(':scope > .section-focus-tools .excel-export-button,:scope > summary > .section-focus-tools .excel-export-button'))return;
+  const tools=node.querySelector(':scope > .section-focus-tools,:scope > summary > .section-focus-tools');if(!tools)return;
+  const button=document.createElement('button');button.type='button';button.className='excel-export-button small';button.textContent='⇩ Xuất Excel';button.onclick=event=>{event.preventDefault();event.stopPropagation();exportDashboardTables(node)};tools.append(button);
+ }));
+}
+
 function memberUnit(row){return String(row?.memberType||'').toUpperCase().startsWith('CAT')?'CAT':'BRAND'}
 function memberWording(value,unit){return String(value||'').replace(/cat\s*[/&]\s*brand/gi,unit)}
 function memberMissingAnalysis(rows){
@@ -1418,12 +1676,14 @@ function memberOverview(rows){
 }
 
 function renderMbs(){
- const rows=filtered(),t=rows.reduce((s,d)=>s+d.target,0),a=rows.reduce((s,d)=>s+d.actual,0),ach=t?a/t:0,reward=rows.reduce((s,d)=>s+d.estimatedReward,0),passed=rows.filter(d=>d.rewardEligible).length,gamePassed=rows.filter(d=>d.gameEligible).length;
+ const scope=filtered(),rows=scope.filter(row=>memberConditionMatch(row,state.mbsCondition)),t=rows.reduce((s,d)=>s+d.target,0),a=rows.reduce((s,d)=>s+d.actual,0),ach=t?a/t:0,reward=rows.reduce((s,d)=>s+d.estimatedReward,0),passed=rows.filter(d=>d.rewardEligible).length,gamePassed=rows.filter(d=>d.gameEligible).length;
  el('content').innerHTML=intro('Hội Viên Doanh Nhân Masan',gameApplicable()?'Chi tiết ngành hàng CAT và nhãn hàng BRAND theo từng nhóm hội viên':'Tháng 10 không quay game • DS ≥100% + duy trì và mở mới theo loại hội viên • thưởng tối đa 2.250.000đ/KH',passed,'KH đạt thưởng')+
+ memberConditionControls(scope)+
  `<div class="cards">${metricCard('DOANH SỐ NỀN TẢNG',fmtMoney(t),'Cơ sở tính điều kiện chương trình',null,'◎')}${metricCard('DOANH SỐ THỰC HIỆN',fmtMoney(a),status(ach),ach,'↗')}${metricCard('KH ĐẠT THƯỞNG',passed,'Đủ toàn bộ điều kiện MBS',null,'◇')}${gameApplicable()?metricCard('KH ĐẠT QUAY GAME',gamePassed,`${fmtNumber(rows.length-gamePassed)} KH chưa đạt`,gamePassed/(rows.length||1),'★'):''}${metricCard('THƯỞNG DỰ KIẾN',fmtMoney(reward),'Theo điều kiện hiện tại',null,'₫')}</div>`+
  memberOverview(rows)+
  memberMissingAnalysis(rows)+
  table(['Mã CH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','DDKD','Loại HV','DS nền tảng','DS thực hiện','% DS','KQ duy trì','Chi tiết duy trì','KQ mở mới','Chi tiết mở mới','Hệ số thưởng','Tiền thưởng','Kết quả thưởng','Điều kiện MBS còn thiếu',...(gameApplicable()?['Đã có quay game','Chuẩn quay game','Còn thiếu','Thiếu gì để quay game','Kết quả quay game']:[])],rows.map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person customer-cell" title="${esc(d.customer)}">${customerNameLink(d)}</td><td class="muted address-cell" title="${esc(d.address)}">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${repNameLink(d.rep)}</td><td><span class="member-type-pill ${String(d.memberType).startsWith('CAT')?'cat':'brand'}">${uiIcon(String(d.memberType).startsWith('CAT')?'layers':'gift')}${esc(d.memberType)}</span></td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td><strong>${esc(d.maintenance)}</strong><small class="condition-count">${fmtNumber(d.maintenanceAchieved)} / ${fmtNumber(d.maintenanceRequired)} ${memberUnit(d)} đạt MOQ</small></td><td>${catDetailCell(d.maintenanceDetail,d.maintenance)}</td><td><strong>${esc(d.newBrand)}</strong><small class="condition-count">${fmtNumber(d.newBrandAchieved)} ${memberUnit(d)} đạt MOQ</small></td><td>${catDetailCell(d.newBrandDetail,d.newBrand)}</td><td>${fmtPct(d.rewardRate)}</td><td class="money"><strong>${fmtFull(d.estimatedReward)}</strong></td><td><span class="status-pill ${d.rewardEligible?'green':'red'}">${esc(d.rewardStatus)}</span></td><td class="muted">${esc(memberWording(d.missing,memberUnit(d)))}</td>${gameApplicable()?`<td>${fmtNumber(d.gameCurrent)}</td><td>${fmtNumber(d.gameTarget)}</td><td><strong class="${d.gameMissingCount?'red':'green'}">${fmtNumber(d.gameMissingCount)}</strong></td><td class="muted">${esc(d.gameMissingDetail)}</td><td><span class="status-pill ${d.gameEligible?'green':'red'}">${esc(d.gameStatus)}</span></td>`:''}</tr>`),'mbs-table');
+ bindMemberConditionFilter();
 }
 function displayPhotoPassed(d){
  if(d.photoSixStatus!=null&&String(d.photoSixStatus).trim())return String(d.photoSixStatus).trim().toLocaleLowerCase('vi')==='đạt';
@@ -1529,6 +1789,7 @@ function displayReviewSection(rows){
  return `<section class="review360-section orange"><header><h3><i>▣</i>Trưng bày & Cuộc thi ảnh</h3><span>▣ ${fmtNumber(photos)} bộ đã chụp · ${fmtNumber(approved)} bộ duyệt</span></header><div class="review360-body">${rows.length?`<div class="review360-display-list">${rows.map(row=>`<div><p><b>${esc(row.program)}</b><small>${esc(row.level)}</small></p><span>${fmtFull(row.actual)} / ${fmtFull(row.target)}</span><em class="review360-status ${displayPhotoPassed(row)?'pass':'fail'}">▣ ${fmtNumber(row.photoCaptured)} chụp · ${fmtNumber(row.photoRepCaptured||0)} DDKD · ${fmtNumber(row.photoApproved)} duyệt</em><strong>${fmtFull(row.earnedReward)}</strong></div>`).join('')}</div>`:reviewEmpty('Quầy chưa tham gia chương trình trưng bày hoặc cuộc thi ảnh.')}</div></section>`;
 }
 function openCustomer360(code){
+ closeSectionFocus(false);
  const key=codeKey(code),mcp=DATA.mcp.find(d=>codeKey(d.customerCode)===key),growth=CUSTOMER_PROGRAM_DATA.growth.get(key)?.[0],mbsRows=CUSTOMER_PROGRAM_DATA.mbs.get(key)||[],display=CUSTOMER_PROGRAM_DATA.display.get(key)||[],combo=CUSTOMER_PROGRAM_DATA.combo.get(key)?.[0],programs=programsForCustomer(key);
  const profile=mcp||growth||mbsRows[0]||display[0]||combo;if(!profile)return;
  const mbsCat=mbsRows.find(row=>/^CAT/i.test(row.memberType||'')),mbsBrand=mbsRows.find(row=>/^BRAND/i.test(row.memberType||''));
@@ -1697,12 +1958,12 @@ function bindMonthlyProgramFilters(){
  ['monthlyDetailMonth','monthlySub','monthlyBrand','monthlyAso'].forEach(key=>{const node=el(key);if(node)node.onchange=()=>{state[key]=node.value;if(key==='monthlySub'){state.monthlyBrand='all';state.monthlyAso='all'}if(key==='monthlyBrand')state.monthlyAso='all';render();el('monthly-drill-workspace')?.scrollIntoView({block:'start'})}});
 }
 
-function render(){ syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:renderOverview,review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso}[state.view])(); el('content').insertAdjacentHTML('afterbegin',greeting()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);const cards=document.querySelector('.executive-cards');if(cards?.children[1])cards.prepend(cards.children[1])} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} bindReviewLinks(); bindSortableTables(); decoratePanels(); scheduleNumberFit(); }
+function render(){ const focusedKey=sectionFocus?.key;closeSectionFocus(false);syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:renderOverview,review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso}[state.view])(); el('content').insertAdjacentHTML('afterbegin',greeting()+exportToolbar()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);const cards=document.querySelector('.executive-cards');if(cards?.children[1])cards.prepend(cards.children[1])} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} bindReviewLinks(); bindSortableTables(); decoratePanels(); scheduleNumberFit(); if(focusedKey){const target=Array.from(document.querySelectorAll('[data-focus-section]')).find(node=>node.dataset.focusSection===focusedKey);if(target)openSectionFocus(target,target.querySelector('.section-focus-button'))} }
 
 function switchMonth(month){
  if(!MONTH_DATA[month])return;
  state.month=month; DATA=MONTH_DATA[month]; PHAP_TEAM=DATA.meta.team||'Nguyễn Văn Pháp'; BONUS_TEAM=DATA.meta.bonusTeam||'Lê Ngọc Dự'; BONUS_SCOPE=`Team SS ${PHAP_TEAM} + SS Dự`; paceTarget=DATA.meta.progress||(DATA.meta.elapsedDays/DATA.meta.workingDays); CUSTOMER_PROGRAM_DATA={growth:groupCode(DATA.growth),mbs:groupCode(DATA.mbs),display:groupCode(DATA.display),combo:groupCode(DATA.combo)};
- MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';render();showToast(`Đã chuyển sang ${DATA.meta.periodLabel}${DATA.meta.locked?' • dữ liệu tĩnh':''}`);window.scrollTo({top:0,behavior:'smooth'});
+ MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.mbsCondition='all';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';render();showToast(`Đã chuyển sang ${DATA.meta.periodLabel}${DATA.meta.locked?' • dữ liệu tĩnh':''}`);window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function showToast(message){
@@ -1743,17 +2004,17 @@ if(document.fonts?.ready)document.fonts.ready.then(scheduleNumberFit);
 
 el('monthFilter').innerHTML=MONTH_KEYS.map(key=>`<option value="${key}">${esc(MONTH_DATA[key].meta.periodLabel)}${MONTH_DATA[key].meta.locked?' • Đã khóa':''}</option>`).join('');
 el('monthFilter').onchange=e=>switchMonth(e.target.value);
-document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render();window.scrollTo({top:0,behavior:'smooth'})});
+document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.mbsCondition='all';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render();window.scrollTo({top:0,behavior:'smooth'})});
 el('teamFilter').onchange=e=>{if(state.view==='bonus'){state.team=e.target.value;state.rep='';render()}};
 el('repFilter').onchange=e=>{state.rep=e.target.value;state.ward='';render()};
 el('wardFilter').onchange=e=>{state.ward=e.target.value;render()};
 el('dayFilter').onchange=e=>{state.day=e.target.value;render()};
 el('searchInput').oninput=e=>{state.search=e.target.value;render()};
-el('resetFilters').onclick=()=>{const hadFilters=Boolean(state.rep||state.ward||state.day||state.search||state.comboProgram!=='all'||state.mcpProgram!=='all'||state.mcpHistory!=='all'||state.mcpChannel!=='all'||state.bonusProgram!=='seasoning'||(state.view==='bonus'&&state.team));MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';render();showToast(hadFilters?'Đã xóa toàn bộ bộ lọc':'Bộ lọc đang ở trạng thái mặc định')};
+el('resetFilters').onclick=()=>{const hadFilters=Boolean(state.rep||state.ward||state.day||state.search||state.comboProgram!=='all'||state.mcpProgram!=='all'||state.mcpHistory!=='all'||state.mcpChannel!=='all'||state.bonusProgram!=='seasoning'||state.mbsCondition!=='all'||(state.view==='bonus'&&state.team));MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.team=state.view==='bonus'?'':PHAP_TEAM;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.mbsCondition='all';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';el('searchInput').value='';render();showToast(hadFilters?'Đã xóa toàn bộ bộ lọc':'Bộ lọc đang ở trạng thái mặc định')};
 el('menuButton').onclick=()=>document.querySelector('.sidebar').classList.toggle('open');
 el('filterToggle').onclick=()=>{const closed=document.body.classList.toggle('filters-collapsed');el('filterToggle').setAttribute('aria-expanded',String(!closed));};
 el('focusToggle').onclick=()=>{const active=document.body.classList.toggle('focus-mode');el('focusToggle').textContent=active?'⊙ Thoát tập trung':'⛶ Tập trung';el('focusToggle').title=active?'Hiện lại menu và bộ lọc':'Ẩn menu và bộ lọc để tập trung vào nội dung';window.scrollTo({top:0,behavior:'smooth'})};
-document.addEventListener('keydown',event=>{if(event.key==='Escape'){document.querySelector('#customer360Modal')?.remove();if(document.body.classList.contains('focus-mode'))el('focusToggle').click()}});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(sectionFocus){event.preventDefault();closeSectionFocus();return;}document.querySelector('#customer360Modal')?.remove();if(document.body.classList.contains('focus-mode'))el('focusToggle').click()}});
 
 render();
 
