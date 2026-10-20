@@ -982,6 +982,20 @@ body.theme-original{--blue:#f96f1f;--blue2:#f96f1f;--cyan:#f96f1f;--text:#f3f2f1
 .member-condition-card>strong>small{font-size:11px;letter-spacing:0;color:#bcb7b3}
 .member-condition-card.active{border-color:#f2610d;background:#241d19;box-shadow:inset 0 3px #f96610,0 4px 12px rgba(165,92,49,0.0314)}
 .member-condition-card:hover{border-color:#f2610d}
+/* nhấn mạnh nhóm hội viên */
+#content .member-condition-card{position:relative;overflow:hidden;padding:18px 18px 16px;border-width:1.5px}
+#content .member-condition-card:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--mc,#f2610d)}
+#content .member-condition-card[data-member-condition="all"]{--mc:#8d8782}
+#content .member-condition-card[data-member-condition="category-only"]{--mc:#4f86e8}
+#content .member-condition-card[data-member-condition="sales-only"]{--mc:#f2a20d}
+#content .member-condition-card>span{font-size:13px!important;color:#f3efe9!important}
+#content .member-condition-card>strong{font-size:44px!important;line-height:1.05;font-weight:800;color:var(--mc)!important;letter-spacing:-1px}
+#content .member-condition-card>strong>small{font-size:14px!important;font-weight:700;color:#d8d2cb!important;margin-left:4px}
+#content .member-condition-card .ui-icon{color:var(--mc)}
+#content .member-condition-card.active{background:linear-gradient(180deg,rgba(255,255,255,.06),#241d19);box-shadow:0 0 0 2px var(--mc),0 8px 22px rgba(0,0,0,.35)}
+#content .member-condition-card:not(.active){opacity:.82}
+#content .member-condition-note{border-left:4px solid #f2610d;padding:10px 14px;background:rgba(242,97,13,.08);border-radius:8px;color:#f3efe9;font-size:13px}
+
 .member-condition-note{margin:0;color:#bcb7b3;font-size:12px;line-height:1.7}
 .member-condition-note b{color:#ef7c39}
 .section-focus-tools{display:flex;justify-content:flex-end;gap:8px;margin:0 0 9px;position:relative;z-index:1}
