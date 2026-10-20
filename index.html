@@ -1980,6 +1980,39 @@ th#content td.hl-col-gap,#content th.hl-col-gap,.hl-col-gap{border-bottom:2px so
 .f-pill.f8{background:rgba(53,167,121,.16);color:#5fd1a0;border-color:#35a779}.f-pill.f4{background:rgba(249,111,31,.16);color:#ffa45c;border-color:#f96f1f}.f-pill.f2{background:rgba(255,180,84,.12);color:#ffb454;border-color:#a8742b}.f-pill.none{background:transparent;color:#bcb7b3;border-color:#363330}
 .route-days{margin-left:4px;color:#f3f2f1;font-weight:700}.route-odd,.ord-days{display:block;color:#bcb7b3;font-size:10px}
 .review360-info article.ordx.freq strong{font-size:18px!important}
+
+/* ===== v13: ô chỉ số nổi bật (màu theo nhóm, số lớn) ===== */
+#content{--k1:#f2610d;--k2:#4f86e8;--k3:#2fc79a;--k4:#f2a20d;--k5:#a78bfa;--k6:#ff5d7a}
+#content .cards .metric-card{position:relative;overflow:hidden;border:1.5px solid color-mix(in srgb,var(--mk,#f2610d) 70%,#363330)!important;background:linear-gradient(180deg,rgba(255,255,255,.055),#171614 62%)!important;padding-top:24px!important}
+#content .cards .metric-card:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:0!important;width:auto!important;height:6px!important;border-radius:0!important;background:var(--mk,#f2610d)!important}
+#content .cards .metric-card:nth-child(6n+1){--mk:var(--k1)}#content .cards .metric-card:nth-child(6n+2){--mk:var(--k2)}#content .cards .metric-card:nth-child(6n+3){--mk:var(--k3)}
+#content .cards .metric-card:nth-child(6n+4){--mk:var(--k4)}#content .cards .metric-card:nth-child(6n+5){--mk:var(--k5)}#content .cards .metric-card:nth-child(6n){--mk:var(--k6)}
+#content .cards .metric-card .metric-top{color:#f3efe9!important;font-size:11.5px!important;font-weight:800!important}
+#content .cards .metric-card .metric-icon{color:var(--mk)!important;border:1.5px solid var(--mk)!important;background:transparent!important}
+html body.theme-original.design-108 #content .cards .metric-card .metric-value{font-size:clamp(23px,2.3vw,32px)!important;font-weight:800!important;line-height:1.1!important;letter-spacing:-.5px;white-space:nowrap;overflow:hidden;text-overflow:clip}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card.metric-card:not([data-slot="actual"]):not([data-emph="target"]):not([data-emph="gap"]) .metric-value.metric-value{color:var(--mk)!important;-webkit-text-fill-color:var(--mk)!important}
+
+html body.theme-original.design-108 #content .executive-cards .metric-card:first-child .metric-value{font-size:clamp(28px,3vw,42px)!important}
+#content .cards .metric-card .metric-sub{font-size:12.5px!important;color:#e2ddd6!important}
+#content .foundation-card,#content .member-summary-card,#content .bonus-program-card,#content .mcp-program-card,#content .sellout-item{position:relative;border-top:5px solid var(--mk,#f2610d)!important}
+#content .foundation-card.tone-0,#content .sellout-item:nth-child(4n+1),#content .bonus-program-card:nth-child(4n+1),#content .mcp-program-card:nth-child(4n+1){--mk:var(--k1)}
+#content .foundation-card.tone-1,#content .sellout-item:nth-child(4n+2),#content .bonus-program-card:nth-child(4n+2),#content .mcp-program-card:nth-child(4n+2){--mk:var(--k2)}
+#content .foundation-card.tone-2,#content .sellout-item:nth-child(4n+3),#content .bonus-program-card:nth-child(4n+3),#content .mcp-program-card:nth-child(4n+3){--mk:var(--k3)}
+#content .foundation-card.tone-3,#content .sellout-item:nth-child(4n),#content .bonus-program-card:nth-child(4n),#content .mcp-program-card:nth-child(4n){--mk:var(--k4)}
+#content .member-summary-card{--mk:var(--k2)}#content .member-summary-card.member-total{--mk:var(--k1)}
+#content .foundation-values b,#content .foundation-lppc-result strong{font-size:30px!important;font-weight:800!important;color:var(--mk)!important}
+#content .sellout-item strong{font-size:24px!important;font-weight:800!important}
+#content .member-summary-card .member-sales strong{font-size:20px!important;font-weight:800!important}
+#content .member-summary-card .member-summary-line.member-reward{border-color:var(--k3)!important;background:rgba(47,199,154,.12)!important}
+#content .program-launch-tile{border-top:5px solid currentColor}
+
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card .metric-value.metric-value{font-size:clamp(23px,2.3vw,32px)!important;white-space:nowrap!important;line-height:1.1!important;font-weight:800!important}
+html body.theme-original.design-108 #content .executive-cards .metric-card.metric-card.metric-card:first-child .metric-value.metric-value{font-size:clamp(28px,3vw,42px)!important}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card[data-emph="target"] .metric-value.metric-value{color:#ffa45c!important;-webkit-text-fill-color:#ffa45c!important}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card[data-emph="gap"] .metric-value.metric-value{color:#ff8a7e!important;-webkit-text-fill-color:#ff8a7e!important}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:0!important;width:auto!important;height:6px!important;border-radius:0!important;background:var(--mk,#f2610d)!important;opacity:1!important}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card{border-top:6px solid var(--mk,#f2610d)!important}
+html body.theme-original.design-108 #content .cards .metric-card.metric-card.metric-card:before{display:none!important}
 </style>
 </head>
 <body class="theme-original design-108">
