@@ -2253,8 +2253,8 @@ function metricCard(label,value,sub,ach,icon='◆'){
  return `<article class="metric-card" data-emph="${emph}" data-slot="${slot}" data-accent="${identity.accent}" data-format="${String(value).includes(' đ')?'money':'number'}"><div class="metric-top"><span>${label}</span><b class="metric-icon">${uiIcon(identity.icon)}</b></div><div class="metric-value">${value}</div><div class="metric-sub">${sub}</div>${ach==null?'':progress(ach)}</article>`;
 }
 function intro(title,desc,count,label='bản ghi'){return `<div class="section-intro"><div><h2>${title}</h2><p>${desc}</p></div><span class="badge">${new Intl.NumberFormat('vi-VN').format(count)} ${label}</span></div>`}
-function fitShotOn(){try{return localStorage.getItem('fitShot')!=='0'}catch(e){return true}}
-function table(headers,rows,className=''){const scrollClass=className.includes('mcp-360-table')?'table-scroll mcp-table-scroll':'table-scroll';const fit=fitShotOn();return `<section class="panel table-panel${fit?' fit-shot':''}${fit&&rows.length<=40?' fit-all':''}"><div class="table-head"><div><span class="digital-kicker">DỮ LIỆU CHI TIẾT</span><h3>Chi tiết</h3></div><span class="panel-note">Nhấn tiêu đề để sắp xếp • ${fit?'đang vừa khung để chụp màn hình':'cuộn ngang để xem thêm'}</span><button type="button" class="fit-toggle" data-fit-toggle aria-pressed="${fit}">${fit?'▣ Vừa khung chụp':'⇔ Cuộn ngang'}</button></div><div class="${scrollClass}"><table class="${className}"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`}
+function fitShotOn(){try{return localStorage.getItem('fitShot2')!=='0'}catch(e){return true}}
+function table(headers,rows,className=''){const scrollClass=className.includes('mcp-360-table')?'table-scroll mcp-table-scroll':'table-scroll';const fit=fitShotOn();return `<section class="panel table-panel${fit?' fit-shot':''}${fit&&rows.length<=40?' fit-all':''}"><div class="table-head"><div><span class="digital-kicker">DỮ LIỆU CHI TIẾT</span><h3>Chi tiết</h3></div><span class="panel-note">Nhấn tiêu đề để sắp xếp • ${fit?'đang vừa khung để chụp màn hình':'cuộn ngang để xem thêm'}</span><button type="button" class="fit-toggle" data-fit-toggle aria-pressed="${fit}">${fit?'▣ Đang vừa khung · bấm để cuộn ngang':'⇔ Đang cuộn ngang · bấm để vừa khung chụp'}</button></div><div class="${scrollClass}"><table class="${className}"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`}
 function catItems(detail){return String(detail||'').split('|').map(item=>item.trim()).filter(Boolean).map(item=>({name:item.replace(/\s+[X✓]$/u,'').trim(),passed:/✓$/u.test(item)}))}
 function missingCatNames(detail){return catItems(detail).filter(item=>!item.passed).map(item=>item.name)}
 function catDetailCell(detail,status){
@@ -3301,7 +3301,7 @@ function bindV12Tree(){
 }
 
 function fitShotApply(){document.querySelectorAll('.table-panel.fit-shot').forEach(p=>{const sc=p.querySelector('.table-scroll'),t=sc&&sc.querySelector('table');if(!t)return;t.style.zoom='';const w=sc.clientWidth,x=t.scrollWidth,h=t.offsetHeight,av=Math.max(innerHeight-230,360);let z=1;if(w&&x>w+1)z=Math.min(z,w/x);if(p.classList.contains('fit-all')&&h>av)z=Math.min(z,av/h);if(z<1)t.style.zoom=Math.max(z,0.5)})}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-fit-toggle]');if(!b)return;try{localStorage.setItem('fitShot',fitShotOn()?'0':'1')}catch(x){window.__fitOff=!window.__fitOff}render()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-fit-toggle]');if(!b)return;try{localStorage.setItem('fitShot2',fitShotOn()?'0':'1')}catch(x){window.__fitOff=!window.__fitOff}render()});
 window.addEventListener('resize',()=>{clearTimeout(window.__fitT);window.__fitT=setTimeout(fitShotApply,150)});
 </script>
 </body>
