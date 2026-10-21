@@ -2016,6 +2016,21 @@ html body.theme-original.design-108 #content .cards .metric-card.metric-card.met
 
 .combo-on-panel{margin-bottom:20px}.combo-grp{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px}
 .combo-grp.ngk{background:rgba(79,134,232,.2);color:#9dbcf5}.combo-grp.gv{background:rgba(242,162,13,.2);color:#ffc965}
+
+/* ===== Chế độ vừa khung để chụp màn hình ===== */
+html body #content .table-panel .fit-toggle{margin-left:12px;padding:7px 12px;border:1px solid #f2610d;border-radius:999px;background:#2a1a10;color:#ffb27d;font:800 11px Manrope,system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+html body #content .table-panel .fit-toggle[aria-pressed="true"]{background:#f2610d;color:#fff}
+html body #content .table-panel.fit-shot .table-scroll{overflow-x:hidden!important}
+html body #content .table-panel.fit-shot.fit-all .table-scroll{max-height:none!important;overflow:visible!important}
+html body #content .table-panel.fit-shot table{width:100%!important;min-width:0!important;table-layout:auto}
+html body #content .table-panel.fit-shot th,html body #content .table-panel.fit-shot td{padding:7px 6px!important;font-size:12px!important;white-space:normal!important;line-height:1.25;height:auto!important}
+html body #content .table-panel.fit-shot th{font-size:10.5px!important;height:auto!important}
+html body #content .table-panel.fit-shot td{white-space:nowrap!important}
+html body #content .table-panel.fit-shot td:nth-child(2){white-space:normal!important}
+html body #content .table-panel.fit-shot td,html body #content .table-panel.fit-shot th{position:static!important;left:auto!important}
+html body #content .table-panel.fit-shot tbody tr{height:auto!important}
+.table-scroll-hint,.table-panel.fit-shot .scroll-hint{display:none!important}
+html body #content .table-panel.fit-shot .table-scroll:after{content:none!important;display:none!important}
 </style>
 </head>
 <body class="theme-original design-108">
@@ -2232,7 +2247,8 @@ function metricCard(label,value,sub,ach,icon='◆'){
  return `<article class="metric-card" data-emph="${emph}" data-slot="${slot}" data-accent="${identity.accent}" data-format="${String(value).includes(' đ')?'money':'number'}"><div class="metric-top"><span>${label}</span><b class="metric-icon">${uiIcon(identity.icon)}</b></div><div class="metric-value">${value}</div><div class="metric-sub">${sub}</div>${ach==null?'':progress(ach)}</article>`;
 }
 function intro(title,desc,count,label='bản ghi'){return `<div class="section-intro"><div><h2>${title}</h2><p>${desc}</p></div><span class="badge">${new Intl.NumberFormat('vi-VN').format(count)} ${label}</span></div>`}
-function table(headers,rows,className=''){const scrollClass=className.includes('mcp-360-table')?'table-scroll mcp-table-scroll':'table-scroll';return `<section class="panel table-panel"><div class="table-head"><div><span class="digital-kicker">DỮ LIỆU CHI TIẾT</span><h3>Chi tiết</h3></div><span class="panel-note">Nhấn tiêu đề để sắp xếp • cuộn ngang để xem thêm</span></div><div class="${scrollClass}"><table class="${className}"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`}
+function fitShotOn(){try{return localStorage.getItem('fitShot')!=='0'}catch(e){return true}}
+function table(headers,rows,className=''){const scrollClass=className.includes('mcp-360-table')?'table-scroll mcp-table-scroll':'table-scroll';const fit=fitShotOn();return `<section class="panel table-panel${fit?' fit-shot':''}${fit&&rows.length<=40?' fit-all':''}"><div class="table-head"><div><span class="digital-kicker">DỮ LIỆU CHI TIẾT</span><h3>Chi tiết</h3></div><span class="panel-note">Nhấn tiêu đề để sắp xếp • ${fit?'đang vừa khung để chụp màn hình':'cuộn ngang để xem thêm'}</span><button type="button" class="fit-toggle" data-fit-toggle aria-pressed="${fit}">${fit?'▣ Vừa khung chụp':'⇔ Cuộn ngang'}</button></div><div class="${scrollClass}"><table class="${className}"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div></section>`}
 function catItems(detail){return String(detail||'').split('|').map(item=>item.trim()).filter(Boolean).map(item=>({name:item.replace(/\s+[X✓]$/u,'').trim(),passed:/✓$/u.test(item)}))}
 function missingCatNames(detail){return catItems(detail).filter(item=>!item.passed).map(item=>item.name)}
 function catDetailCell(detail,status){
@@ -3150,7 +3166,7 @@ function layoutReportSections(){
  }
 }
 
-function render(){ const focusedKey=sectionFocus?.key;closeSectionFocus(false);syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:renderOverview,review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso,salary:renderSalary}[state.view])(); el('content').insertAdjacentHTML('afterbegin',ssScopeControls()+greeting()+dataCoverageNotice()+exportToolbar()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} el('content').insertAdjacentHTML('beforeend',reportGuide()); bindSsScope(); bindCommandLinks(); bindReviewLinks(); bindSortableTables(); layoutReportSections(); injectProgramLaunchpad(); decoratePanels(); bindProgramLaunchpad(); buildReportIndex(); scheduleNumberFit(); if(focusedKey){const target=Array.from(document.querySelectorAll('[data-focus-section]')).find(node=>node.dataset.focusSection===focusedKey);if(target)openSectionFocus(target,target.querySelector('.section-focus-button'))} }
+function render(){ const focusedKey=sectionFocus?.key;closeSectionFocus(false);syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:renderOverview,review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso,salary:renderSalary}[state.view])(); el('content').insertAdjacentHTML('afterbegin',ssScopeControls()+greeting()+dataCoverageNotice()+exportToolbar()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} el('content').insertAdjacentHTML('beforeend',reportGuide()); bindSsScope(); bindCommandLinks(); bindReviewLinks(); bindSortableTables(); layoutReportSections(); injectProgramLaunchpad(); decoratePanels(); bindProgramLaunchpad(); buildReportIndex(); scheduleNumberFit(); fitShotApply(); setTimeout(fitShotApply,400); if(focusedKey){const target=Array.from(document.querySelectorAll('[data-focus-section]')).find(node=>node.dataset.focusSection===focusedKey);if(target)openSectionFocus(target,target.querySelector('.section-focus-button'))} }
 
 function switchMonth(month){
  if(!MONTH_DATA[month])return;
@@ -3277,6 +3293,10 @@ function bindV12Tree(){
   const hideAll=k=>document.querySelectorAll(`.v12-tree tr[data-v12-parent="${k}"]`).forEach(c=>{c.hidden=true;const kk=c.dataset.v12Toggle;if(kk){const b=c.querySelector('.v12-caret');b.setAttribute('aria-expanded','false');b.textContent='▸';c.classList.remove('open');hideAll(kk)}});
   if(open)document.querySelectorAll(`.v12-tree tr[data-v12-parent="${key}"]`).forEach(c=>c.hidden=false);else hideAll(key)}));
 }
+
+function fitShotApply(){document.querySelectorAll('.table-panel.fit-shot').forEach(p=>{const sc=p.querySelector('.table-scroll'),t=sc&&sc.querySelector('table');if(!t)return;t.style.zoom='';const w=sc.clientWidth,x=t.scrollWidth;if(w&&x>w+1)t.style.zoom=Math.max(w/x,0.45)})}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-fit-toggle]');if(!b)return;try{localStorage.setItem('fitShot',fitShotOn()?'0':'1')}catch(x){window.__fitOff=!window.__fitOff}render()});
+window.addEventListener('resize',()=>{clearTimeout(window.__fitT);window.__fitT=setTimeout(fitShotApply,150)});
 </script>
 </body>
 </html>
