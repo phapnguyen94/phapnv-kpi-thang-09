@@ -2037,6 +2037,7 @@ html body #content .table-panel.fit-shot td *{line-height:1.15!important}
 html body #content .table-panel.fit-shot td .badge,html body #content .table-panel.fit-shot td [class*="status"],html body #content .table-panel.fit-shot td [class*="pill"]{padding:2px 7px!important;font-size:10.5px!important;white-space:nowrap!important}
 html body #content .table-panel.fit-shot td small,html body #content .table-panel.fit-shot td .sub{display:inline!important;margin-left:6px}
 html body #content .table-panel.fit-shot .table-head{padding:10px 16px!important;min-height:0!important}
+#reportIndex{display:none!important}body.theme-original.design-108 .report-workspace{grid-template-columns:minmax(0,1fr)!important}
 </style>
 </head>
 <body class="theme-original design-108">
@@ -2368,8 +2369,7 @@ function renderOverviewBase(){
  decisionBrief(rows)+
  activeCoveragePanel(rows)+
  `<section class="panel foundation-panel"><div class="panel-head"><div><span class="digital-kicker">HIỆU SUẤT & THU NHẬP</span><h3>KPI nền tảng • ${esc(DATA.meta.periodLabel||'')}</h3></div><span class="panel-note">Thực hiện • Chỉ tiêu • Lương nếu đạt</span></div>${foundationRecalculationNote()}<div class="foundation-grid">${foundation.map(([n,t,a,u,reward],index)=>{const p=t?a/t:0,format=u==='money'?fmtMoney:u==='decimal'?fmtDecimal:fmtNumber;return `<article class="foundation-card tone-${index%4}" data-unit="${u}"><header><span>${esc(n)}</span><strong class="${color(p)}">${fmtPct(p)}</strong></header><div class="foundation-values"><div><small>THỰC HIỆN</small><b>${format(a)}</b></div><div><small>CHỈ TIÊU</small><b>${format(t)}</b></div></div><div class="foundation-track"><i style="width:${Math.min(Math.max(p,0)*100,100)}%"></i><em>${fmtPct(p)}</em></div>${reward?`<footer><span>◆</span><b>${esc(reward)}</b></footer>`:''}</article>`}).join('')}${foundationTrackingCard(rows)}</div></section>`+
- `<section class="panel"><div class="panel-head"><h3>Sell Out theo ngành hàng</h3><span class="panel-note">${DATA.meta.locked?'Raw kpi đã loại dòng trùng • thực hiện / chỉ tiêu':'Theo nhóm ngành hàng, sheet KPI THÁNG • thực hiện / chỉ tiêu'}</span></div><div class="sellout-grid">${categories.map(([n,t,a])=>{const p=t?a/t:0;return `<div class="sellout-item"><div><span>${n}</span><strong class="${color(p)}">${fmtPct(p)}</strong></div><small>${fmtMoney(a)} / ${fmtMoney(t)}</small>${progress(p)}</div>`}).join('')}</div></section>`+
- table(['Hạng','Đại diện KD','Team / SS','Target Sell Out','Actual Sell Out','% Sell Out','Active MCP',...channelActiveHeaders(),'PC thực hiện','LPPC / MT 5,0',...foundationTrackingHeaders(),'Tiến độ'],ranking.map((d,i)=>`<tr><td><span class="rank ${i<3?'top':''}">${i+1}</span></td><td class="person">${repNameLink(d.rep)}</td><td class="muted">${esc(d.team)}</td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td>${fmtNumber(d.activeActual)} / ${fmtNumber(d.activeTarget)}</td>${channelActiveCells(d)}<td><strong>${fmtNumber(d.pcBc??d.pcActual)}</strong></td><td><strong class="${d.lppc>=LPPC_TARGET?'green':'red'}">${fmtDecimal(d.lppc)}</strong></td>${foundationTrackingCells(d)}<td>${status(d.achievement,DATA.meta.locked?null:d.paceGap)}</td></tr>`));
+  table(['Hạng','Đại diện KD','Team / SS','Target Sell Out','Actual Sell Out','% Sell Out','Active MCP',...channelActiveHeaders(),'PC thực hiện','LPPC / MT 5,0',...foundationTrackingHeaders(),'Tiến độ'],ranking.map((d,i)=>`<tr><td><span class="rank ${i<3?'top':''}">${i+1}</span></td><td class="person">${repNameLink(d.rep)}</td><td class="muted">${esc(d.team)}</td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td>${fmtNumber(d.activeActual)} / ${fmtNumber(d.activeTarget)}</td>${channelActiveCells(d)}<td><strong>${fmtNumber(d.pcBc??d.pcActual)}</strong></td><td><strong class="${d.lppc>=LPPC_TARGET?'green':'red'}">${fmtDecimal(d.lppc)}</strong></td>${foundationTrackingCells(d)}<td>${status(d.achievement,DATA.meta.locked?null:d.paceGap)}</td></tr>`));
 }
 
 function reviewRows(list,rep=''){return (list||[]).filter(d=>(!state.team||d.team===state.team)&&(!rep||d.rep===rep))}
@@ -3136,7 +3136,7 @@ function programLaunchpad(){
  const cards=[['mbs','Hội viên Masan','Duy trì · Mở mới · Thưởng','trophy','purple'],['display','Trưng bày','Chương trình · Hình ảnh · Tích lũy','camera','teal'],['mcp','Khách hàng MCP','ON / OFF · Chương trình tại quầy','store','orange'],['combo','Combo mở mới','Khách hàng · Đơn hàng · Doanh số','gift','pink']];
  return `<section class="panel program-launchpad"><div class="panel-head"><div><span class="digital-kicker">KẾT NỐI TOÀN BỘ CHƯƠNG TRÌNH</span><h3>Không gian chương trình</h3></div><span class="panel-note">Chọn để đi thẳng vào chi tiết</span></div><div class="program-launch-grid">${cards.map(([view,title,detail,icon,tone])=>`<button type="button" class="program-launch-tile ${tone}" data-launch-view="${view}"><i>${uiIcon(icon)}</i><span><b>${title}</b><small>${detail}</small></span><em>↗</em></button>`).join('')}</div></section>`;
 }
-function injectProgramLaunchpad(){
+function injectProgramLaunchpad(){return;
  if(state.view!=='overview')return;
  const cards=el('content').querySelector('.executive-cards');
  if(cards&&!el('content').querySelector('.program-launchpad'))cards.insertAdjacentHTML('afterend',programLaunchpad());
@@ -3169,7 +3169,7 @@ function reportIndexModel(nodes){
   return{node,index,id:'report-section-'+state.view+'-'+index,label,rows};
  });
 }
-function buildReportIndex(){
+function buildReportIndex(){const _d=el('reportIndex');if(_d){_d.innerHTML='';return}
  const dock=el('reportIndex');if(!dock)return;
  reportIndexObserver?.disconnect();
  const model=reportIndexModel(reportIndexNodes());
