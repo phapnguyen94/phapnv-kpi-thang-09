@@ -3245,7 +3245,7 @@ if(document.fonts?.ready)document.fonts.ready.then(scheduleNumberFit);
 
 el('monthFilter').innerHTML=MONTH_KEYS.map(key=>`<option value="${key}">${esc(MONTH_DATA[key].meta.periodLabel)}${MONTH_DATA[key].meta.locked?' • Đã khóa':''}</option>`).join('');
 el('monthFilter').onchange=e=>switchMonth(e.target.value);
-document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpTea365='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.mbsCondition='all';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';state.bdMonth='all';state.bdMode='all';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render();window.scrollTo({top:0,behavior:'smooth'})});
+document.querySelectorAll('.nav-item').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.view=b.dataset.view;MCP_PROGRAMS=makeMcpPrograms();state.growthProgram=growthPrograms()[0].key;state.rep='';state.ward='';state.day='';state.search='';state.comboProgram='all';state.mcpProgram='all';state.mcpHistory='all';state.mcpTea365='all';state.mcpChannel='all';state.bonusProgram='seasoning';state.mbsCondition='all';state.monthlySub='all';state.monthlyAso='all';state.monthlyBrand='all';state.monthlyDetailMonth='all';state.subStart='';state.subEnd='';state.bdMonth='all';state.bdMode='all';state.bdType='all';el('searchInput').value='';document.querySelector('.sidebar').classList.remove('open');render();window.scrollTo({top:0,behavior:'smooth'})});
 el('teamFilter').onchange=e=>selectSs(e.target.value);
 el('repFilter').onchange=e=>{state.rep=e.target.value;state.ward='';render()};
 el('wardFilter').onchange=e=>{state.ward=e.target.value;render()};
@@ -3314,30 +3314,38 @@ function bdayInfo(b){
 }
 function bdayFmt(b){if(!b)return '—';const p=b.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
 function renderBirthday(){
- if(state.bdMonth==null)state.bdMonth='all';if(!state.bdMode)state.bdMode='all';
+ if(state.bdMonth==null)state.bdMonth='all';if(!state.bdMode)state.bdMode='all';if(!state.bdType)state.bdType='all';
+ const TYPES=['VIP3','VIP5','VIPSI','LẺ'];const tp=r=>{const t=String(r.t||'').trim().toUpperCase();return TYPES.includes(t)?t:'LẺ'};const tl=t=>t==='LẺ'?'Lẻ':t==='VIPSI'?'VIP Sỉ':t;
  const q=state.search?normalizeLookup(state.search):'';
  let base=bdayRows().filter(r=>(!state.rep||r.r===state.rep)&&(!q||[r.n,r.c,r.a,r.r].some(v=>normalizeLookup(v).includes(q))));
- base=base.map(r=>({...r,i:bdayInfo(r.b)}));
- const has=base.filter(r=>r.i),no=base.filter(r=>!r.i);
+ base=base.map(r=>({...r,i:bdayInfo(r.b),tp:tp(r)}));
  const thisMon=new Date().getMonth()+1;
+ const sel=state.bdType==='all'?base:base.filter(r=>r.tp===state.bdType);
+ const has=sel.filter(r=>r.i),no=sel.filter(r=>!r.i);
  const inMon=has.filter(r=>r.i.mon===thisMon),in7=has.filter(r=>r.i.days<=7),in30=has.filter(r=>r.i.days<=30);
- let list=state.bdMode==='none'?no:state.bdMode==='soon'?in30:state.bdMode==='has'?has:base;
+ let list=state.bdMode==='none'?no:state.bdMode==='soon'?in30:state.bdMode==='has'?has:sel;
  if(state.bdMonth!=='all')list=list.filter(r=>r.i&&r.i.mon===Number(state.bdMonth));
  list=[...list].sort((a,b)=>(a.i?a.i.days:9999)-(b.i?b.i.days:9999)||a.n.localeCompare(b.n,'vi'));
- const pct=base.length?has.length/base.length:0;
+ const pct=sel.length?has.length/sel.length:0;
  const seg=(k,v,l)=>`<button type="button" class="bd-seg${String(state[k])===String(v)?' on':''}" data-bd="${k}" data-v="${v}">${l}</button>`;
  const monthBtns=seg('bdMonth','all','Cả năm')+Array.from({length:12},(_,i)=>seg('bdMonth',i+1,'T'+(i+1))).join('');
- const modeBtns=seg('bdMode','all','Tất cả')+seg('bdMode','has','Đã có ngày SN')+seg('bdMode','soon','SN trong 30 ngày tới')+seg('bdMode','none','Chưa có ngày SN');
+ const modeBtns=seg('bdMode','all','Tất cả')+seg('bdMode','has','Đã cập nhật ngày SN')+seg('bdMode','soon','SN trong 30 ngày tới')+seg('bdMode','none','Chưa cập nhật ngày SN');
+ const typeBtns=seg('bdType','all','Tất cả Type')+TYPES.map(t=>seg('bdType',t,tl(t))).join('');
  const rows=list.map(r=>{const i=r.i;const tag=i?(i.days===0?'<b class="bd-hot">Hôm nay</b>':i.days<=7?`<b class="bd-soon">${i.days} ngày</b>`:`${i.days} ngày`):'<span class="bd-none">Chưa có</span>';
-  return `<tr><td class="person">${esc(r.n)}</td><td>${esc(r.c)}</td><td>${esc(r.r)}</td><td>${esc(r.t||'LẺ')}</td><td>${esc(r.a)}</td><td>${i?`<b>${String(i.day).padStart(2,'0')}/${String(i.mon).padStart(2,'0')}</b>/${i.year}`:'—'}</td><td>${tag}</td><td>${i?i.age:'—'}</td><td>${bdayFmt(r.u)}</td></tr>`});
- const byRep={};base.forEach(r=>{const o=byRep[r.r]||(byRep[r.r]={t:0,h:0,m:0});o.t++;if(r.i){o.h++;if(r.i.mon===thisMon)o.m++}});
- const repRows=Object.entries(byRep).sort((a,b)=>b[1].t-a[1].t).map(([n,o])=>`<tr><td class="person">${esc(n)}</td><td>${fmtNumber(o.t)}</td><td>${fmtNumber(o.h)}</td><td>${fmtNumber(o.t-o.h)}</td><td><b>${fmtPct(o.t?o.h/o.t:0)}</b></td><td>${fmtNumber(o.m)}</td></tr>`).join('');
- el('content').innerHTML=intro('Sinh nhật khách hàng','Danh sách ngày sinh nhật chủ quầy theo file LIST_BIRTHDAY. Mỗi lần nạp dữ liệu mới, quầy chưa có ngày SN mà file mới có thì tự được điền thêm; quầy đã có ngày SN thì giữ nguyên.',base.length,'quầy')+
- `<div class="metric-grid">${metricCard('TỔNG SỐ QUẦY',fmtNumber(base.length),'Theo bộ lọc hiện tại',null,'◆')}${metricCard('ĐÃ CÓ NGÀY SN',fmtNumber(has.length),fmtPct(pct)+' tổng quầy',pct,'◆')}${metricCard('CHƯA CÓ NGÀY SN',fmtNumber(no.length),'Cần DDKD hỏi và cập nhật',null,'◆')}${metricCard('SN THÁNG '+thisMon,fmtNumber(inMon.length),'Quầy có sinh nhật trong tháng này',null,'◆')}${metricCard('SN TRONG 7 NGÀY TỚI',fmtNumber(in7.length),'Chuẩn bị quà / lời chúc',null,'◆')}</div>
- <section class="panel"><div class="panel-head"><div><span class="digital-kicker">BỘ LỌC</span><h3>Chọn tháng và nhóm quầy</h3></div></div><div class="bd-bar">${modeBtns}</div><div class="bd-bar">${monthBtns}</div></section>`+
+  return `<tr><td class="person">${esc(r.n)}</td><td>${esc(r.c)}</td><td>${esc(r.r)}</td><td>${tl(r.tp)}</td><td>${esc(r.a)}</td><td>${i?`<b>${String(i.day).padStart(2,'0')}/${String(i.mon).padStart(2,'0')}</b>/${i.year}`:'—'}</td><td>${tag}</td><td>${i?i.age:'—'}</td><td>${bdayFmt(r.u)}</td></tr>`});
+ const cell=(n,type,mode)=>`<td><a href="#" class="bd-go" data-type="${type}" data-mode="${mode}">${fmtNumber(n)}</a></td>`;
+ const grp=(arr)=>{const h=arr.filter(r=>r.i),t=arr.length;return{t,h:h.length,n:t-h.length,m:h.filter(r=>r.i.mon===thisMon).length,w:h.filter(r=>r.i.days<=7).length}};
+ const typeRows=[...TYPES.map(t=>[t,grp(base.filter(r=>r.tp===t))]),['all',grp(base)]].map(([t,g])=>`<tr${t==='all'?' class="v12-total-row"':''}><td class="person">${t==='all'?'<b>Tổng</b>':tl(t)}</td>${cell(g.t,t,'all')}${cell(g.h,t,'has')}<td><b>${fmtPct(g.t?g.h/g.t:0)}</b></td>${cell(g.n,t,'none')}<td>${fmtNumber(g.m)}</td><td>${fmtNumber(g.w)}</td></tr>`).join('');
+ const reps=[...new Set(base.map(r=>r.r))].sort((a,b)=>base.filter(r=>r.r===b).length-base.filter(r=>r.r===a).length);
+ const repRows=reps.map(n=>{const x=base.filter(r=>r.r===n);const g=grp(x);return `<tr><td class="person">${esc(n)}</td>${TYPES.map(t=>{const y=grp(x.filter(r=>r.tp===t));return `<td>${y.t?`<b>${y.h}</b> / <span class="bd-none">${y.n}</span>`:'—'}</td>`}).join('')}<td><b>${g.h}</b> / <span class="bd-none">${g.n}</span></td><td><b>${fmtPct(g.t?g.h/g.t:0)}</b></td></tr>`}).join('');
+ el('content').innerHTML=intro('Sinh nhật khách hàng','Danh sách ngày sinh nhật chủ quầy theo file LIST_BIRTHDAY, chia theo Type KH (VIP3, VIP5, VIP Sỉ, Lẻ). Mỗi lần nạp dữ liệu mới, quầy chưa cập nhật ngày SN mà file mới có thì tự được điền thêm; quầy đã có ngày SN thì giữ nguyên.',sel.length,'quầy')+
+ `<section class="panel"><div class="panel-head"><div><span class="digital-kicker">THEO TYPE KH</span><h3>Đã cập nhật / chưa cập nhật ngày SN</h3></div></div><div class="table-scroll"><table><thead><tr><th>Type KH</th><th>Tổng quầy</th><th>Đã cập nhật SN</th><th>% đã cập nhật</th><th>Chưa cập nhật SN</th><th>SN tháng ${thisMon}</th><th>SN 7 ngày tới</th></tr></thead><tbody>${typeRows}</tbody></table></div><p class="panel-note">Bấm vào số để xem danh sách quầy tương ứng bên dưới.</p></section>
+ <div class="metric-grid">${metricCard('TỔNG SỐ QUẦY'+(state.bdType==='all'?'':' • '+tl(state.bdType).toUpperCase()),fmtNumber(sel.length),'Theo bộ lọc hiện tại',null,'◆')}${metricCard('ĐÃ CẬP NHẬT NGÀY SN',fmtNumber(has.length),fmtPct(pct)+' tổng quầy',pct,'◆')}${metricCard('CHƯA CẬP NHẬT NGÀY SN',fmtNumber(no.length),'Cần DDKD hỏi và cập nhật',null,'◆')}${metricCard('SN THÁNG '+thisMon,fmtNumber(inMon.length),'Quầy có sinh nhật trong tháng này',null,'◆')}${metricCard('SN TRONG 7 NGÀY TỚI',fmtNumber(in7.length),'Chuẩn bị quà / lời chúc',null,'◆')}</div>
+ <section class="panel"><div class="panel-head"><div><span class="digital-kicker">BỘ LỌC</span><h3>Chọn Type KH, nhóm quầy và tháng</h3></div></div><div class="bd-bar">${typeBtns}</div><div class="bd-bar">${modeBtns}</div><div class="bd-bar">${monthBtns}</div></section>`+
  table(['Quầy','Mã KH','DDKD','Type','Địa chỉ','Ngày SN','Còn tới SN','Tuổi sắp tới','Cập nhật SN'],rows,'bday-table')+
- `<section class="panel"><div class="panel-head"><div><span class="digital-kicker">THEO DDKD</span><h3>Tỷ lệ quầy đã có ngày SN</h3></div></div><div class="table-scroll"><table><thead><tr><th>DDKD</th><th>Tổng quầy</th><th>Đã có SN</th><th>Chưa có SN</th><th>% có SN</th><th>SN tháng ${thisMon}</th></tr></thead><tbody>${repRows}</tbody></table></div></section>`;
+ `<section class="panel"><div class="panel-head"><div><span class="digital-kicker">THEO DDKD × TYPE</span><h3>Đã cập nhật / chưa cập nhật ngày SN</h3></div></div><div class="table-scroll"><table><thead><tr><th>DDKD</th>${TYPES.map(t=>`<th>${tl(t)}</th>`).join('')}<th>Tổng</th><th>% đã cập nhật</th></tr></thead><tbody>${repRows}</tbody></table></div><p class="panel-note">Mỗi ô: <b>đã cập nhật</b> / chưa cập nhật.</p></section>`;
  document.querySelectorAll('.bd-seg').forEach(b=>b.onclick=()=>{state[b.dataset.bd]=b.dataset.v;render()});
+ document.querySelectorAll('.bd-go').forEach(a=>a.onclick=e=>{e.preventDefault();state.bdType=a.dataset.type;state.bdMode=a.dataset.mode;state.bdMonth='all';render();document.querySelector('.bday-table')?.scrollIntoView({block:'start'})});
 }
 /* ---------- KPI lương ---------- */
 function v12Salary(rep){
