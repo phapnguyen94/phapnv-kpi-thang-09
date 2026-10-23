@@ -2788,10 +2788,27 @@ function memberOverview(rows){
  return section('CAT','Tổng quan tiến độ theo ngành hàng')+section('BRAND','Tổng quan tiến độ theo nhãn hàng')+'<p class="member-method-note">CAT: chỉ tính ngành hàng của hội viên CAT. BRAND: chỉ tính nhãn hàng của hội viên BRAND. OLD và NEW lấy số đạt MOQ trên danh mục của từng nhóm; quầy đạt thưởng lấy cột “Đạt thưởng (1/0)”.</p>';
 }
 
+
+function memberClosePlan(scope){
+ const MOQ=200000;
+ const A=scope.filter(r=>memberConditionMatch(r,'category-only')),B=scope.filter(r=>memberConditionMatch(r,'sales-only'));
+ const needA=r=>Math.max(Number(r.gap)||0,0);
+ const needB=r=>Math.max((Number(r.maintenanceRequired)||0)-(Number(r.maintenanceAchieved)||0),0)*MOQ+((Number(r.newBrandAchieved)||0)<1?MOQ:0);
+ const sum=(arr,f)=>arr.reduce((x,r)=>x+f(r),0);
+ const already=scope.filter(r=>memberFlag(r.rewardEligible)).length;
+ const aT=sum(A,r=>r.target),aA=sum(A,r=>r.actual),aN=sum(A,needA),bA=sum(B,r=>r.actual),bT=sum(B,r=>r.target),bN=sum(B,needB);
+ const total=already+A.length+B.length;
+ const reps=[...new Set([...A,...B].map(r=>r.rep))].map(n=>{const a=A.filter(r=>r.rep===n),b=B.filter(r=>r.rep===n);return{n,na:a.length,da:sum(a,needA),nb:b.length,db:sum(b,needB)}}).sort((x,y)=>(y.da+y.db)-(x.da+x.db));
+ const rrows=reps.map(d=>`<tr><td class="person">${esc(d.n)}</td><td>${fmtNumber(d.na)}</td><td class="money">${fmtMoney(d.da)}</td><td>${fmtNumber(d.nb)}</td><td class="money">${fmtMoney(d.db)}</td><td class="money"><b>${fmtMoney(d.da+d.db)}</b></td></tr>`).join('');
+ return `<section class="panel mbs-close-plan"><div class="panel-head"><div><span class="digital-kicker">KỊCH BẢN CHỐT HỘI VIÊN</span><h3>Nếu chốt thành công ${fmtNumber(A.length)} + ${fmtNumber(B.length)} quầy</h3><span class="panel-note">Tính theo phạm vi đang lọc • Nhóm B tính tối thiểu ${fmtNumber(MOQ)}đ cho mỗi CAT/BRAND còn thiếu (MOQ)</span></div></div>
+ <div class="cards">${metricCard('NHÓM A • ĐẠT CAT/BRAND, CHƯA ĐẠT DS',fmtNumber(A.length)+' KH','DS nền tảng '+fmtMoney(aT)+' • đã thực hiện '+fmtMoney(aA),null,'◇')}${metricCard('NHÓM A • DS CẦN MANG VỀ THÊM',fmtMoney(aN),'Để đủ 100% DS nền tảng',null,'↗')}${metricCard('NHÓM B • ĐẠT DS, CHƯA ĐẠT CAT/BRAND',fmtNumber(B.length)+' KH','DS đã thực hiện '+fmtMoney(bA),null,'◇')}${metricCard('NHÓM B • DS CẦN MANG VỀ THÊM',fmtMoney(bN),'Tối thiểu để đủ duy trì + mở mới',null,'↗')}${metricCard('TỔNG DS MANG VỀ THÊM',fmtMoney(aN+bN),'Nhóm A + Nhóm B',null,'↗')}${metricCard('HỘI VIÊN ĐẠT THƯỞNG SAU CHỐT',fmtNumber(total)+' KH','Hiện '+fmtNumber(already)+' → '+fmtNumber(total)+' (+'+fmtNumber(A.length+B.length)+')',scope.length?total/scope.length:null,'◇')}</div>
+ <div class="table-scroll"><table><thead><tr><th>DDKD</th><th>Nhóm A (quầy)</th><th>Nhóm A: DS cần thêm</th><th>Nhóm B (quầy)</th><th>Nhóm B: DS cần thêm</th><th>Tổng DS cần thêm</th></tr></thead><tbody>${rrows||'<tr><td colspan="6">Không có quầy trong phạm vi lọc</td></tr>'}<tr class="v12-total-row"><td><b>Tổng</b></td><td><b>${fmtNumber(A.length)}</b></td><td class="money"><b>${fmtMoney(aN)}</b></td><td><b>${fmtNumber(B.length)}</b></td><td class="money"><b>${fmtMoney(bN)}</b></td><td class="money"><b>${fmtMoney(aN+bN)}</b></td></tr></tbody></table></div>
+ <p class="panel-note">Nhóm A: DS cần thêm = DS nền tảng − DS đã thực hiện. Nhóm B: DS cần thêm = (số CAT/BRAND duy trì còn thiếu + 1 nếu chưa mở mới) × ${fmtNumber(MOQ)}đ — là mức tối thiểu, thực tế có thể cao hơn nếu khách mua nhiều hơn MOQ.</p></section>`;
+}
 function renderMbs(){
  const scope=filtered(),rows=scope.filter(row=>memberConditionMatch(row,state.mbsCondition)),t=rows.reduce((s,d)=>s+d.target,0),a=rows.reduce((s,d)=>s+d.actual,0),ach=t?a/t:0,reward=rows.reduce((s,d)=>s+d.estimatedReward,0),passed=rows.filter(d=>d.rewardEligible).length,gamePassed=rows.filter(d=>d.gameEligible).length;
  el('content').innerHTML=intro('Hội Viên Doanh Nhân Masan',gameApplicable()?'Chi tiết ngành hàng CAT và nhãn hàng BRAND theo từng nhóm hội viên':'Tháng 10 không quay game • DS ≥100% + duy trì và mở mới theo loại hội viên • thưởng tối đa 2.250.000đ/KH',passed,'KH đạt thưởng')+
- memberConditionControls(scope)+
+ memberConditionControls(scope)+memberClosePlan(scope)+
  `<div class="cards">${metricCard('DOANH SỐ NỀN TẢNG',fmtMoney(t),'Cơ sở tính điều kiện chương trình',null,'◎')}${metricCard('DOANH SỐ THỰC HIỆN',fmtMoney(a),status(ach),ach,'↗')}${metricCard('KH ĐẠT THƯỞNG',passed,'Đủ toàn bộ điều kiện MBS',null,'◇')}${gameApplicable()?metricCard('KH ĐẠT QUAY GAME',gamePassed,`${fmtNumber(rows.length-gamePassed)} KH chưa đạt`,gamePassed/(rows.length||1),'★'):''}${metricCard('THƯỞNG DỰ KIẾN',fmtMoney(reward),'Theo điều kiện hiện tại',null,'₫')}</div>`+
  memberOverview(rows)+
  memberMissingAnalysis(rows)+
