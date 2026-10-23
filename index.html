@@ -1826,6 +1826,8 @@ html body.theme-original.design-108 .amber,html body.theme-original.design-108 .
 .v12-card header b{font-size:14px;color:var(--k-tx)}.v12-card header small{font-size:11.5px;color:var(--k-mu)}
 .v12-wide{margin-top:16px}
 .v12-bars{display:grid;gap:9px}
+.v12-drill-row{cursor:pointer;border-radius:8px;transition:background .15s}.v12-drill-row:hover,.v12-drill-row:focus{background:rgba(255,106,0,.09);outline:none}
+.v12-drill-table{width:100%;border-collapse:collapse;font-size:13.5px}.v12-drill-table th,.v12-drill-table td{padding:8px 10px;border-bottom:1px solid rgba(0,0,0,.1);text-align:left}.v12-drill-table .num{text-align:right;font-variant-numeric:tabular-nums}.v12-total-row td{background:rgba(255,106,0,.12);border-bottom:2px solid rgba(0,0,0,.25)}
 .v12-bar-row{display:grid;grid-template-columns:minmax(90px,150px) minmax(0,1fr) 62px;align-items:center;gap:10px;font-size:12.5px}
 .v12-bar-label{color:#352f26;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .v12-bar-track{position:relative;height:10px;background:#d7d7dc;border-radius:6px}
@@ -3262,7 +3264,7 @@ render();
 function v12Tone(p,pace){if(!(p>0))return 'bad';if(p>=1)return 'good';if(pace!=null&&p>=pace)return 'good';if(p>=(pace??1)*0.85)return 'warn';return 'bad'}
 function v12Bars(items,opts={}){
  const pace=opts.pace;const max=Math.max(1.1,...items.map(d=>Math.min(d.p||0,1.6)));
- return `<div class="v12-bars">${items.map(d=>{const w=Math.min(d.p||0,1.6)/max*100;return `<div class="v12-bar-row" title="${esc(d.label)}: ${fmtPct(d.p)}${d.sub?' • '+esc(d.sub):''}"><span class="v12-bar-label">${esc(d.label)}</span><div class="v12-bar-track">${pace!=null?`<i class="v12-pace" style="left:${Math.min(pace,1.6)/max*100}%"></i>`:''}<i class="v12-goal" style="left:${1/max*100}%"></i><b class="v12-fill ${v12Tone(d.p,pace)}" style="width:${w}%"></b></div><strong class="v12-bar-val ${v12Tone(d.p,pace)}">${fmtPct(d.p)}</strong>${d.sub?`<small class="v12-bar-sub">${esc(d.sub)}</small>`:''}</div>`}).join('')}</div>`;
+ return `<div class="v12-bars">${items.map(d=>{const w=Math.min(d.p||0,1.6)/max*100;return `<div class="v12-bar-row${d.drill?' v12-drill-row':''}"${d.drill?` data-drill="${esc(d.drill)}" role="button" tabindex="0"`:''} title="${esc(d.label)}: ${fmtPct(d.p)}${d.sub?' • '+esc(d.sub):''}${d.drill?' • bấm để xem chi tiết DDKD':''}"><span class="v12-bar-label">${esc(d.label)}</span><div class="v12-bar-track">${pace!=null?`<i class="v12-pace" style="left:${Math.min(pace,1.6)/max*100}%"></i>`:''}<i class="v12-goal" style="left:${1/max*100}%"></i><b class="v12-fill ${v12Tone(d.p,pace)}" style="width:${w}%"></b></div><strong class="v12-bar-val ${v12Tone(d.p,pace)}">${fmtPct(d.p)}</strong>${d.sub?`<small class="v12-bar-sub">${esc(d.sub)}</small>`:''}</div>`}).join('')}</div>`;
 }
 function v12Columns(items,pace){
  const max=Math.max(1.1,...items.map(d=>Math.min(d.p||0,1.6)));const H=150;
@@ -3270,13 +3272,29 @@ function v12Columns(items,pace){
 }
 function v12Short(name){const p=String(name).trim().split(/\s+/);if(/^vacant/i.test(name))return 'Vacant';return p.length>1?p.slice(-2).join(' '):name}
 function v12Legend(pace){return `<div class="v12-legend"><span><i class="good"></i>Đạt / vượt tiến độ</span><span><i class="warn"></i>Sát tiến độ</span><span><i class="bad"></i>Chậm</span>${pace!=null?`<span><i class="pace"></i>Tiến độ thời gian ${fmtPct(pace)}</span>`:''}</div>`}
+var V12DR,V12ROWS;
+function v12Drill(key){
+ const c=V12DR[key];if(!c)return;const pace=DATA.meta.locked?1:paceTarget;
+ const fv=v=>c.unit==='money'?fmtMoney(v):c.unit==='decimal'?fmtDecimal(v):fmtNumber(v);
+ let rows=V12ROWS.filter(d=>d.rep).map(d=>{const t=c.tk?(Number(d[c.tk])||0):c.tv;const a=Number(d[c.ak])||0;return{rep:d.rep,t,a,p:t>0?a/t:null}});
+ const tt=rows.reduce((x,r)=>x+(c.tk?r.t:0),0),ta=rows.reduce((x,r)=>x+r.a,0);
+ const tot=c.tk?{t:tt,a:ta,p:tt>0?ta/tt:null}:{t:c.tv,a:ta/(rows.length||1),p:c.tv>0?(ta/(rows.length||1))/c.tv:null};
+ rows=rows.filter(r=>r.t>0||r.a>0).sort((x,y)=>(y.p??-1)-(x.p??-1));
+ const cls=p=>p==null?'':v12Tone(p,pace);
+ const tr=r=>`<tr><td>${esc(r.rep)}</td><td class="num">${r.t>0||c.tk?fv(r.t):'—'}</td><td class="num">${fv(r.a)}</td><td class="num"><b class="v12-bar-val ${cls(r.p)}">${r.p==null?'—':fmtPct(r.p)}</b></td></tr>`;
+ document.querySelector('#customer360Modal')?.remove();
+ document.body.insertAdjacentHTML('beforeend',`<div id="customer360Modal" class="customer-modal v12-drill-modal" role="dialog" aria-modal="true"><div class="customer-modal-card" style="max-width:760px"><button class="modal-close" aria-label="Đóng">×</button><header><div><span>CHI TIẾT THEO DDKD</span><h2>${esc(c.label)}</h2><p>${esc(DATA.meta.periodLabel||'')} • Tiến độ thời gian ${fmtPct(pace)} • xếp % đạt cao → thấp</p></div></header><div style="overflow:auto;padding:4px 2px"><table class="v12-drill-table"><thead><tr><th>DDKD</th><th class="num">Chỉ tiêu</th><th class="num">Thực hiện</th><th class="num">% đạt</th></tr></thead><tbody><tr class="v12-total-row"><td><b>${c.tk?'Tổng':'Trung bình'}</b></td><td class="num"><b>${fv(tot.t)}</b></td><td class="num"><b>${fv(tot.a)}</b></td><td class="num"><b class="v12-bar-val ${cls(tot.p)}">${tot.p==null?'—':fmtPct(tot.p)}</b></td></tr>${rows.map(tr).join('')}</tbody></table></div></div></div>`);
+ const m=el('customer360Modal');m.querySelector('.modal-close').onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};
+}
+document.addEventListener('click',e=>{const r=e.target.closest&&e.target.closest('.v12-drill-row');if(r)v12Drill(r.dataset.drill)});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('v12-drill-row')){e.preventDefault();v12Drill(e.target.dataset.drill)}});
 function overviewCharts(rows){
  if(!rows.length)return '';
- const pace=DATA.meta.locked?1:paceTarget;const sum=k=>rows.reduce((s,d)=>s+(Number(d[k])||0),0);
+ V12ROWS=rows;if(!V12DR)V12DR={};const pace=DATA.meta.locked?1:paceTarget;const sum=k=>rows.reduce((s,d)=>s+(Number(d[k])||0),0);
  const defs=Array.isArray(DATA.meta.foundationMetrics)?DATA.meta.foundationMetrics:[];
- const kpi=defs.map(m=>{const t=m.targetValue??sum(m.targetKey);const a=m.aggregation==='average'?sum(m.actualKey)/(rows.length||1):sum(m.actualKey);return{label:m.label.split('•')[0].trim(),p:t?a/t:0,sub:m.unit==='money'?`${fmtMoney(a)} / ${fmtMoney(t)}`:m.unit==='decimal'?`${fmtDecimal(a)} / ${fmtDecimal(t)}`:`${fmtNumber(a)} / ${fmtNumber(t)}`}});
+ const kpi=defs.map(m=>{const t=m.targetValue??sum(m.targetKey);const a=m.aggregation==='average'?sum(m.actualKey)/(rows.length||1):sum(m.actualKey);const dk='k'+m.actualKey;V12DR[dk]={label:m.label.split('•')[0].trim(),tk:m.targetKey||null,tv:m.targetValue,ak:m.actualKey,unit:m.unit};return{drill:dk,label:m.label.split('•')[0].trim(),p:t?a/t:0,sub:m.unit==='money'?`${fmtMoney(a)} / ${fmtMoney(t)}`:m.unit==='decimal'?`${fmtDecimal(a)} / ${fmtDecimal(t)}`:`${fmtNumber(a)} / ${fmtNumber(t)}`}});
  const reps=[...rows].filter(d=>d.target>0).sort((a,b)=>b.achievement-a.achievement).map(d=>({label:d.rep,short:v12Short(d.rep),p:d.achievement,sub:`${fmtMoney(d.actual)} / ${fmtMoney(d.target)}`}));
- const cat=[['Seasoning','selloutSeasoning'],['Convenience','selloutConvenience'],['Home Care','selloutHomeCare'],['Refreshment','selloutRefreshment'],['Processed Meats','selloutProcessed'],['Nutrition','selloutNutrition'],['Coffee','selloutCoffee'],['Rice','selloutRice'],['Beer','selloutBeer']].map(([l,k])=>({label:l,t:sum(k+'Target'),a:sum(k+'Actual')})).filter(d=>d.t>0).map(d=>({label:d.label,p:d.a/d.t,sub:`${fmtMoney(d.a)} / ${fmtMoney(d.t)}`})).sort((a,b)=>b.p-a.p);
+ const cat=[['Seasoning','selloutSeasoning'],['Convenience','selloutConvenience'],['Home Care','selloutHomeCare'],['Refreshment','selloutRefreshment'],['Processed Meats','selloutProcessed'],['Nutrition','selloutNutrition'],['Coffee','selloutCoffee'],['Rice','selloutRice'],['Beer','selloutBeer']].map(([l,k])=>({label:l,k,t:sum(k+'Target'),a:sum(k+'Actual')})).filter(d=>d.t>0).map(d=>{V12DR['c'+d.k]={label:d.label+' (Sell Out)',tk:d.k+'Target',ak:d.k+'Actual',unit:'money'};return{drill:'c'+d.k,label:d.label,p:d.a/d.t,sub:`${fmtMoney(d.a)} / ${fmtMoney(d.t)}`}}).sort((a,b)=>b.p-a.p);
  const passed=reps.filter(d=>d.p>=pace).length;
  return `<section class="panel v12-overview" data-v12="overview"><div class="panel-head"><div><span class="digital-kicker">BỨC TRANH NHANH</span><h3>KPI tháng trong một màn hình</h3><span class="panel-note">${esc(DATA.meta.periodLabel||'')} • ${fmtNumber(rows.length)} DDKD • ${fmtNumber(passed)}/${fmtNumber(reps.length)} DDKD theo kịp tiến độ doanh số</span></div>${v12Legend(pace)}</div>
  <div class="v12-grid"><article class="v12-card"><header><b>KPI nền tảng</b><small>% đạt toàn team</small></header>${v12Bars(kpi,{pace})}</article><article class="v12-card"><header><b>Sell Out theo ngành hàng</b><small>% đạt chỉ tiêu</small></header>${v12Bars(cat,{pace})}</article></div>
