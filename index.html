@@ -3961,5 +3961,125 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
 
 
 
+<script id="kpi-diag">window.KPI_DIAG={"Nguyễn Công Minh": {"o9": 237, "o10": 235}, "Thái Đức Cường": {"o9": 285, "o10": 270}, "Nguyễn Vũ Thắng": {"o9": 308, "o10": 283}, "Trần Ngọc Tuấn": {"o9": 340, "o10": 298}, "Trần Hữu Phi": {"o9": 339, "o10": 330}, "Nguyễn Văn Thuận": {"o9": 434, "o10": 429}, "Lê Hữu Cần": {"o9": 351, "o10": 341}, "Trịnh Đình Sơn": {"o9": 232, "o10": 258}, "Bùi Thị Thu Trang": {"o9": 233, "o10": 253}, "Trần Bá Hải": {"o9": 194, "o10": 182}, "Nguyễn Thị Trang": {"o9": 317, "o10": 323}, "Lê Văn Tịnh": {"o9": 369, "o10": 388}, "10KF1131-CDGT-SMVL": {"o9": 1, "o10": 0}, "Nguyễn Thị Kim Thúy": {"o9": 348, "o10": 358}, "Nguyễn Thị Thanh Thúy": {"o9": 293, "o10": 245}, "Vacant đang tuyển 4772": {"o9": 187, "o10": 244}, "Hồ Thị Lương": {"o9": 271, "o10": 274}, "Hồ Thị My My": {"o9": 256, "o10": 257}, "Mai Xuân Dậu": {"o9": 222, "o10": 221}, "Dương Thị Thúy Hằng": {"o9": 242, "o10": 216}, "Lê Hùng Cường": {"o9": 325, "o10": 336}, "Ngô Đức Nam": {"o9": 318, "o10": 313}, "Võ Thành Hưng": {"o9": 253, "o10": 250}, "Dương Tấn Hải": {"o9": 255, "o10": 256}, "Cao Xuân Tùng": {"o9": 382, "o10": 343}, "Nguyễn Thị Thương": {"o9": 246, "o10": 242}, "Huỳnh Minh Phước": {"o9": 186, "o10": 188}, "Phạm Thị Huyền Trang": {"o9": 317, "o10": 331}, "Võ Văn Dũng": {"o9": 353, "o10": 334}, "Lê Đặng Minh": {"o9": 231, "o10": 219}, "Trần Văn Công": {"o9": 269, "o10": 245}, "Nguyễn Thị Hạnh": {"o9": 298, "o10": 298}, "Đoàn Hữu Phước": {"o9": 315, "o10": 311}, "NVBH Vãng lai CDGT": {"o9": 0, "o10": 4}};</script>
+<style id="kpi-ov-css">.ovx{--nv:hsl(222 70% 26%);--nv2:hsl(218 62% 44%);display:grid;gap:14px;color:hsl(222 30% 14%)}
+.ov-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px 28px;border-radius:18px;color:#fff;background:linear-gradient(120deg,hsl(222 72% 24%),hsl(200 78% 38%));box-shadow:0 8px 26px hsl(215 70% 30%/.30)}
+.ov-hero .ring{position:relative;width:140px;height:140px}.ov-hero .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800}
+.ov-hero h2{margin:0;font-size:14px;letter-spacing:.1em;text-transform:uppercase;opacity:.92;color:#fff}.ov-hero .big{font-size:44px;font-weight:800;line-height:1.1;margin:4px 0}.ov-hero .big span{font-size:20px;font-weight:600;opacity:.9}.ov-hero .sub{font-size:14px;opacity:.95}
+.ov-ban{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:14px;background:linear-gradient(90deg,var(--nv),var(--nv2));color:#fff;border-left:8px solid hsl(42 96% 50%)}
+.ov-ban b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--nv);font-size:15px}.ov-ban span{font-weight:800;letter-spacing:.07em;font-size:15px;flex:1}.ov-ban em{font-style:normal;font-size:12.5px;opacity:.92}
+.ov-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ov-gt{grid-column:1/-1;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:hsl(222 30% 28%);margin-top:4px}
+@media(max-width:1200px){.ov-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.ov-grid{grid-template-columns:1fr}.ov-hero{grid-template-columns:1fr;text-align:center}}
+.ov-k{all:unset;box-sizing:border-box;cursor:pointer;display:block;border-radius:16px;padding:12px 14px;border:1.5px solid hsl(var(--h) 60% 82%);border-top:5px solid hsl(var(--h) 70% 48%);background:linear-gradient(160deg,#fff,hsl(var(--h) 80% 95%));box-shadow:0 5px 14px hsl(var(--h) 60% 40%/.12);transition:transform .12s}
+.ov-k:hover{transform:translateY(-2px)}.ov-k.on{outline:3px solid hsl(var(--h) 75% 50%);outline-offset:1px}
+.ov-k .l{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:12.5px;font-weight:800;color:hsl(222 30% 20%);line-height:1.25}
+.ov-k .v{margin-top:6px;font-size:26px;font-weight:800;color:hsl(var(--h) 70% 36%);line-height:1.1}.ov-k .v small{font-size:13px;font-weight:700;color:hsl(222 12% 46%)}
+.ov-k .bar{position:relative;height:7px;border-radius:9px;background:hsl(222 20% 90%);margin-top:8px;overflow:visible}.ov-k .bar u{display:block;height:100%;border-radius:9px;background:hsl(160 62% 42%)}.ov-k .bar u.w{background:hsl(40 95% 50%)}.ov-k .bar u.b{background:hsl(355 74% 52%)}.ov-k .bar s{position:absolute;top:-3px;width:2px;height:13px;background:hsl(222 30% 20%)}
+.ov-k .rw{font-size:11.5px;color:hsl(222 12% 38%);margin-top:7px;line-height:1.35}
+i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;font-weight:800;font-size:12px;color:#fff;background:hsl(160 62% 38%);white-space:nowrap}i.p.w{background:hsl(40 95% 44%)}i.p.b{background:hsl(355 74% 48%)}
+#ov-drill{display:grid;gap:14px}.ov-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}@media(max-width:1000px){.ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ov-st{border-radius:16px;padding:12px 16px;border:1.5px solid hsl(var(--h) 60% 80%);border-top:5px solid hsl(var(--h) 70% 48%);background:linear-gradient(160deg,#fff,hsl(var(--h) 80% 95%))}
+.ov-st .l{font-size:13px;font-weight:800;color:hsl(222 30% 20%)}.ov-st .v b{font-size:38px;font-weight:800;color:hsl(var(--h) 70% 38%);letter-spacing:-.02em}.ov-st .v small{font-size:16px;font-weight:700;color:hsl(222 12% 46%)}.ov-st .s{font-size:12.5px;color:hsl(222 14% 36%);margin-top:4px}
+.ov-box{background:#fff;border:1px solid hsl(222 25% 88%);border-radius:16px;padding:14px 16px;box-shadow:0 4px 14px hsl(222 40% 30%/.07)}
+.ov-hd{text-align:center;font-weight:800;font-size:14.5px;color:#fff;padding:9px 14px;border-radius:10px;background:linear-gradient(90deg,var(--nv),hsl(222 66% 36%));border-left:6px solid hsl(42 96% 50%);border-right:6px solid hsl(42 96% 50%);margin-bottom:10px}
+.ov-sort{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-size:12.5px;color:hsl(222 12% 40%);align-items:center}.ov-sort button,.ov-full button{font:inherit;font-weight:700;font-size:12.5px;padding:5px 12px;border-radius:99px;border:1.5px solid hsl(222 30% 82%);background:hsl(222 40% 98%);color:hsl(222 40% 24%);cursor:pointer}.ov-sort button.on{background:var(--nv);color:#fff;border-color:transparent}
+.ov-r{display:grid;grid-template-columns:230px 1fr 56px;gap:10px;align-items:center;padding:4px 0}@media(max-width:700px){.ov-r{grid-template-columns:140px 1fr 50px}}
+.ov-r .n{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}.ov-r .n b{width:22px;color:hsl(222 12% 50%);font-weight:700}.ov-r .t{position:relative;height:22px;background:hsl(222 25% 95%);border-radius:7px}
+.ov-r .bx{position:absolute;left:0;top:3px;height:16px;border-radius:5px;background:hsl(160 62% 40%)}.ov-r .bx.w{background:hsl(40 95% 50%)}.ov-r .bx.b{background:hsl(355 74% 52%)}.ov-r s{position:absolute;top:0;width:3px;height:22px;border-radius:2px;background:hsl(24 92% 52%)}.ov-r .t span{position:absolute;top:3px;font-size:12px;font-weight:800}
+.ov-tb{width:100%;border-collapse:collapse;font-size:13.5px;min-width:700px}.ov-tb th{text-align:right;padding:9px 10px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--nv);white-space:nowrap}.ov-tb td{text-align:right;padding:8px 10px;border-bottom:1px solid hsl(222 25% 91%);white-space:nowrap;font-variant-numeric:tabular-nums}.ov-tb .l{text-align:left}.ov-tb tbody tr:nth-child(even){background:hsl(222 40% 98%)}.ov-tb tr.tot td{font-weight:800;background:hsl(222 60% 95%);border-top:2px solid var(--nv2)}.ov-tb .rd{color:hsl(355 74% 44%);font-weight:700}
+.ov-note{font-size:12.5px;color:hsl(222 12% 40%);margin:8px 2px 0}.ov-full{text-align:center;margin:6px 0}
+
+.mx-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.mx-sum div{background:var(--c);color:#fff;border-radius:12px;padding:10px 12px;text-align:center}.mx-sum b{display:block;font-size:14px}.mx-sum span{font-size:12px;opacity:.9}
+.mx-wrap{display:grid;grid-template-columns:34px 1fr;gap:8px}.mx-y{display:flex;flex-direction:column;justify-content:space-between;align-items:center;font-size:11px;color:hsl(222 12% 42%)}.mx-y b,.mx-x b{letter-spacing:.14em;font-size:12px;color:var(--nv)}.mx-y b{writing-mode:vertical-rl;transform:rotate(180deg)}
+.mx-g{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mx-q{background:var(--c);color:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 6px 16px hsl(222 40% 20%/.18)}
+.mx-q h4{margin:0;text-align:center;font-size:17px;color:#fff;display:flex;gap:8px;justify-content:center;align-items:center}.mx-q h4 em{font-style:normal;font-size:11px;background:hsl(0 0% 100%/.25);padding:2px 8px;border-radius:99px}.mx-q .s{text-align:center;font-size:12.5px;opacity:.9;margin:4px 0 10px}
+.mx-ch{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}.mx-c{background:hsl(0 0% 96%);color:hsl(222 30% 16%);border-radius:8px;padding:4px 9px;text-align:center;line-height:1.25}.mx-c b{display:block;font-size:12.5px}.mx-c i{font-style:normal;font-size:11px;color:hsl(222 12% 40%)}
+.mx-q ul{margin:0;padding:10px 0 0 18px;border-top:1px solid hsl(0 0% 100%/.25);font-size:12.5px;line-height:1.5}
+.mx-x{display:grid;grid-template-columns:34px 1fr 1fr;margin:6px 0 4px;font-size:11px;color:hsl(222 12% 42%)}.mx-x b{text-align:center;grid-column:2/3}.mx-x span:last-child{text-align:right}
+@media(max-width:800px){.mx-g{grid-template-columns:1fr}.mx-sum{grid-template-columns:1fr 1fr}}
+</style>
+<script id="kpi-ov-js">(function(){
+ if(window.__ovInstalled||typeof renderOverview!=='function')return; window.__ovInstalled=true;
+ const OLD=renderOverview; let SEL=0, SORT='pct';
+ const vi=(v,d=0)=>Number(v).toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});
+ const pc=(v,d=1)=>Number.isFinite(v)?vi(v*100,d)+'%':'—';
+ const tr=(v)=>Math.abs(v)>=1e9?vi(v/1e9,2)+' tỷ':vi(v/1e6,Math.abs(v)<1e7&&v!==0?1:0)+' tr';
+ const E=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const fmt=(u,v)=>u==='money'?tr(v):u==='decimal'?vi(v,2):vi(v,Math.abs(v)<100&&v%1?1:0);
+ const sum=(rows,k)=>rows.reduce((s,d)=>s+(Number(d[k])||0),0);
+ function defs(){
+  const fm=(DATA.meta.foundationMetrics||[]).map((m,i)=>({g:'f',label:m.label,tk:m.targetKey,ak:m.actualKey,tv:m.targetValue,avg:m.aggregation==='average',u:m.unit||'number',reward:m.reward||'',h:[24,222,160,42,262,195,355][i%7]}));
+  const NG=[['Seasoning','Seasoning',24],['Convenience Foods','Convenience',222],['Home Care','HomeCare',160],['Refreshment Drinks','Refreshment',195],['Processed Meats','Processed',355],['Nutrition','Nutrition',262],['Coffee','Coffee',28],['Rice base','Rice',200],['Beer','Beer',42]].map(([l,k,h])=>({g:'n',label:l,tk:'sellout'+k+'Target',ak:'sellout'+k+'Actual',u:'money',reward:'',h}));
+  const lp={g:'f',label:'LPPC nền tảng • cột BY',tk:null,ak:'foundationLppc',tv:(typeof LPPC_TARGET==='number'?LPPC_TARGET:5),avg:true,u:'decimal',reward:'Line/PC nền tảng (BW–BY) • mục tiêu vận hành '+(typeof LPPC_TARGET==='number'?LPPC_TARGET:5).toString().replace('.',','),h:300}; const at=fm.findIndex(m=>m.ak==='lppcMeat'); fm.splice(at<0?fm.length:at+1,0,lp);
+  return fm.concat(NG);
+ }
+ function agg(m,rows){const t=m.tv!=null?m.tv:sum(rows,m.tk); const a=m.avg?sum(rows,m.ak)/(rows.length||1):sum(rows,m.ak); return {t,a,p:t?a/t:0}}
+ function rowv(m,d){const t=m.tv!=null?m.tv:(Number(d[m.tk])||0), a=Number(d[m.ak])||0; return {t,a,p:t?a/t:0}}
+ function tone(p,pace){return p>=1?'g':p>=pace?'w':'b'}
+ window.__ovRender=function(){
+  const rows=filtered(), D=defs().filter(m=>m.g==='f'||rows.some(d=>(Number(d[m.tk])||0)>0));
+  if(SEL>=D.length)SEL=0; const pace=(typeof paceTarget==='number'&&isFinite(paceTarget))?paceTarget:DATA.meta.elapsedDays/DATA.meta.workingDays;
+  const T=sum(rows,'target'),A=sum(rows,'actual'),P=T?A/T:0, gap=Math.max(T-A,0), R=58, C=2*Math.PI*R;
+  const nOk=rows.filter(d=>d.achievement>=pace).length;
+  let h=`<div class="ovx"><div class="ov-hero"><div class="ring"><svg viewBox="0 0 140 140" width="140" height="140"><circle cx="70" cy="70" r="${R}" fill="none" stroke="hsl(0 0% 100% / .3)" stroke-width="12"/><circle cx="70" cy="70" r="${R}" fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C*Math.min(P,1)} ${C}" transform="rotate(-90 70 70)"/></svg><b>${pc(P)}</b></div>
+   <div><h2>${E(DATA.meta.scopeLabel||'Team SS Pháp')} · ${E(DATA.meta.periodLabel||'')} · đã qua ${DATA.meta.elapsedDays}/${DATA.meta.workingDays} ngày</h2><div class="big">${tr(A)} <span>/ CT ${tr(T)}</span></div><div class="sub">${P>=pace?'Vượt':'Chậm'} tiến độ chuẩn ${pc(pace)} ${vi(Math.abs(P-pace)*100,1)} điểm · còn thiếu ${tr(gap)} · ${nOk}/${rows.length} ĐDKD kịp tiến độ</div></div></div>
+   <div class="ov-ban"><b>1</b><span>KPI NỀN TẢNG VÀ SELL OUT THEO NGÀNH</span><em>Bấm một KPI để xem từng ĐDKD</em></div><div class="ov-grid">`;
+  const grp=(g,ttl)=>{let s=`<div class="ov-gt">${ttl}</div>`; D.forEach((m,i)=>{if(m.g!==g)return; const x=agg(m,rows),tn=tone(x.p,pace); s+=`<button type="button" class="ov-k ${SEL===i?'on':''}" data-i="${i}" style="--h:${m.h}"><div class="l"><span>${E(m.label)}</span><i class="p ${tn}">${pc(x.p,0)}</i></div><div class="v">${fmt(m.u,x.a)}<small> / ${fmt(m.u,x.t)}</small></div><div class="bar"><u class="${tn}" style="width:${Math.min(x.p,1)*100}%"></u><s style="left:${Math.min(pace,1)*100}%"></s></div>${m.reward?`<div class="rw">◆ ${E(m.reward)}</div>`:`<div class="rw">${tn==='g'?'Đã đạt chỉ tiêu':'Còn thiếu '+fmt(m.u,Math.max(x.t-x.a,0))}</div>`}</button>`}); return s};
+  h+=grp('f','KPI nền tảng')+grp('n','Sell Out theo ngành hàng')+'</div><div id="ov-drill"></div></div>';
+  el('content').innerHTML=intro('Tổng quan KPI',`Nguồn ${E(DATA.meta.foundationSource||'KPI THÁNG')} · cập nhật ${E(DATA.meta.updated||'')}`,rows.length,'ĐDKD')+h+'<p class="ov-full"><button type="button" id="ov-old">Xem bản tổng quan đầy đủ (cũ)</button></p>';
+  document.querySelectorAll('.ov-k').forEach(b=>b.addEventListener('click',()=>{SEL=+b.dataset.i;window.__ovRender();document.getElementById('ov-drill').scrollIntoView({behavior:'smooth',block:'start'})}));
+  document.getElementById('ov-old').onclick=()=>{window.__ovFull=true;OLD()};
+  drill(D[SEL],rows,pace);
+ };
+
+ const QD={
+  I:{n:'(I) Nhóm Đường Tăng',sub:'Năng lực CAO · Động lực CAO',c:'hsl(222 62% 26%)',b:['Coaching để trao quyền, thử thách phát triển','Có chiến lược đưa xuống Sa Tăng (về chuyên môn hoặc leadership) để liên tục học hỏi','Lắng nghe để kịp thời chăm sóc, duy trì gắn kết, hiểu đúng động lực']},
+  II:{n:'(II) Nhóm Tôn Ngộ Không',sub:'Năng lực CAO · Động lực THẤP',c:'hsl(350 66% 28%)',b:['Đặt câu hỏi để hiểu tâm tư, mong muốn, động lực','Lắng nghe để xây dựng an toàn, tin tưởng','Có sự thay đổi phù hợp để giúp trở thành Đường Tăng hoặc Sa Tăng trong những trách nhiệm mới']},
+  III:{n:'(III) Nhóm Sa Tăng',sub:'Năng lực THẤP · Động lực CAO',c:'hsl(30 14% 40%)',b:['Ưu tiên mentoring, training nâng cao Năng lực','Có thể để nhóm Đường Tăng hỗ trợ','Lắng nghe để hiểu đúng và duy trì Động lực']},
+  IV:{n:'(IV) Nhóm Trư Bát Giới',sub:'Năng lực THẤP · Động lực THẤP',c:'hsl(218 30% 24%)',b:['Trao đổi, lắng nghe để hiểu tâm tư, động lực','Phản hồi thẳng thắn chân thành, cùng lên kế hoạch thay đổi nếu sẵn sàng. Ưu tiên giải quyết Động lực trước','Có hành động dứt khoát nếu bắt đầu ảnh hưởng tới đội ngũ']}};
+
+ function rankArr(v){const s=v.map((x,i)=>[x,i]).sort((p,q)=>p[0]-q[0]),n=s.length,o=[]; s.forEach((x,i)=>{o[x[1]]=n>1?i/(n-1)*100:50}); return o}
+ function med(a){const s=a.slice().sort((x,y)=>x-y),n=s.length; return n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):50}
+ function matrix(rows,pace){
+  const M=DATA.meta, frac=(M.elapsedDays&&M.workingDays)?M.elapsedDays/M.workingDays:pace, DG=window.KPI_DIAG||{}, mcp=DATA.mcp||[], pm=(M.periodKey||'2026-10'), pL='T'+(Number(pm.slice(5))===1?12:Number(pm.slice(5))-1), cL='T'+Number(pm.slice(5));
+  if(rows.length<4)return '<div class="ov-box"><p class="ov-note">Cần chọn từ 4 ĐDKD trở lên (bỏ lọc ĐDKD) để dựng ma trận.</p></div>';
+  const fq=x=>{const m=/F(\d+)/.exec(x.freq||''); return m?Number(m[1]):0};
+  const R=rows.map(r=>{const pcs=Number(r.foundationPc)||0, calls=mcp.filter(x=>x.rep===r.rep).reduce((s,x)=>s+fq(x),0)*frac, dg=DG[r.rep]||{};
+   return {r,lp:Number(r.lppc)||0,vo:pcs?r.actual/pcs:0,pp:frac?(Number(r.achievement)||0)/frac:0,call:calls?pcs/calls:0,aso:r.mcpTotal?r.activeActual/r.mcpTotal:0,gr:dg.o9?(dg.o10/frac)/dg.o9-1:0}});
+  ['lp','vo','pp','call','aso','gr'].forEach(k=>{const rk=rankArr(R.map(x=>x[k])); R.forEach((x,i)=>x['r_'+k]=rk[i])});
+  R.forEach(x=>{x.nl=Math.round((x.r_lp+x.r_vo+x.r_pp)/3); x.dl=Math.round((x.r_call+x.r_aso+x.r_gr)/3)});
+  const mN=med(R.map(x=>x.nl)),mD=med(R.map(x=>x.dl)), G={I:[],II:[],III:[],IV:[]};
+  R.forEach(x=>{x.q=x.nl>=mN?(x.dl>=mD?'I':'II'):(x.dl>=mD?'III':'IV'); G[x.q].push(x)});
+  const chip=x=>`<span class="mx-c" title="LPPC ${vi(x.lp,2)} · VPO ${vi(x.vo/1e6,2)} tr/đơn · %TH/tiến độ ${pc(x.pp,0)} · PC/Call ${vi(x.call,2)} · ASO/MCP ${pc(x.aso,0)} · số đơn ${cL} dự kiến vs ${pL}: ${(x.gr>=0?'+':'')+vi(x.gr*100,1)}%"><b>${E(x.r.rep)}</b><i>NL ${x.nl} · ĐL ${x.dl}</i></span>`;
+  const box=q=>`<div class="mx-q" style="--c:${QD[q].c}"><h4>${QD[q].n}<em>${G[q].length} ĐDKD</em></h4><div class="s">${QD[q].sub}</div><div class="mx-ch">${G[q].sort((x,y)=>y.nl+y.dl-x.nl-x.dl).map(chip).join('')||'<span class="ov-note">Không có ĐDKD</span>'}</div><ul>${QD[q].b.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+  return `<div class="ov-ban"><b>3</b><span>MA TRẬN CHẨN ĐOÁN</span><em>Phân rổ để chọn cách dẫn dắt – không dán nhãn con người</em></div>
+  <div class="ov-box"><div class="ov-hd">Ma trận chẩn đoán: 4 kiểu Đại diện kinh doanh · phân rổ để chọn cách dẫn dắt — không dán nhãn con người</div>
+  <div class="mx-sum">${['II','I','III','IV'].map(q=>`<div style="--c:${QD[q].c}"><b>${QD[q].n} · ${G[q].length}</b><span>${QD[q].sub}</span></div>`).join('')}</div>
+  <div class="mx-wrap"><div class="mx-y"><span>Cao</span><b>NĂNG LỰC</b><span>Thấp</span></div><div class="mx-g">${box('II')}${box('I')}${box('IV')}${box('III')}</div></div>
+  <div class="mx-x"><span>Thấp</span><b>ĐỘNG LỰC</b><span>Cao</span></div>
+  <p class="ov-note" style="color:hsl(222 60% 34%)"><b>Năng lực (NL)</b> = điểm xếp hạng trung bình trong ${R.length} ĐDKD của LPPC Total, VPO (giá trị/đơn) và %TH chỉ tiêu so với tiến độ — phản ánh <i>chất lượng</i> mỗi lần bán. <b>Động lực (ĐL)</b> = điểm xếp hạng trung bình của PC/Call, ASO/MCP và mức tăng số đơn ${cL} (dự kiến) so với ${pL} — phản ánh <i>độ chăm chỉ, kỷ luật tuyến</i>. Điểm 0–100, ranh giới Cao/Thấp là mức giữa của ${R.length} ĐDKD (NL ${mN} · ĐL ${mD}). Số liệu chỉ là gợi ý để chọn cách trò chuyện — quản lý cần kết hợp quan sát thực tế trên tuyến. Số liệu đến ${E(M.updated||'')} (${M.elapsedDays}/${M.workingDays} ngày) – vị trí có thể đổi đến cuối tháng. Số call tạm tính theo tần suất ghé trong MCP hiện tại (F4/F8…) × tiến độ ngày công.</p></div>`;
+ }
+ function drill(m,rows,pace){
+  const x=agg(m,rows), list=rows.map(d=>Object.assign({d},rowv(m,d))), tot=list.reduce((s,r)=>s+r.a,0), totT=list.reduce((s,r)=>s+r.t,0);
+  list.sort((a,b)=>SORT==='pct'?b.p-a.p:SORT==='act'?b.a-a.a:SORT==='gap'?(b.t-b.a)-(a.t-a.a):a.d.rep.localeCompare(b.d.rep));
+  const mx=Math.max(...list.flatMap(r=>[r.a,r.t]),1), nOk=list.filter(r=>r.p>=1).length, nPace=list.filter(r=>r.p>=pace).length;
+  const best=list.slice().sort((a,b)=>b.p-a.p)[0], worst=list.slice().sort((a,b)=>a.p-b.p)[0];
+  let s=`<div class="ov-ban"><b>2</b><span>${E(m.label.toUpperCase())} · THEO TỪNG ĐDKD</span><em>Team ${pc(x.p)} · ${nOk}/${list.length} ĐDKD đạt 100%</em></div>
+  <div class="ov-stats"><div class="ov-st" style="--h:${m.h}"><div class="l">Thực hiện</div><div class="v"><b>${fmt(m.u,x.a)}</b></div><div class="s">Chỉ tiêu <b>${fmt(m.u,x.t)}</b></div></div>
+   <div class="ov-st" style="--h:${tone(x.p,pace)==='g'?160:tone(x.p,pace)==='w'?42:355}"><div class="l">Tỷ lệ đạt</div><div class="v"><b>${pc(x.p)}</b></div><div class="s">Tiến độ chuẩn <b>${pc(pace)}</b> · ${x.p>=pace?'vượt':'chậm'} ${vi(Math.abs(x.p-pace)*100,1)} điểm</div></div>
+   <div class="ov-st" style="--h:222"><div class="l">ĐDKD kịp tiến độ</div><div class="v"><b>${nPace}</b><small> / ${list.length}</small></div><div class="s">Đạt 100%: <b>${nOk}</b></div></div>
+   <div class="ov-st" style="--h:262"><div class="l">Cao nhất / thấp nhất</div><div class="v" style="font-size:20px"><b>${E(best.d.rep.split(' ').slice(-2).join(' '))} ${pc(best.p,0)}</b></div><div class="s">Thấp: <b>${E(worst.d.rep.split(' ').slice(-2).join(' '))} ${pc(worst.p,0)}</b></div></div></div>
+  <div class="ov-box"><div class="ov-hd">Thực hiện so với chỉ tiêu từng ĐDKD (vạch cam: chỉ tiêu · nhãn tròn: % đạt)</div><div class="ov-sort">Sắp xếp: ${[['pct','% đạt'],['act','Thực hiện'],['gap','Còn thiếu'],['nm','Tên']].map(([k,t])=>`<button type="button" data-s="${k}" class="${SORT===k?'on':''}">${t}</button>`).join('')}</div><div class="ov-rows">`;
+  list.forEach((r,i)=>{const tn=tone(r.p,pace); s+=`<div class="ov-r"><div class="n"><b>${i+1}</b>${repNameLink(r.d.rep)}</div><div class="t"><div class="bx ${tn}" style="width:${Math.max(r.a/mx*100,.5)}%"></div>${r.t?`<s style="left:${r.t/mx*100}%"></s>`:''}<span style="left:${Math.min(Math.max(r.a,r.t)/mx*100+1,86)}%">${fmt(m.u,r.a)}</span></div><i class="p ${tn}">${pc(r.p,0)}</i></div>`});
+  s+=`</div></div><div class="ov-box"><div class="ov-hd">Bảng chi tiết · ${E(m.label)}</div><div style="overflow-x:auto"><table class="ov-tb"><thead><tr><th>#</th><th class="l">Đại diện KD</th><th>Chỉ tiêu</th><th>Thực hiện</th><th>% đạt</th><th>Còn thiếu</th>${m.g==='n'?'<th>Đóng góp tỷ trọng</th>':''}<th class="l">Trạng thái</th></tr></thead><tbody>`;
+  list.forEach((r,i)=>{const tn=tone(r.p,pace),th=Math.max(r.t-r.a,0); s+=`<tr><td>${i+1}</td><td class="l">${repNameLink(r.d.rep)}</td><td>${fmt(m.u,r.t)}</td><td><b>${fmt(m.u,r.a)}</b></td><td><i class="p ${tn}">${pc(r.p,1)}</i></td><td>${th>0?'<span class="rd">'+fmt(m.u,th)+'</span>':'—'}</td>${m.g==='n'?`<td>${tot?pc(r.a/tot,1):'—'}</td>`:''}<td class="l">${r.p>=1?'Đạt chỉ tiêu':r.p>=pace?'Kịp tiến độ':'Chậm tiến độ'}</td></tr>`});
+  s+=`<tr class="tot"><td></td><td class="l">${E(DATA.meta.scopeLabel||'Team')}</td><td>${fmt(m.u,x.t)}</td><td>${fmt(m.u,x.a)}</td><td><i class="p ${tone(x.p,pace)}">${pc(x.p,1)}</i></td><td>${x.t>x.a?fmt(m.u,x.t-x.a):'—'}</td>${m.g==='n'?'<td>100%</td>':''}<td></td></tr></tbody></table></div>${m.reward?`<p class="ov-note">Mức thưởng trong file: ${E(m.reward)}</p>`:''}</div>`;
+  document.getElementById('ov-drill').innerHTML=s+matrix(rows,pace);
+  document.querySelectorAll('#ov-drill .ov-sort button').forEach(b=>b.addEventListener('click',()=>{SORT=b.dataset.s;drill(m,rows,pace)}));
+ }
+ renderOverview=function(){ if(window.__ovFull){window.__ovFull=false;} window.__ovRender(); };
+ window.__ovOld=OLD; try{ if(typeof state!=='undefined'&&state.view==='overview'&&typeof render==='function') render(); }catch(e){console.warn(e)}
+})();
+</script>
 </body>
 </html>
