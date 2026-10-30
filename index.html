@@ -3236,7 +3236,7 @@ function layoutReportSections(){
  }
 }
 
-function render(){ const focusedKey=sectionFocus?.key;closeSectionFocus(false);syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:renderOverview,review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso,salary:renderSalary,birthday:renderBirthday,le:renderLe,sun:renderSun,trk:renderTrk}[state.view])(); el('content').insertAdjacentHTML('afterbegin',ssScopeControls()+greeting()+dataCoverageNotice()+exportToolbar()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} el('content').insertAdjacentHTML('beforeend',reportGuide()); bindSsScope(); bindCommandLinks(); bindReviewLinks(); bindSortableTables(); layoutReportSections(); injectProgramLaunchpad(); decoratePanels(); bindProgramLaunchpad(); buildReportIndex(); scheduleNumberFit(); fitShotApply(); setTimeout(fitShotApply,400); if(focusedKey){const target=Array.from(document.querySelectorAll('[data-focus-section]')).find(node=>node.dataset.focusSection===focusedKey);if(target)openSectionFocus(target,target.querySelector('.section-focus-button'))} }
+function render(){ const focusedKey=sectionFocus?.key;closeSectionFocus(false);syncFilters(); el('pageTitle').textContent=titles[state.view]; el('updatedDate').textContent=`${DATA.meta.locked?'Dữ liệu tĩnh':'Cập nhật'} ${DATA.meta.updated}`; el('periodLabel').textContent=DATA.meta.periodLabel; el('monthFilter').value=state.month; document.title=`Dashboard KPI • ${DATA.meta.periodLabel}`; ({overview:function(){return renderOverview()},review:renderReview,bonus:renderBonus,monthly:renderMonthly,growth:renderGrowth,combo:renderCombo,mbs:renderMbs,display:renderDisplay,mcp:renderMcp,aso:renderAso,salary:renderSalary,birthday:renderBirthday,le:renderLe,sun:renderSun,trk:renderTrk}[state.view])(); el('content').insertAdjacentHTML('afterbegin',ssScopeControls()+greeting()+dataCoverageNotice()+exportToolbar()); el('content').dataset.view=state.view; if(state.view==='overview'){const strip=document.querySelector('.source-trust-strip');const foundation=document.querySelector('.foundation-panel');if(strip&&foundation)foundation.before(strip);} if(state.view==='monthly'){document.querySelector('.monthly-ward-panel').insertAdjacentHTML('beforebegin',monthlyAsoOverview(window.KPI_MONTHLY_DETAIL.periods.filter(m=>m<=state.month&&window.KPI_MONTHLY_DETAIL.sales.some(d=>d.month===m&&d.actual>0)))+monthlyProgramDetails());bindMonthlyProgramFilters();bindSubdivisionRange();const asoPicker=el('monthlyTrendAso');if(asoPicker)asoPicker.onchange=()=>{state.monthlyTrendAso=asoPicker.value;render();document.querySelector('.monthly-aso-overview')?.scrollIntoView({block:'start'})}} el('content').insertAdjacentHTML('beforeend',reportGuide()); bindSsScope(); bindCommandLinks(); bindReviewLinks(); bindSortableTables(); layoutReportSections(); injectProgramLaunchpad(); decoratePanels(); bindProgramLaunchpad(); buildReportIndex(); scheduleNumberFit(); fitShotApply(); setTimeout(fitShotApply,400); if(focusedKey){const target=Array.from(document.querySelectorAll('[data-focus-section]')).find(node=>node.dataset.focusSection===focusedKey);if(target)openSectionFocus(target,target.querySelector('.section-focus-button'))} }
 
 function switchMonth(month){
  if(!MONTH_DATA[month])return;
@@ -3949,6 +3949,93 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
  P.enter=enter;P.exit=exit;
  var host=document.querySelector('.header-actions');
  if(host&&!document.getElementById('presentToggle')){var b=document.createElement('button');b.id='presentToggle';b.type='button';b.className='focus-button';b.title='Trình chiếu từng mục toàn màn hình';b.textContent='▶ Trình chiếu';b.onclick=enter;var f=document.getElementById('focusToggle');f?f.after(b):host.prepend(b)}
+})();
+</script>
+
+
+
+
+
+
+<style id="kpi-ov-css">.ovx{--nv:hsl(222 70% 26%);--nv2:hsl(218 62% 44%);display:grid;gap:14px;color:hsl(222 30% 14%)}
+.ov-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px 28px;border-radius:18px;color:#fff;background:linear-gradient(120deg,hsl(222 72% 24%),hsl(200 78% 38%));box-shadow:0 8px 26px hsl(215 70% 30%/.30)}
+.ov-hero .ring{position:relative;width:140px;height:140px}.ov-hero .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800}
+.ov-hero h2{margin:0;font-size:14px;letter-spacing:.1em;text-transform:uppercase;opacity:.92;color:#fff}.ov-hero .big{font-size:44px;font-weight:800;line-height:1.1;margin:4px 0}.ov-hero .big span{font-size:20px;font-weight:600;opacity:.9}.ov-hero .sub{font-size:14px;opacity:.95}
+.ov-ban{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:14px;background:linear-gradient(90deg,var(--nv),var(--nv2));color:#fff;border-left:8px solid hsl(42 96% 50%)}
+.ov-ban b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--nv);font-size:15px}.ov-ban span{font-weight:800;letter-spacing:.07em;font-size:15px;flex:1}.ov-ban em{font-style:normal;font-size:12.5px;opacity:.92}
+.ov-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ov-gt{grid-column:1/-1;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:hsl(222 30% 28%);margin-top:4px}
+@media(max-width:1200px){.ov-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.ov-grid{grid-template-columns:1fr}.ov-hero{grid-template-columns:1fr;text-align:center}}
+.ov-k{all:unset;box-sizing:border-box;cursor:pointer;display:block;border-radius:16px;padding:12px 14px;border:1.5px solid hsl(var(--h) 60% 82%);border-top:5px solid hsl(var(--h) 70% 48%);background:linear-gradient(160deg,#fff,hsl(var(--h) 80% 95%));box-shadow:0 5px 14px hsl(var(--h) 60% 40%/.12);transition:transform .12s}
+.ov-k:hover{transform:translateY(-2px)}.ov-k.on{outline:3px solid hsl(var(--h) 75% 50%);outline-offset:1px}
+.ov-k .l{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:12.5px;font-weight:800;color:hsl(222 30% 20%);line-height:1.25}
+.ov-k .v{margin-top:6px;font-size:26px;font-weight:800;color:hsl(var(--h) 70% 36%);line-height:1.1}.ov-k .v small{font-size:13px;font-weight:700;color:hsl(222 12% 46%)}
+.ov-k .bar{position:relative;height:7px;border-radius:9px;background:hsl(222 20% 90%);margin-top:8px;overflow:visible}.ov-k .bar u{display:block;height:100%;border-radius:9px;background:hsl(160 62% 42%)}.ov-k .bar u.w{background:hsl(40 95% 50%)}.ov-k .bar u.b{background:hsl(355 74% 52%)}.ov-k .bar s{position:absolute;top:-3px;width:2px;height:13px;background:hsl(222 30% 20%)}
+.ov-k .rw{font-size:11.5px;color:hsl(222 12% 38%);margin-top:7px;line-height:1.35}
+i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;font-weight:800;font-size:12px;color:#fff;background:hsl(160 62% 38%);white-space:nowrap}i.p.w{background:hsl(40 95% 44%)}i.p.b{background:hsl(355 74% 48%)}
+#ov-drill{display:grid;gap:14px}.ov-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}@media(max-width:1000px){.ov-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ov-st{border-radius:16px;padding:12px 16px;border:1.5px solid hsl(var(--h) 60% 80%);border-top:5px solid hsl(var(--h) 70% 48%);background:linear-gradient(160deg,#fff,hsl(var(--h) 80% 95%))}
+.ov-st .l{font-size:13px;font-weight:800;color:hsl(222 30% 20%)}.ov-st .v b{font-size:38px;font-weight:800;color:hsl(var(--h) 70% 38%);letter-spacing:-.02em}.ov-st .v small{font-size:16px;font-weight:700;color:hsl(222 12% 46%)}.ov-st .s{font-size:12.5px;color:hsl(222 14% 36%);margin-top:4px}
+.ov-box{background:#fff;border:1px solid hsl(222 25% 88%);border-radius:16px;padding:14px 16px;box-shadow:0 4px 14px hsl(222 40% 30%/.07)}
+.ov-hd{text-align:center;font-weight:800;font-size:14.5px;color:#fff;padding:9px 14px;border-radius:10px;background:linear-gradient(90deg,var(--nv),hsl(222 66% 36%));border-left:6px solid hsl(42 96% 50%);border-right:6px solid hsl(42 96% 50%);margin-bottom:10px}
+.ov-sort{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-size:12.5px;color:hsl(222 12% 40%);align-items:center}.ov-sort button,.ov-full button{font:inherit;font-weight:700;font-size:12.5px;padding:5px 12px;border-radius:99px;border:1.5px solid hsl(222 30% 82%);background:hsl(222 40% 98%);color:hsl(222 40% 24%);cursor:pointer}.ov-sort button.on{background:var(--nv);color:#fff;border-color:transparent}
+.ov-r{display:grid;grid-template-columns:230px 1fr 56px;gap:10px;align-items:center;padding:4px 0}@media(max-width:700px){.ov-r{grid-template-columns:140px 1fr 50px}}
+.ov-r .n{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}.ov-r .n b{width:22px;color:hsl(222 12% 50%);font-weight:700}.ov-r .t{position:relative;height:22px;background:hsl(222 25% 95%);border-radius:7px}
+.ov-r .bx{position:absolute;left:0;top:3px;height:16px;border-radius:5px;background:hsl(160 62% 40%)}.ov-r .bx.w{background:hsl(40 95% 50%)}.ov-r .bx.b{background:hsl(355 74% 52%)}.ov-r s{position:absolute;top:0;width:3px;height:22px;border-radius:2px;background:hsl(24 92% 52%)}.ov-r .t span{position:absolute;top:3px;font-size:12px;font-weight:800}
+.ov-tb{width:100%;border-collapse:collapse;font-size:13.5px;min-width:700px}.ov-tb th{text-align:right;padding:9px 10px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--nv);white-space:nowrap}.ov-tb td{text-align:right;padding:8px 10px;border-bottom:1px solid hsl(222 25% 91%);white-space:nowrap;font-variant-numeric:tabular-nums}.ov-tb .l{text-align:left}.ov-tb tbody tr:nth-child(even){background:hsl(222 40% 98%)}.ov-tb tr.tot td{font-weight:800;background:hsl(222 60% 95%);border-top:2px solid var(--nv2)}.ov-tb .rd{color:hsl(355 74% 44%);font-weight:700}
+.ov-note{font-size:12.5px;color:hsl(222 12% 40%);margin:8px 2px 0}.ov-full{text-align:center;margin:6px 0}
+</style>
+<script id="kpi-ov-js">(function(){
+ if(window.__ovInstalled||typeof renderOverview!=='function')return; window.__ovInstalled=true;
+ const OLD=renderOverview; let SEL=0, SORT='pct';
+ const vi=(v,d=0)=>Number(v).toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});
+ const pc=(v,d=1)=>Number.isFinite(v)?vi(v*100,d)+'%':'—';
+ const tr=(v)=>Math.abs(v)>=1e9?vi(v/1e9,2)+' tỷ':vi(v/1e6,Math.abs(v)<1e7&&v!==0?1:0)+' tr';
+ const E=(s)=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const fmt=(u,v)=>u==='money'?tr(v):u==='decimal'?vi(v,2):vi(v,Math.abs(v)<100&&v%1?1:0);
+ const sum=(rows,k)=>rows.reduce((s,d)=>s+(Number(d[k])||0),0);
+ function defs(){
+  const fm=(DATA.meta.foundationMetrics||[]).map((m,i)=>({g:'f',label:m.label,tk:m.targetKey,ak:m.actualKey,tv:m.targetValue,avg:m.aggregation==='average',u:m.unit||'number',reward:m.reward||'',h:[24,222,160,42,262,195,355][i%7]}));
+  const NG=[['Seasoning','Seasoning',24],['Convenience Foods','Convenience',222],['Home Care','HomeCare',160],['Refreshment Drinks','Refreshment',195],['Processed Meats','Processed',355],['Nutrition','Nutrition',262],['Coffee','Coffee',28],['Rice base','Rice',200],['Beer','Beer',42]].map(([l,k,h])=>({g:'n',label:l,tk:'sellout'+k+'Target',ak:'sellout'+k+'Actual',u:'money',reward:'',h}));
+  return fm.concat(NG);
+ }
+ function agg(m,rows){const t=m.tv!=null?m.tv:sum(rows,m.tk); const a=m.avg?sum(rows,m.ak)/(rows.length||1):sum(rows,m.ak); return {t,a,p:t?a/t:0}}
+ function rowv(m,d){const t=m.tv!=null?m.tv:(Number(d[m.tk])||0), a=Number(d[m.ak])||0; return {t,a,p:t?a/t:0}}
+ function tone(p,pace){return p>=1?'g':p>=pace?'w':'b'}
+ window.__ovRender=function(){
+  const rows=filtered(), D=defs().filter(m=>m.g==='f'||rows.some(d=>(Number(d[m.tk])||0)>0));
+  if(SEL>=D.length)SEL=0; const pace=(typeof paceTarget==='number'&&isFinite(paceTarget))?paceTarget:DATA.meta.elapsedDays/DATA.meta.workingDays;
+  const T=sum(rows,'target'),A=sum(rows,'actual'),P=T?A/T:0, gap=Math.max(T-A,0), R=58, C=2*Math.PI*R;
+  const nOk=rows.filter(d=>d.achievement>=pace).length;
+  let h=`<div class="ovx"><div class="ov-hero"><div class="ring"><svg viewBox="0 0 140 140" width="140" height="140"><circle cx="70" cy="70" r="${R}" fill="none" stroke="hsl(0 0% 100% / .3)" stroke-width="12"/><circle cx="70" cy="70" r="${R}" fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C*Math.min(P,1)} ${C}" transform="rotate(-90 70 70)"/></svg><b>${pc(P)}</b></div>
+   <div><h2>${E(DATA.meta.scopeLabel||'Team SS Pháp')} · ${E(DATA.meta.periodLabel||'')} · đã qua ${DATA.meta.elapsedDays}/${DATA.meta.workingDays} ngày</h2><div class="big">${tr(A)} <span>/ CT ${tr(T)}</span></div><div class="sub">${P>=pace?'Vượt':'Chậm'} tiến độ chuẩn ${pc(pace)} ${vi(Math.abs(P-pace)*100,1)} điểm · còn thiếu ${tr(gap)} · ${nOk}/${rows.length} ĐDKD kịp tiến độ</div></div></div>
+   <div class="ov-ban"><b>1</b><span>KPI NỀN TẢNG VÀ SELL OUT THEO NGÀNH</span><em>Bấm một KPI để xem từng ĐDKD</em></div><div class="ov-grid">`;
+  const grp=(g,ttl)=>{let s=`<div class="ov-gt">${ttl}</div>`; D.forEach((m,i)=>{if(m.g!==g)return; const x=agg(m,rows),tn=tone(x.p,pace); s+=`<button type="button" class="ov-k ${SEL===i?'on':''}" data-i="${i}" style="--h:${m.h}"><div class="l"><span>${E(m.label)}</span><i class="p ${tn}">${pc(x.p,0)}</i></div><div class="v">${fmt(m.u,x.a)}<small> / ${fmt(m.u,x.t)}</small></div><div class="bar"><u class="${tn}" style="width:${Math.min(x.p,1)*100}%"></u><s style="left:${Math.min(pace,1)*100}%"></s></div>${m.reward?`<div class="rw">◆ ${E(m.reward)}</div>`:`<div class="rw">${tn==='g'?'Đã đạt chỉ tiêu':'Còn thiếu '+fmt(m.u,Math.max(x.t-x.a,0))}</div>`}</button>`}); return s};
+  h+=grp('f','KPI nền tảng')+grp('n','Sell Out theo ngành hàng')+'</div><div id="ov-drill"></div></div>';
+  el('content').innerHTML=intro('Tổng quan KPI',`Nguồn ${E(DATA.meta.foundationSource||'KPI THÁNG')} · cập nhật ${E(DATA.meta.updated||'')}`,rows.length,'ĐDKD')+h+'<p class="ov-full"><button type="button" id="ov-old">Xem bản tổng quan đầy đủ (cũ)</button></p>';
+  document.querySelectorAll('.ov-k').forEach(b=>b.addEventListener('click',()=>{SEL=+b.dataset.i;window.__ovRender();document.getElementById('ov-drill').scrollIntoView({behavior:'smooth',block:'start'})}));
+  document.getElementById('ov-old').onclick=()=>{window.__ovFull=true;OLD()};
+  drill(D[SEL],rows,pace);
+ };
+ function drill(m,rows,pace){
+  const x=agg(m,rows), list=rows.map(d=>Object.assign({d},rowv(m,d))), tot=list.reduce((s,r)=>s+r.a,0), totT=list.reduce((s,r)=>s+r.t,0);
+  list.sort((a,b)=>SORT==='pct'?b.p-a.p:SORT==='act'?b.a-a.a:SORT==='gap'?(b.t-b.a)-(a.t-a.a):a.d.rep.localeCompare(b.d.rep));
+  const mx=Math.max(...list.flatMap(r=>[r.a,r.t]),1), nOk=list.filter(r=>r.p>=1).length, nPace=list.filter(r=>r.p>=pace).length;
+  const best=list.slice().sort((a,b)=>b.p-a.p)[0], worst=list.slice().sort((a,b)=>a.p-b.p)[0];
+  let s=`<div class="ov-ban"><b>2</b><span>${E(m.label.toUpperCase())} · THEO TỪNG ĐDKD</span><em>Team ${pc(x.p)} · ${nOk}/${list.length} ĐDKD đạt 100%</em></div>
+  <div class="ov-stats"><div class="ov-st" style="--h:${m.h}"><div class="l">Thực hiện</div><div class="v"><b>${fmt(m.u,x.a)}</b></div><div class="s">Chỉ tiêu <b>${fmt(m.u,x.t)}</b></div></div>
+   <div class="ov-st" style="--h:${tone(x.p,pace)==='g'?160:tone(x.p,pace)==='w'?42:355}"><div class="l">Tỷ lệ đạt</div><div class="v"><b>${pc(x.p)}</b></div><div class="s">Tiến độ chuẩn <b>${pc(pace)}</b> · ${x.p>=pace?'vượt':'chậm'} ${vi(Math.abs(x.p-pace)*100,1)} điểm</div></div>
+   <div class="ov-st" style="--h:222"><div class="l">ĐDKD kịp tiến độ</div><div class="v"><b>${nPace}</b><small> / ${list.length}</small></div><div class="s">Đạt 100%: <b>${nOk}</b></div></div>
+   <div class="ov-st" style="--h:262"><div class="l">Cao nhất / thấp nhất</div><div class="v" style="font-size:20px"><b>${E(best.d.rep.split(' ').slice(-2).join(' '))} ${pc(best.p,0)}</b></div><div class="s">Thấp: <b>${E(worst.d.rep.split(' ').slice(-2).join(' '))} ${pc(worst.p,0)}</b></div></div></div>
+  <div class="ov-box"><div class="ov-hd">Thực hiện so với chỉ tiêu từng ĐDKD (vạch cam: chỉ tiêu · nhãn tròn: % đạt)</div><div class="ov-sort">Sắp xếp: ${[['pct','% đạt'],['act','Thực hiện'],['gap','Còn thiếu'],['nm','Tên']].map(([k,t])=>`<button type="button" data-s="${k}" class="${SORT===k?'on':''}">${t}</button>`).join('')}</div><div class="ov-rows">`;
+  list.forEach((r,i)=>{const tn=tone(r.p,pace); s+=`<div class="ov-r"><div class="n"><b>${i+1}</b>${repNameLink(r.d.rep)}</div><div class="t"><div class="bx ${tn}" style="width:${Math.max(r.a/mx*100,.5)}%"></div>${r.t?`<s style="left:${r.t/mx*100}%"></s>`:''}<span style="left:${Math.min(Math.max(r.a,r.t)/mx*100+1,86)}%">${fmt(m.u,r.a)}</span></div><i class="p ${tn}">${pc(r.p,0)}</i></div>`});
+  s+=`</div></div><div class="ov-box"><div class="ov-hd">Bảng chi tiết · ${E(m.label)}</div><div style="overflow-x:auto"><table class="ov-tb"><thead><tr><th>#</th><th class="l">Đại diện KD</th><th>Chỉ tiêu</th><th>Thực hiện</th><th>% đạt</th><th>Còn thiếu</th>${m.g==='n'?'<th>Đóng góp tỷ trọng</th>':''}<th class="l">Trạng thái</th></tr></thead><tbody>`;
+  list.forEach((r,i)=>{const tn=tone(r.p,pace),th=Math.max(r.t-r.a,0); s+=`<tr><td>${i+1}</td><td class="l">${repNameLink(r.d.rep)}</td><td>${fmt(m.u,r.t)}</td><td><b>${fmt(m.u,r.a)}</b></td><td><i class="p ${tn}">${pc(r.p,1)}</i></td><td>${th>0?'<span class="rd">'+fmt(m.u,th)+'</span>':'—'}</td>${m.g==='n'?`<td>${tot?pc(r.a/tot,1):'—'}</td>`:''}<td class="l">${r.p>=1?'Đạt chỉ tiêu':r.p>=pace?'Kịp tiến độ':'Chậm tiến độ'}</td></tr>`});
+  s+=`<tr class="tot"><td></td><td class="l">${E(DATA.meta.scopeLabel||'Team')}</td><td>${fmt(m.u,x.t)}</td><td>${fmt(m.u,x.a)}</td><td><i class="p ${tone(x.p,pace)}">${pc(x.p,1)}</i></td><td>${x.t>x.a?fmt(m.u,x.t-x.a):'—'}</td>${m.g==='n'?'<td>100%</td>':''}<td></td></tr></tbody></table></div>${m.reward?`<p class="ov-note">Mức thưởng trong file: ${E(m.reward)}</p>`:''}</div>`;
+  document.getElementById('ov-drill').innerHTML=s;
+  document.querySelectorAll('#ov-drill .ov-sort button').forEach(b=>b.addEventListener('click',()=>{SORT=b.dataset.s;drill(m,rows,pace)}));
+ }
+ renderOverview=function(){ if(window.__ovFull){window.__ovFull=false;} window.__ovRender(); };
+ window.__ovOld=OLD; try{ if(typeof state!=='undefined'&&state.view==='overview'&&typeof render==='function') render(); }catch(e){console.warn(e)}
 })();
 </script>
 </body>
