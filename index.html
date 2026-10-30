@@ -3957,6 +3957,8 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
 
 
 
+
+
 <style id="kpi-ov-css">.ovx{--nv:hsl(222 70% 26%);--nv2:hsl(218 62% 44%);display:grid;gap:14px;color:hsl(222 30% 14%)}
 .ov-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px 28px;border-radius:18px;color:#fff;background:linear-gradient(120deg,hsl(222 72% 24%),hsl(200 78% 38%));box-shadow:0 8px 26px hsl(215 70% 30%/.30)}
 .ov-hero .ring{position:relative;width:140px;height:140px}.ov-hero .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800}
@@ -3996,6 +3998,7 @@ i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;fo
  function defs(){
   const fm=(DATA.meta.foundationMetrics||[]).map((m,i)=>({g:'f',label:m.label,tk:m.targetKey,ak:m.actualKey,tv:m.targetValue,avg:m.aggregation==='average',u:m.unit||'number',reward:m.reward||'',h:[24,222,160,42,262,195,355][i%7]}));
   const NG=[['Seasoning','Seasoning',24],['Convenience Foods','Convenience',222],['Home Care','HomeCare',160],['Refreshment Drinks','Refreshment',195],['Processed Meats','Processed',355],['Nutrition','Nutrition',262],['Coffee','Coffee',28],['Rice base','Rice',200],['Beer','Beer',42]].map(([l,k,h])=>({g:'n',label:l,tk:'sellout'+k+'Target',ak:'sellout'+k+'Actual',u:'money',reward:'',h}));
+  const lp={g:'f',label:'LPPC nền tảng • cột BY',tk:null,ak:'foundationLppc',tv:(typeof LPPC_TARGET==='number'?LPPC_TARGET:5),avg:true,u:'decimal',reward:'Line/PC nền tảng (BW–BY) • mục tiêu vận hành '+(typeof LPPC_TARGET==='number'?LPPC_TARGET:5).toString().replace('.',','),h:300}; const at=fm.findIndex(m=>m.ak==='lppcMeat'); fm.splice(at<0?fm.length:at+1,0,lp);
   return fm.concat(NG);
  }
  function agg(m,rows){const t=m.tv!=null?m.tv:sum(rows,m.tk); const a=m.avg?sum(rows,m.ak)/(rows.length||1):sum(rows,m.ak); return {t,a,p:t?a/t:0}}
