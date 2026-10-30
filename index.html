@@ -3973,6 +3973,11 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
 
 
 
+
+
+
+
+<script id="kpi-diag">window.KPI_DIAG={"Nguyễn Công Minh": {"o9": 237, "o10": 235}, "Thái Đức Cường": {"o9": 285, "o10": 270}, "Nguyễn Vũ Thắng": {"o9": 308, "o10": 283}, "Trần Ngọc Tuấn": {"o9": 340, "o10": 298}, "Trần Hữu Phi": {"o9": 339, "o10": 330}, "Nguyễn Văn Thuận": {"o9": 434, "o10": 429}, "Lê Hữu Cần": {"o9": 351, "o10": 341}, "Trịnh Đình Sơn": {"o9": 232, "o10": 258}, "Bùi Thị Thu Trang": {"o9": 233, "o10": 253}, "Trần Bá Hải": {"o9": 194, "o10": 182}, "Nguyễn Thị Trang": {"o9": 317, "o10": 323}, "Lê Văn Tịnh": {"o9": 369, "o10": 388}, "10KF1131-CDGT-SMVL": {"o9": 1, "o10": 0}, "Nguyễn Thị Kim Thúy": {"o9": 348, "o10": 358}, "Nguyễn Thị Thanh Thúy": {"o9": 293, "o10": 245}, "Vacant đang tuyển 4772": {"o9": 187, "o10": 244}, "Hồ Thị Lương": {"o9": 271, "o10": 274}, "Hồ Thị My My": {"o9": 256, "o10": 257}, "Mai Xuân Dậu": {"o9": 222, "o10": 221}, "Dương Thị Thúy Hằng": {"o9": 242, "o10": 216}, "Lê Hùng Cường": {"o9": 325, "o10": 336}, "Ngô Đức Nam": {"o9": 318, "o10": 313}, "Võ Thành Hưng": {"o9": 253, "o10": 250}, "Dương Tấn Hải": {"o9": 255, "o10": 256}, "Cao Xuân Tùng": {"o9": 382, "o10": 343}, "Nguyễn Thị Thương": {"o9": 246, "o10": 242}, "Huỳnh Minh Phước": {"o9": 186, "o10": 188}, "Phạm Thị Huyền Trang": {"o9": 317, "o10": 331}, "Võ Văn Dũng": {"o9": 353, "o10": 334}, "Lê Đặng Minh": {"o9": 231, "o10": 219}, "Trần Văn Công": {"o9": 269, "o10": 245}, "Nguyễn Thị Hạnh": {"o9": 298, "o10": 298}, "Đoàn Hữu Phước": {"o9": 315, "o10": 311}, "NVBH Vãng lai CDGT": {"o9": 0, "o10": 4}};</script>
 <style id="kpi-ov-css">.ovx{--nv:hsl(222 70% 26%);--nv2:hsl(218 62% 44%);display:grid;gap:14px;color:hsl(222 30% 14%)}
 .ov-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px 28px;border-radius:18px;color:#fff;background:linear-gradient(120deg,hsl(222 72% 24%),hsl(200 78% 38%));box-shadow:0 8px 26px hsl(215 70% 30%/.30)}
 .ov-hero .ring{position:relative;width:140px;height:140px}.ov-hero .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800}
@@ -4048,27 +4053,27 @@ i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;fo
   II:{n:'(II) Nhóm Tôn Ngộ Không',sub:'Năng lực CAO · Động lực THẤP',c:'hsl(350 66% 28%)',b:['Đặt câu hỏi để hiểu tâm tư, mong muốn, động lực','Lắng nghe để xây dựng an toàn, tin tưởng','Có sự thay đổi phù hợp để giúp trở thành Đường Tăng hoặc Sa Tăng trong những trách nhiệm mới']},
   III:{n:'(III) Nhóm Sa Tăng',sub:'Năng lực THẤP · Động lực CAO',c:'hsl(30 14% 40%)',b:['Ưu tiên mentoring, training nâng cao Năng lực','Có thể để nhóm Đường Tăng hỗ trợ','Lắng nghe để hiểu đúng và duy trì Động lực']},
   IV:{n:'(IV) Nhóm Trư Bát Giới',sub:'Năng lực THẤP · Động lực THẤP',c:'hsl(218 30% 24%)',b:['Trao đổi, lắng nghe để hiểu tâm tư, động lực','Phản hồi thẳng thắn chân thành, cùng lên kế hoạch thay đổi nếu sẵn sàng. Ưu tiên giải quyết Động lực trước','Có hành động dứt khoát nếu bắt đầu ảnh hưởng tới đội ngũ']}};
- function rk(vals){const ix=vals.map((v,i)=>[v,i]).filter(x=>Number.isFinite(x[0])).sort((a,b)=>a[0]-b[0]), n=ix.length, o=vals.map(()=>NaN); ix.forEach((x,r)=>{o[x[1]]=n>1?r/(n-1)*100:50}); return o}
- function mean(a){const v=a.filter(Number.isFinite); return v.length?v.reduce((s,x)=>s+x,0)/v.length:NaN}
- function median(a){const v=a.slice().sort((x,y)=>x-y), m=v.length>>1; return v.length%2?v[m]:(v[m-1]+v[m])/2}
+
+ function rankArr(v){const s=v.map((x,i)=>[x,i]).sort((p,q)=>p[0]-q[0]),n=s.length,o=[]; s.forEach((x,i)=>{o[x[1]]=n>1?i/(n-1)*100:50}); return o}
+ function med(a){const s=a.slice().sort((x,y)=>x-y),n=s.length; return n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):50}
  function matrix(rows,pace){
-  const M=DATA.meta, frac=(M.elapsedDays&&M.workingDays)?M.elapsedDays/M.workingDays:pace, sal=(window.KPI_MONTHLY_DETAIL&&window.KPI_MONTHLY_DETAIL.sales)||[], pm=(M.periodKey||'2026-10'), prev=(function(){const [y,m]=pm.split('-').map(Number); return m===1?(y-1)+'-12':y+'-'+String(m-1).padStart(2,'0')})();
-  const t9=r=>sal.filter(x=>x.month===prev&&x.rep===r.rep).reduce((q,x)=>q+(Number(x.actual)||0),0);
-  const L=rows.map(r=>({r,lppc:Number(r.lppc)||NaN,vpo:(r.foundationPc>0?r.actual/r.foundationPc:NaN),pct:(Number(r.achievement)||0)/frac,pcm:(r.mcpTotal>0?r.foundationPc/r.mcpTotal:NaN),asm:(r.mcpTotal>0?r.activeActual/r.mcpTotal:NaN),gr:(t9(r)>0?(r.actual/frac)/t9(r)-1:NaN)}));
-  if(L.length<4)return '<div class="ov-box"><p class="ov-note">Cần chọn từ 4 ĐDKD trở lên (bỏ lọc ĐDKD) để dựng ma trận.</p></div>';
-  const a=rk(L.map(x=>x.lppc)),b=rk(L.map(x=>x.vpo)),c=rk(L.map(x=>x.pct)),d=rk(L.map(x=>x.pcm)),e=rk(L.map(x=>x.asm)),f=rk(L.map(x=>x.gr));
-  L.forEach((x,i)=>{x.nl=mean([a[i],b[i],c[i]]);x.dl=mean([d[i],e[i],f[i]])});
-  const mN=median(L.map(x=>x.nl)),mD=median(L.map(x=>x.dl)), G={I:[],II:[],III:[],IV:[]};
-  L.forEach(x=>{const hn=x.nl>=mN,hd=x.dl>=mD; x.q=hn?(hd?'I':'II'):(hd?'III':'IV'); G[x.q].push(x)});
-  const nm=r=>r.rep;
-  const chip=x=>`<span class="mx-c" title="LPPC ${vi(x.lppc,2)} · VPO ${tr(x.vpo)} · %TH/tiến độ ${pc(x.pct,0)} · PC/MCP ${vi(x.pcm,2)} · ASO/MCP ${pc(x.asm,0)} · DS dự kiến vs kỳ trước ${Number.isFinite(x.gr)?pc(x.gr,0):'—'}"><b>${E(nm(x.r))}</b><i>NL ${vi(x.nl,0)} · ĐL ${vi(x.dl,0)}</i></span>`;
+  const M=DATA.meta, frac=(M.elapsedDays&&M.workingDays)?M.elapsedDays/M.workingDays:pace, DG=window.KPI_DIAG||{}, mcp=DATA.mcp||[], pm=(M.periodKey||'2026-10'), pL='T'+(Number(pm.slice(5))===1?12:Number(pm.slice(5))-1), cL='T'+Number(pm.slice(5));
+  if(rows.length<4)return '<div class="ov-box"><p class="ov-note">Cần chọn từ 4 ĐDKD trở lên (bỏ lọc ĐDKD) để dựng ma trận.</p></div>';
+  const fq=x=>{const m=/F(\d+)/.exec(x.freq||''); return m?Number(m[1]):0};
+  const R=rows.map(r=>{const pcs=Number(r.foundationPc)||0, calls=mcp.filter(x=>x.rep===r.rep).reduce((s,x)=>s+fq(x),0)*frac, dg=DG[r.rep]||{};
+   return {r,lp:Number(r.lppc)||0,vo:pcs?r.actual/pcs:0,pp:frac?(Number(r.achievement)||0)/frac:0,call:calls?pcs/calls:0,aso:r.mcpTotal?r.activeActual/r.mcpTotal:0,gr:dg.o9?(dg.o10/frac)/dg.o9-1:0}});
+  ['lp','vo','pp','call','aso','gr'].forEach(k=>{const rk=rankArr(R.map(x=>x[k])); R.forEach((x,i)=>x['r_'+k]=rk[i])});
+  R.forEach(x=>{x.nl=Math.round((x.r_lp+x.r_vo+x.r_pp)/3); x.dl=Math.round((x.r_call+x.r_aso+x.r_gr)/3)});
+  const mN=med(R.map(x=>x.nl)),mD=med(R.map(x=>x.dl)), G={I:[],II:[],III:[],IV:[]};
+  R.forEach(x=>{x.q=x.nl>=mN?(x.dl>=mD?'I':'II'):(x.dl>=mD?'III':'IV'); G[x.q].push(x)});
+  const chip=x=>`<span class="mx-c" title="LPPC ${vi(x.lp,2)} · VPO ${vi(x.vo/1e6,2)} tr/đơn · %TH/tiến độ ${pc(x.pp,0)} · PC/Call ${vi(x.call,2)} · ASO/MCP ${pc(x.aso,0)} · số đơn ${cL} dự kiến vs ${pL}: ${(x.gr>=0?'+':'')+vi(x.gr*100,1)}%"><b>${E(x.r.rep)}</b><i>NL ${x.nl} · ĐL ${x.dl}</i></span>`;
   const box=q=>`<div class="mx-q" style="--c:${QD[q].c}"><h4>${QD[q].n}<em>${G[q].length} ĐDKD</em></h4><div class="s">${QD[q].sub}</div><div class="mx-ch">${G[q].sort((x,y)=>y.nl+y.dl-x.nl-x.dl).map(chip).join('')||'<span class="ov-note">Không có ĐDKD</span>'}</div><ul>${QD[q].b.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
   return `<div class="ov-ban"><b>3</b><span>MA TRẬN CHẨN ĐOÁN</span><em>Phân rổ để chọn cách dẫn dắt – không dán nhãn con người</em></div>
-  <div class="ov-box"><div class="ov-hd">Ma trận chẩn đoán: 4 kiểu Đại diện kinh doanh · Năng lực × Động lực</div>
+  <div class="ov-box"><div class="ov-hd">Ma trận chẩn đoán: 4 kiểu Đại diện kinh doanh · phân rổ để chọn cách dẫn dắt — không dán nhãn con người</div>
   <div class="mx-sum">${['II','I','III','IV'].map(q=>`<div style="--c:${QD[q].c}"><b>${QD[q].n} · ${G[q].length}</b><span>${QD[q].sub}</span></div>`).join('')}</div>
   <div class="mx-wrap"><div class="mx-y"><span>Cao</span><b>NĂNG LỰC</b><span>Thấp</span></div><div class="mx-g">${box('II')}${box('I')}${box('IV')}${box('III')}</div></div>
   <div class="mx-x"><span>Thấp</span><b>ĐỘNG LỰC</b><span>Cao</span></div>
-  <p class="ov-note"><b>Năng lực (NL)</b> = điểm xếp hạng trung bình (0–100) trong ${L.length} ĐDKD của LPPC Total, VPO (DS/số đơn PC nền tảng) và %TH so với tiến độ — phản ánh chất lượng mỗi lần bán. <b>Động lực (ĐL)</b> = điểm xếp hạng của PC/MCP, ASO/MCP và mức tăng DS dự kiến T${Number(pm.slice(5))} so với tháng trước — phản ánh độ chăm chỉ, kỷ luật tuyến. Ranh giới Cao/Thấp là trung vị của ${L.length} ĐDKD (NL ${vi(mN,0)} · ĐL ${vi(mD,0)}). Dữ liệu đến ${E(M.updated||'')} (${M.elapsedDays}/${M.workingDays} ngày). Vị trí chỉ để gợi ý cách trò chuyện, quản lý cần kết hợp quan sát thực tế; rê chuột vào tên để xem chỉ số gốc.</p></div>`;
+  <p class="ov-note" style="color:hsl(222 60% 34%)"><b>Năng lực (NL)</b> = điểm xếp hạng trung bình trong ${R.length} ĐDKD của LPPC Total, VPO (giá trị/đơn) và %TH chỉ tiêu so với tiến độ — phản ánh <i>chất lượng</i> mỗi lần bán. <b>Động lực (ĐL)</b> = điểm xếp hạng trung bình của PC/Call, ASO/MCP và mức tăng số đơn ${cL} (dự kiến) so với ${pL} — phản ánh <i>độ chăm chỉ, kỷ luật tuyến</i>. Điểm 0–100, ranh giới Cao/Thấp là mức giữa của ${R.length} ĐDKD (NL ${mN} · ĐL ${mD}). Số liệu chỉ là gợi ý để chọn cách trò chuyện — quản lý cần kết hợp quan sát thực tế trên tuyến. Số liệu đến ${E(M.updated||'')} (${M.elapsedDays}/${M.workingDays} ngày) – vị trí có thể đổi đến cuối tháng. Số call tạm tính theo tần suất ghé trong MCP hiện tại (F4/F8…) × tiến độ ngày công.</p></div>`;
  }
  function drill(m,rows,pace){
   const x=agg(m,rows), list=rows.map(d=>Object.assign({d},rowv(m,d))), tot=list.reduce((s,r)=>s+r.a,0), totT=list.reduce((s,r)=>s+r.t,0);
