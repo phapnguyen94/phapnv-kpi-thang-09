@@ -3959,6 +3959,20 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style id="kpi-ov-css">.ovx{--nv:hsl(222 70% 26%);--nv2:hsl(218 62% 44%);display:grid;gap:14px;color:hsl(222 30% 14%)}
 .ov-hero{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px 28px;border-radius:18px;color:#fff;background:linear-gradient(120deg,hsl(222 72% 24%),hsl(200 78% 38%));box-shadow:0 8px 26px hsl(215 70% 30%/.30)}
 .ov-hero .ring{position:relative;width:140px;height:140px}.ov-hero .ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:800}
@@ -3985,6 +3999,15 @@ i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;fo
 .ov-r .bx{position:absolute;left:0;top:3px;height:16px;border-radius:5px;background:hsl(160 62% 40%)}.ov-r .bx.w{background:hsl(40 95% 50%)}.ov-r .bx.b{background:hsl(355 74% 52%)}.ov-r s{position:absolute;top:0;width:3px;height:22px;border-radius:2px;background:hsl(24 92% 52%)}.ov-r .t span{position:absolute;top:3px;font-size:12px;font-weight:800}
 .ov-tb{width:100%;border-collapse:collapse;font-size:13.5px;min-width:700px}.ov-tb th{text-align:right;padding:9px 10px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--nv);white-space:nowrap}.ov-tb td{text-align:right;padding:8px 10px;border-bottom:1px solid hsl(222 25% 91%);white-space:nowrap;font-variant-numeric:tabular-nums}.ov-tb .l{text-align:left}.ov-tb tbody tr:nth-child(even){background:hsl(222 40% 98%)}.ov-tb tr.tot td{font-weight:800;background:hsl(222 60% 95%);border-top:2px solid var(--nv2)}.ov-tb .rd{color:hsl(355 74% 44%);font-weight:700}
 .ov-note{font-size:12.5px;color:hsl(222 12% 40%);margin:8px 2px 0}.ov-full{text-align:center;margin:6px 0}
+
+.mx-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.mx-sum div{background:var(--c);color:#fff;border-radius:12px;padding:10px 12px;text-align:center}.mx-sum b{display:block;font-size:14px}.mx-sum span{font-size:12px;opacity:.9}
+.mx-wrap{display:grid;grid-template-columns:34px 1fr;gap:8px}.mx-y{display:flex;flex-direction:column;justify-content:space-between;align-items:center;font-size:11px;color:hsl(222 12% 42%)}.mx-y b,.mx-x b{letter-spacing:.14em;font-size:12px;color:var(--nv)}.mx-y b{writing-mode:vertical-rl;transform:rotate(180deg)}
+.mx-g{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mx-q{background:var(--c);color:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 6px 16px hsl(222 40% 20%/.18)}
+.mx-q h4{margin:0;text-align:center;font-size:17px;color:#fff;display:flex;gap:8px;justify-content:center;align-items:center}.mx-q h4 em{font-style:normal;font-size:11px;background:hsl(0 0% 100%/.25);padding:2px 8px;border-radius:99px}.mx-q .s{text-align:center;font-size:12.5px;opacity:.9;margin:4px 0 10px}
+.mx-ch{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}.mx-c{background:hsl(0 0% 96%);color:hsl(222 30% 16%);border-radius:8px;padding:4px 9px;text-align:center;line-height:1.25}.mx-c b{display:block;font-size:12.5px}.mx-c i{font-style:normal;font-size:11px;color:hsl(222 12% 40%)}
+.mx-q ul{margin:0;padding:10px 0 0 18px;border-top:1px solid hsl(0 0% 100%/.25);font-size:12.5px;line-height:1.5}
+.mx-x{display:grid;grid-template-columns:34px 1fr 1fr;margin:6px 0 4px;font-size:11px;color:hsl(222 12% 42%)}.mx-x b{text-align:center;grid-column:2/3}.mx-x span:last-child{text-align:right}
+@media(max-width:800px){.mx-g{grid-template-columns:1fr}.mx-sum{grid-template-columns:1fr 1fr}}
 </style>
 <script id="kpi-ov-js">(function(){
  if(window.__ovInstalled||typeof renderOverview!=='function')return; window.__ovInstalled=true;
@@ -4019,6 +4042,34 @@ i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;fo
   document.getElementById('ov-old').onclick=()=>{window.__ovFull=true;OLD()};
   drill(D[SEL],rows,pace);
  };
+
+ const QD={
+  I:{n:'(I) Nhóm Đường Tăng',sub:'Năng lực CAO · Động lực CAO',c:'hsl(222 62% 26%)',b:['Coaching để trao quyền, thử thách phát triển','Có chiến lược đưa xuống Sa Tăng (về chuyên môn hoặc leadership) để liên tục học hỏi','Lắng nghe để kịp thời chăm sóc, duy trì gắn kết, hiểu đúng động lực']},
+  II:{n:'(II) Nhóm Tôn Ngộ Không',sub:'Năng lực CAO · Động lực THẤP',c:'hsl(350 66% 28%)',b:['Đặt câu hỏi để hiểu tâm tư, mong muốn, động lực','Lắng nghe để xây dựng an toàn, tin tưởng','Có sự thay đổi phù hợp để giúp trở thành Đường Tăng hoặc Sa Tăng trong những trách nhiệm mới']},
+  III:{n:'(III) Nhóm Sa Tăng',sub:'Năng lực THẤP · Động lực CAO',c:'hsl(30 14% 40%)',b:['Ưu tiên mentoring, training nâng cao Năng lực','Có thể để nhóm Đường Tăng hỗ trợ','Lắng nghe để hiểu đúng và duy trì Động lực']},
+  IV:{n:'(IV) Nhóm Trư Bát Giới',sub:'Năng lực THẤP · Động lực THẤP',c:'hsl(218 30% 24%)',b:['Trao đổi, lắng nghe để hiểu tâm tư, động lực','Phản hồi thẳng thắn chân thành, cùng lên kế hoạch thay đổi nếu sẵn sàng. Ưu tiên giải quyết Động lực trước','Có hành động dứt khoát nếu bắt đầu ảnh hưởng tới đội ngũ']}};
+ function rk(vals){const ix=vals.map((v,i)=>[v,i]).filter(x=>Number.isFinite(x[0])).sort((a,b)=>a[0]-b[0]), n=ix.length, o=vals.map(()=>NaN); ix.forEach((x,r)=>{o[x[1]]=n>1?r/(n-1)*100:50}); return o}
+ function mean(a){const v=a.filter(Number.isFinite); return v.length?v.reduce((s,x)=>s+x,0)/v.length:NaN}
+ function median(a){const v=a.slice().sort((x,y)=>x-y), m=v.length>>1; return v.length%2?v[m]:(v[m-1]+v[m])/2}
+ function matrix(rows,pace){
+  const M=DATA.meta, frac=(M.elapsedDays&&M.workingDays)?M.elapsedDays/M.workingDays:pace, sal=(window.KPI_MONTHLY_DETAIL&&window.KPI_MONTHLY_DETAIL.sales)||[], pm=(M.periodKey||'2026-10'), prev=(function(){const [y,m]=pm.split('-').map(Number); return m===1?(y-1)+'-12':y+'-'+String(m-1).padStart(2,'0')})();
+  const t9=r=>sal.filter(x=>x.month===prev&&x.rep===r.rep).reduce((q,x)=>q+(Number(x.actual)||0),0);
+  const L=rows.map(r=>({r,lppc:Number(r.lppc)||NaN,vpo:(r.foundationPc>0?r.actual/r.foundationPc:NaN),pct:(Number(r.achievement)||0)/frac,pcm:(r.mcpTotal>0?r.foundationPc/r.mcpTotal:NaN),asm:(r.mcpTotal>0?r.activeActual/r.mcpTotal:NaN),gr:(t9(r)>0?(r.actual/frac)/t9(r)-1:NaN)}));
+  if(L.length<4)return '<div class="ov-box"><p class="ov-note">Cần chọn từ 4 ĐDKD trở lên (bỏ lọc ĐDKD) để dựng ma trận.</p></div>';
+  const a=rk(L.map(x=>x.lppc)),b=rk(L.map(x=>x.vpo)),c=rk(L.map(x=>x.pct)),d=rk(L.map(x=>x.pcm)),e=rk(L.map(x=>x.asm)),f=rk(L.map(x=>x.gr));
+  L.forEach((x,i)=>{x.nl=mean([a[i],b[i],c[i]]);x.dl=mean([d[i],e[i],f[i]])});
+  const mN=median(L.map(x=>x.nl)),mD=median(L.map(x=>x.dl)), G={I:[],II:[],III:[],IV:[]};
+  L.forEach(x=>{const hn=x.nl>=mN,hd=x.dl>=mD; x.q=hn?(hd?'I':'II'):(hd?'III':'IV'); G[x.q].push(x)});
+  const nm=r=>r.rep;
+  const chip=x=>`<span class="mx-c" title="LPPC ${vi(x.lppc,2)} · VPO ${tr(x.vpo)} · %TH/tiến độ ${pc(x.pct,0)} · PC/MCP ${vi(x.pcm,2)} · ASO/MCP ${pc(x.asm,0)} · DS dự kiến vs kỳ trước ${Number.isFinite(x.gr)?pc(x.gr,0):'—'}"><b>${E(nm(x.r))}</b><i>NL ${vi(x.nl,0)} · ĐL ${vi(x.dl,0)}</i></span>`;
+  const box=q=>`<div class="mx-q" style="--c:${QD[q].c}"><h4>${QD[q].n}<em>${G[q].length} ĐDKD</em></h4><div class="s">${QD[q].sub}</div><div class="mx-ch">${G[q].sort((x,y)=>y.nl+y.dl-x.nl-x.dl).map(chip).join('')||'<span class="ov-note">Không có ĐDKD</span>'}</div><ul>${QD[q].b.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+  return `<div class="ov-ban"><b>3</b><span>MA TRẬN CHẨN ĐOÁN</span><em>Phân rổ để chọn cách dẫn dắt – không dán nhãn con người</em></div>
+  <div class="ov-box"><div class="ov-hd">Ma trận chẩn đoán: 4 kiểu Đại diện kinh doanh · Năng lực × Động lực</div>
+  <div class="mx-sum">${['II','I','III','IV'].map(q=>`<div style="--c:${QD[q].c}"><b>${QD[q].n} · ${G[q].length}</b><span>${QD[q].sub}</span></div>`).join('')}</div>
+  <div class="mx-wrap"><div class="mx-y"><span>Cao</span><b>NĂNG LỰC</b><span>Thấp</span></div><div class="mx-g">${box('II')}${box('I')}${box('IV')}${box('III')}</div></div>
+  <div class="mx-x"><span>Thấp</span><b>ĐỘNG LỰC</b><span>Cao</span></div>
+  <p class="ov-note"><b>Năng lực (NL)</b> = điểm xếp hạng trung bình (0–100) trong ${L.length} ĐDKD của LPPC Total, VPO (DS/số đơn PC nền tảng) và %TH so với tiến độ — phản ánh chất lượng mỗi lần bán. <b>Động lực (ĐL)</b> = điểm xếp hạng của PC/MCP, ASO/MCP và mức tăng DS dự kiến T${Number(pm.slice(5))} so với tháng trước — phản ánh độ chăm chỉ, kỷ luật tuyến. Ranh giới Cao/Thấp là trung vị của ${L.length} ĐDKD (NL ${vi(mN,0)} · ĐL ${vi(mD,0)}). Dữ liệu đến ${E(M.updated||'')} (${M.elapsedDays}/${M.workingDays} ngày). Vị trí chỉ để gợi ý cách trò chuyện, quản lý cần kết hợp quan sát thực tế; rê chuột vào tên để xem chỉ số gốc.</p></div>`;
+ }
  function drill(m,rows,pace){
   const x=agg(m,rows), list=rows.map(d=>Object.assign({d},rowv(m,d))), tot=list.reduce((s,r)=>s+r.a,0), totT=list.reduce((s,r)=>s+r.t,0);
   list.sort((a,b)=>SORT==='pct'?b.p-a.p:SORT==='act'?b.a-a.a:SORT==='gap'?(b.t-b.a)-(a.t-a.a):a.d.rep.localeCompare(b.d.rep));
@@ -4034,21 +4085,13 @@ i.p{font-style:normal;display:inline-block;padding:2px 9px;border-radius:99px;fo
   s+=`</div></div><div class="ov-box"><div class="ov-hd">Bảng chi tiết · ${E(m.label)}</div><div style="overflow-x:auto"><table class="ov-tb"><thead><tr><th>#</th><th class="l">Đại diện KD</th><th>Chỉ tiêu</th><th>Thực hiện</th><th>% đạt</th><th>Còn thiếu</th>${m.g==='n'?'<th>Đóng góp tỷ trọng</th>':''}<th class="l">Trạng thái</th></tr></thead><tbody>`;
   list.forEach((r,i)=>{const tn=tone(r.p,pace),th=Math.max(r.t-r.a,0); s+=`<tr><td>${i+1}</td><td class="l">${repNameLink(r.d.rep)}</td><td>${fmt(m.u,r.t)}</td><td><b>${fmt(m.u,r.a)}</b></td><td><i class="p ${tn}">${pc(r.p,1)}</i></td><td>${th>0?'<span class="rd">'+fmt(m.u,th)+'</span>':'—'}</td>${m.g==='n'?`<td>${tot?pc(r.a/tot,1):'—'}</td>`:''}<td class="l">${r.p>=1?'Đạt chỉ tiêu':r.p>=pace?'Kịp tiến độ':'Chậm tiến độ'}</td></tr>`});
   s+=`<tr class="tot"><td></td><td class="l">${E(DATA.meta.scopeLabel||'Team')}</td><td>${fmt(m.u,x.t)}</td><td>${fmt(m.u,x.a)}</td><td><i class="p ${tone(x.p,pace)}">${pc(x.p,1)}</i></td><td>${x.t>x.a?fmt(m.u,x.t-x.a):'—'}</td>${m.g==='n'?'<td>100%</td>':''}<td></td></tr></tbody></table></div>${m.reward?`<p class="ov-note">Mức thưởng trong file: ${E(m.reward)}</p>`:''}</div>`;
-  document.getElementById('ov-drill').innerHTML=s;
+  document.getElementById('ov-drill').innerHTML=s+matrix(rows,pace);
   document.querySelectorAll('#ov-drill .ov-sort button').forEach(b=>b.addEventListener('click',()=>{SORT=b.dataset.s;drill(m,rows,pace)}));
  }
  renderOverview=function(){ if(window.__ovFull){window.__ovFull=false;} window.__ovRender(); };
  window.__ovOld=OLD; try{ if(typeof state!=='undefined'&&state.view==='overview'&&typeof render==='function') render(); }catch(e){console.warn(e)}
 })();
 </script>
-
-
-
-
-
-
-
-
 <style id="ux-shared-css">/* ===== UX SHARED: đồng bộ SO + KPI ===== */
 :root{--ux-bg:#f3f6fb;--ux-card:#fff;--ux-line:hsl(220 25% 89%);--ux-nv:hsl(222 70% 24%);--ux-nv2:hsl(218 62% 42%);--ux-ac:hsl(24 95% 53%);--ux-ink:hsl(222 30% 14%);--ux-mut:hsl(222 12% 42%)}
 html body{background:var(--ux-bg)!important;color:var(--ux-ink)}
