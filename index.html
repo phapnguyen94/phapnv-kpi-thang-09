@@ -3622,7 +3622,7 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
 <script id="shot-js">(function(){
 if(window.__shotInit)return; window.__shotInit=true;
 var css='.shot-fab{position:fixed;right:72px;bottom:16px;z-index:99990;background:#163a7a;color:#fff;border:0;border-radius:999px;padding:11px 18px;font:600 14px/1 system-ui,Segoe UI,Roboto,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer;display:flex;gap:7px;align-items:center}.shot-fab:active{transform:scale(.97)}.shot-fab[disabled]{opacity:.7;cursor:wait}'+
-'.shot-md{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.72);display:flex;flex-direction:column;align-items:center;padding:12px;font-family:system-ui,Segoe UI,Roboto,sans-serif}.shot-md .bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px}.shot-md .bar button{border:0;border-radius:8px;padding:10px 16px;font:600 14px system-ui;cursor:pointer;background:#fff;color:#0f172a}.shot-md .bar .pri{background:#0068ff;color:#fff}.shot-md .bar .x{background:#e2e8f0}.shot-md .pv{flex:1;overflow:auto;width:100%;max-width:980px;background:#fff;border-radius:10px;padding:8px}.shot-md .pv img{display:block;width:100%;height:auto;margin:0 0 6px;border:1px solid #e2e8f0}.shot-md .hint{color:#e2e8f0;font-size:12.5px;margin-bottom:8px;text-align:center}';
+'.shot-md{position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.72);display:flex;flex-direction:column;align-items:center;padding:12px;font-family:system-ui,Segoe UI,Roboto,sans-serif}.shot-md .sbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px}.shot-md .sbar button{border:0;border-radius:8px;padding:10px 16px;font:600 14px system-ui;cursor:pointer;background:#fff;color:#0f172a}.shot-md .sbar .spri{background:#0068ff;color:#fff}.shot-md .sbar .sx{background:#e2e8f0}.shot-md .spv{flex:1;overflow:auto;width:100%;max-width:980px;background:#fff;border-radius:10px;padding:8px}.shot-md .spv img{display:block;width:100%;height:auto;margin:0 0 6px;border:1px solid #e2e8f0}.shot-md .shd,.shot-md .sbar,.shot-md .shint{flex-shrink:0}.shot-md .shd{color:#fff;font:700 15px system-ui;margin:2px 0 10px;width:100%;max-width:980px}.shot-md .sbar .spri{background:#5b4bdb;color:#fff}.shot-md .shint{color:#e2e8f0;font-size:12.5px;margin-bottom:8px;text-align:center}';
 var st=document.createElement('style');st.className='shot-ignore';st.textContent=css;document.head.appendChild(st);
 var b=document.createElement('button');b.className='shot-fab shot-ignore';b.type='button';b.innerHTML='<span style="font-size:17px">📷</span><span>Chụp ảnh</span>';document.body.appendChild(b);
 function fixC(v){return v.replace(/color\(\s*([a-z0-9-]+)\s+([^)]*)\)/g,function(m,sp,rest){var a=1,parts=rest.split('/');if(parts[1])a=parseFloat(parts[1])/(/%/.test(parts[1])?100:1);var n=parts[0].trim().split(/\s+/).map(function(x){return /%/.test(x)?parseFloat(x)/100:parseFloat(x)});if(n.length<3||n.some(isNaN))return 'rgba(128,128,128,'+a+')';return 'rgba('+n.slice(0,3).map(function(x){return Math.round(Math.max(0,Math.min(1,x))*255)}).join(',')+','+(isNaN(a)?1:a)+')'})}
@@ -3648,7 +3648,7 @@ async function run(tt,tl){
   var canvas=await html2canvas(t,{backgroundColor:bg(),scale:1,useCORS:true,logging:false,width:W,windowWidth:Math.max(W,document.documentElement.clientWidth),scrollX:0,scrollY:-window.scrollY,
     onclone:function(doc){
       var root=doc.querySelector('[data-shot="'+ID+'"]');
-      doc.querySelectorAll('.shot-ignore').forEach(function(e){e.remove()});
+      doc.querySelectorAll('.shot-ignore,.ss-scope-controls,.export-dashboard-bar,.section-focus-tools').forEach(function(e){if(!e.contains(root))e.remove()});
       var cs=doc.defaultView;
       root.style.width=W+'px';root.style.maxWidth='none';root.style.height='auto';root.style.maxHeight='none';root.style.overflow='visible';root.removeAttribute('hidden');if(root.tagName==='DETAILS')root.open=true;
       root.querySelectorAll('*').forEach(function(e){
@@ -3666,41 +3666,41 @@ async function run(tt,tl){
       root.insertBefore(bar,root.firstChild);
     }});
   t.removeAttribute('data-shot');
-  var H=canvas.height,Wd=canvas.width,k=Math.min(2,14000/H,16000/Wd);
-  /* render again at higher scale only when small enough */
-  var cv=canvas;
-  if(k>1.2){cv=document.createElement('canvas');cv.width=Math.round(Wd*Math.min(k,2));cv.height=Math.round(H*Math.min(k,2));var g=cv.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(canvas,0,0,cv.width,cv.height)}
-  var files=[],base=fname(title)+'_'+(new Date().toISOString().slice(5,10).replace('-',''));
-  var maxH=Math.round(cv.width*3);  /* mỗi ảnh tối đa ~ 1:3 để gửi Zalo không bị mờ */
-  var n=Math.max(1,Math.ceil(cv.height/maxH)),ph=Math.ceil(cv.height/n);
-  for(var p=0;p<n;p++){var h=Math.min(ph,cv.height-p*ph);var pc=document.createElement('canvas');pc.width=cv.width;pc.height=h;var pg=pc.getContext('2d');pg.fillStyle='#fff';pg.fillRect(0,0,pc.width,h);pg.drawImage(cv,0,p*ph,cv.width,h,0,0,cv.width,h);
-    var bl=await toBlob(pc);files.push(new File([bl],base+(n>1?'_'+(p+1)+'of'+n:'')+'.png',{type:'image/png'}))}
+  var H=canvas.height,Wd=canvas.width,k=Math.min(2,15000/H,15000/Wd),cv=canvas;
+  if(Math.abs(k-1)>0.05){cv=document.createElement('canvas');cv.width=Math.round(Wd*k);cv.height=Math.round(H*k);var g=cv.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(canvas,0,0,cv.width,cv.height)}
+  var base=fname(title)+'_'+(new Date().toISOString().slice(5,10).replace('-',''));
+  var bl=await toBlob(cv);var files=[new File([bl],base+'.png',{type:'image/png'})];
   return files;
 }
-function modal(files){
+function modal(files,copied,title){
+  var f=files[0],url=URL.createObjectURL(f);
   var m=document.createElement('div');m.className='shot-md shot-ignore';
-  var bar=document.createElement('div');bar.className='bar';
-  function btn(txt,cls,fn){var x=document.createElement('button');x.type='button';x.textContent=txt;if(cls)x.className=cls;x.onclick=fn;bar.appendChild(x)}
-  var urls=files.map(function(f){return URL.createObjectURL(f)});
+  var hd=document.createElement('div');hd.className='shd';hd.innerHTML='<span>🖼 Ảnh để gửi Zalo</span>';
+  var bar=document.createElement('div');bar.className='sbar';
+  var hint=document.createElement('div');hint.className='shint';
+  function btn(txt,cls,fn){var x=document.createElement('button');x.type='button';x.textContent=txt;if(cls)x.className=cls;x.onclick=fn;bar.appendChild(x);return x}
+  function copy(){if(!(navigator.clipboard&&window.ClipboardItem)){hint.textContent='Trình duyệt không cho sao chép — bấm Tải ảnh PNG.';return}navigator.clipboard.write([new ClipboardItem({'image/png':f})]).then(function(){hint.textContent='✅ Đã sao chép ảnh — mở Zalo, bấm vào ô chat rồi Dán (Ctrl+V).'}).catch(function(){hint.textContent='Không sao chép được — bấm Tải ảnh PNG.'})}
   var canShare=navigator.canShare&&navigator.canShare({files:files});
-  if(canShare)btn('📤 Gửi (Zalo…)','pri',function(){navigator.share({files:files,title:files[0].name}).catch(function(){})});
-  btn('⬇ Tải ảnh'+(files.length>1?' ('+files.length+')':''),canShare?'':'pri',function(){files.forEach(function(f,i){setTimeout(function(){var a=document.createElement('a');a.href=urls[i];a.download=f.name;document.body.appendChild(a);a.click();a.remove()},i*350)})});
-  if(navigator.clipboard&&window.ClipboardItem&&files.length===1)btn('📋 Sao chép','',function(){navigator.clipboard.write([new ClipboardItem({'image/png':files[0]})]).then(function(){hint.textContent='Đã sao chép — dán (Ctrl+V) vào Zalo.'}).catch(function(){hint.textContent='Trình duyệt không cho sao chép, hãy dùng Tải ảnh.'})});
-  btn('✕ Đóng','x',function(){m.remove();urls.forEach(URL.revokeObjectURL)});
-  var hint=document.createElement('div');hint.className='hint';hint.textContent=files.length>1?'Ảnh dài được chia '+files.length+' phần để gửi Zalo không bị mờ.':'Xem trước ảnh chụp toàn bộ mục này.';
-  var pv=document.createElement('div');pv.className='pv';urls.forEach(function(u){var i=new Image();i.src=u;pv.appendChild(i)});
-  m.appendChild(bar);m.appendChild(hint);m.appendChild(pv);document.body.appendChild(m);
+  if(canShare)btn('Chia sẻ (Zalo)','spri',function(){navigator.share({files:files,title:f.name}).catch(function(){})});
+  btn('Sao chép ảnh',canShare?'':'spri',copy);
+  btn('Tải ảnh PNG','',function(){var a=document.createElement('a');a.href=url;a.download=f.name;document.body.appendChild(a);a.click();a.remove()});
+  btn('✕ Đóng','sx',function(){m.remove();URL.revokeObjectURL(url)});
+  hint.textContent=copied?'✅ Đã sao chép ảnh — mở Zalo, bấm vào ô chat rồi Dán (Ctrl+V).':(canShare?'Bấm Chia sẻ rồi chọn Zalo và người cần gửi.':'Bấm Sao chép ảnh rồi dán vào Zalo.');
+  var pv=document.createElement('div');pv.className='spv';var i=new Image();i.src=url;pv.appendChild(i);
+  m.appendChild(hd);m.appendChild(bar);m.appendChild(hint);m.appendChild(pv);document.body.appendChild(m);
 }
 async function go(btn,tt,tl){
-  if(btn.disabled)return;btn.disabled=true;var old=btn.innerHTML;btn.innerHTML='<span>…</span>';
-  try{var f=await run(tt,tl);modal(f)}catch(e){console.error(e);alert('Không chụp được: '+(e&&e.message||e))}
+  if(btn.disabled)return;btn.disabled=true;var old=btn.innerHTML;btn.innerHTML='<span>Đang chụp…</span>';
+  var copied=false;
+  try{
+    var pr=run(tt,tl);
+    var canCopy=navigator.clipboard&&window.ClipboardItem;
+    var cp=canCopy?navigator.clipboard.write([new ClipboardItem({'image/png':pr.then(function(fs){return fs[0]})})]).then(function(){copied=true}).catch(function(){}):Promise.resolve();
+    var f=await pr;await cp;modal(f,copied,tl);
+  }catch(e){console.error(e);alert('Không chụp được: '+(e&&e.message||e))}
   btn.disabled=false;btn.innerHTML=old;
 }
-b.addEventListener('click',async function(){
-  if(b.disabled)return;b.disabled=true;var old=b.innerHTML;b.innerHTML='<span>Đang chụp…</span>';
-  try{var f=await run();modal(f)}catch(e){console.error(e);alert('Không chụp được: '+(e&&e.message||e))}
-  b.disabled=false;b.innerHTML=old;
-});
+b.addEventListener('click',function(){go(b)});
 
 var SEL='.sp-card,.sp-tablebox,.trk-box,section.panel,details.ward-group';
 var css2='.shot-mini{position:absolute;top:6px;z-index:50;border:1px solid #cbd5e1;background:rgba(255,255,255,.96);color:#163a7a;border-radius:8px;width:30px;height:28px;font-size:15px;line-height:1;cursor:pointer;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.15);opacity:.55;transition:opacity .15s}.shot-mini:hover,.shot-mini:focus{opacity:1}details>.shot-mini{top:6px}';
