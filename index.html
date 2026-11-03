@@ -3133,7 +3133,7 @@ function ovChartTH(){
  const path=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
  const hi=Math.max(...pts.map(p=>p[1])),mxI=pts.findIndex(p=>p[1]===Math.min(...pts.map(q=>q[1]))),loI=pts.findIndex(p=>p[1]===hi);
  const sum=DATA.kpis.reduce((s,k)=>s+k.actual,0),ct=DATA.kpis.reduce((s,k)=>s+k.target,0);
- return `<div class="ovcard"><div class="ovch"><b>Team SS Pháp</b><span>TH / CHỈ TIÊU <b>${M1(sum)} / ${M1(ct)}</b> Tr <em class="pill ${sum/ct>=prog?'':'o'}">${P1(sum/ct)}</em></span></div><div style="overflow:auto"><svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:${W}px;height:${H}px">
+ return `<div class="ovcard"><div class="ovch"><b>Team SS Pháp</b><span>TH / CHỈ TIÊU <b>${M1(sum)} / ${M1(ct)}</b> Tr <em class="pill ${sum/ct>=prog?'':'o'}">${P1(sum/ct)}</em></span></div><div style="overflow:auto"><svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:0;height:auto">
  <line x1="${px-20}" x2="${W-px+20}" y1="${Y(prog)}" y2="${Y(prog)}" stroke="#e24b4b" stroke-dasharray="6 5"/><rect x="${px-24}" y="${Y(prog)-24}" width="96" height="20" rx="10" fill="#d6244f"/><text x="${px+24}" y="${Y(prog)-10}" fill="#fff" font-size="11" font-weight="800" text-anchor="middle">TIẾN ĐỘ ${P1(prog)}</text>
  <path d="${path}" fill="none" stroke="#e0a100" stroke-width="3"/>
  ${pts.map((p,i)=>{const v=p[2].target?p[2].actual/p[2].target:0,c=v>=prog*1.1?'#2e9e6b':v>=prog*.9?'#e0a100':'#d6244f';return `<g><line x1="${p[0]}" x2="${p[0]}" y1="${p[1]}" y2="${H-py+8}" stroke="#e8ecf5"/><circle cx="${p[0]}" cy="${p[1]}" r="6" fill="#fff" stroke="${c}" stroke-width="3"/><rect x="${p[0]-23}" y="${p[1]-30}" width="46" height="19" rx="9" fill="${c}"/><text x="${p[0]}" y="${p[1]-16.5}" fill="#fff" font-size="11" font-weight="800" text-anchor="middle">${P1(v)}</text><text x="${p[0]}" y="${H-py+24}" font-size="11.5" font-weight="800" text-anchor="middle" fill="#1f2a44">${esc2(String(p[2].rep).split(' ').slice(-1)[0])}</text><text x="${p[0]}" y="${H-py+38}" font-size="10" text-anchor="middle" fill="#6a7596">${M1(p[2].actual)}/${M1(p[2].target)}</text></g>`}).join('')}
@@ -3188,6 +3188,8 @@ function ovOn(){
  return `<div class="note" style="margin:0 0 8px"><b>Mục tiêu kênh ON:</b> mở ${TG} ASO mỗi ĐDKD ở 7 loại hình (theo L2 trên MCP) và số quầy đã lấy Trà Búp Non Tea 365. Team SS Pháp: <b>${aso} / ${TG*R.length}</b> ASO (${P1(TG*R.length?aso/(TG*R.length):0)}) · tiến độ ${P1(prog)}.</div>`+ovFrame(`<table class="fund">${ovHead(g)}<tbody>${ovRows(R,cells)}</tbody></table>`,400)}
 /* ============ TỔNG QUAN: KPI NỀN TẢNG THEO TEAM / ĐDKD (giữ nội dung cũ, đổi giao diện) ============ */
 V11.ff={open:new Set(),tOpen:new Set(['Nguyễn Văn PhápA','Nguyễn Văn PhápB','Nguyễn Văn PhápO'])};
+const V11IC={up:'<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',wifi:'<path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/>',flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',zap:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',basket:'<path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>',pkg:'<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',layers:'<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',list:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',crown:'<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>'};
+const v11i=k=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${V11IC[k]||''}</svg>`;
 function v11FundTable(spec,rows,callMap,id){
  const prog=DATA.meta.progress||.04,days=DATA.meta.elapsedDays||1;
  const S=(L,k)=>L.reduce((s,x)=>s+(Number(x[k])||0),0),dv=(a,b)=>b?a/b:0;
@@ -3237,22 +3239,22 @@ function v11Fund(){
  const gx=rows.reduce((t,x)=>t+x.teaGreenActual,0),gxt=rows.reduce((t,x)=>t+x.teaGreenTarget,0),yl=rows.reduce((t,x)=>t+x.homeyYellowActual,0),ylt=rows.reduce((t,x)=>t+x.homeyYellowTarget,0);
  const lx=sumF('xm','pc')?sumF('xm','lines')/sumF('xm','pc'):0,mp=D.ovmeta.meatPc,lm=mp?D.ovmeta.meatLine/mp:0;
  const gap=(v,ref)=>{const d=(v-ref)*100;return (d>=0?`vượt ${d.toFixed(1)}%`:`chậm ${Math.abs(d).toFixed(1)}%`).replace('.',',')};
- const card=(cls,t,sub,v,line)=>`<div class="kc2 ${cls}"><small>${t}<i>${sub||''}</i></small><b>${v}</b><span>${line}</span></div>`;
+ let _ci=0;const _ic=['up','users','pin','wifi','flag','zap','basket','pkg'];const card=(cls,t,sub,v,line)=>`<div class="kc2 ${cls}"><u>${v11i(_ic[_ci++%8])}</u><small>${t}<i>${sub||''}</i></small><b>${v}</b><span>${line}</span></div>`;
  const cards=`<div class="kgrid">${card('c2','Doanh số tháng','(Triệu)',P1(pctTH),`TH ${M1(th)} / CT ${M1(ct)} · ${gap(pctTH,prog)} so tiến độ`)}${card('c1','ASO Tổng','(80% MCP đạt KPI)',P1(mt?ao/mt:0),`TH ${N0(ao)} / MCP ${N0(mt)} · ${gap(mt?ao/mt:0,prog)} so tiến độ`)}${card('c2','PC OFF','(65% Call OFF)',P1(co?bo/co:0),`${N0(bo)} / ${N0(co)} call · ${gap(co?bo/co:0,.65)} so chuẩn`)}${card('c2','PC ON','(50% Call ON)',P1(cn?bn/cn:0),`${N0(bn)} / ${N0(cn)} call · ${gap(cn?bn/cn:0,.5)} so chuẩn`)}${card('c2','ASO FC1 · Trận Xanh','(Focus Tết)',P1(gxt?gx/gxt:0),`TH ${N0(gx)} / CT ${N0(gxt)} · ${gap(gxt?gx/gxt:0,prog)} so tiến độ`)}${card('c1','ASO FC2 · Trận Vàng','(Hạt nêm Chinsu)',P1(ylt?yl/ylt:0),`TH ${N0(yl)} / CT ${N0(ylt)} · ${gap(ylt?yl/ylt:0,prog)} so tiến độ`)}${card(lx>=4.5?'c1':'c3','LPPC','(trừ Meat/Bia)',dec(lx),`CT 4,5 · đạt ${P1(lx/4.5)} · ${N0(sumF('xm','lines'))} line / ${N0(sumF('xm','pc'))} đơn`)}${card(lm>=3.8?'c1':'c3','LPPC Meat','(ON+OFF)',dec(lm),`CT 3,8 · đạt ${P1(lm/3.8)} · ${N0(D.ovmeta.meatLine)} line / ${N0(mp)} đơn`)}</div>`;
- const chips=[['th','1','%TH theo ĐDKD'],['kpi','2','KPI ĐDKD'],['cat','3','Theo ngành hàng'],['grp','4','Nhóm hàng & KH'],['aso','5','ASO nhóm sản phẩm'],['vip','6','Kênh & nhóm VIP'],['on','7','Kênh ON · 7 loại hình']].map(c=>`<button class="chip ${tab===c[0]?'on':''}" data-v-ovtab="${c[0]}"><b>${c[1]}</b>${c[2]}</button>`).join('');
+ const chipsA=[['th','1','%TH theo ĐDKD','up'],['kpi','2','KPI ĐDKD','target'],['cat','3','Theo ngành hàng','layers'],['grp','4','Nhóm hàng & KH','pkg'],['aso','5','ASO nhóm sản phẩm','list'],['vip','6','Kênh & nhóm VIP','crown'],['on','7','Kênh ON · 7 loại hình','wifi']];const chips=chipsA.map(c=>`<button class="chip ${tab===c[0]?'on':''}" data-v-ovtab="${c[0]}"><b>${c[1]}</b>${c[2]}</button>`).join('');
  const bar=`<div class="tools"><button class="btn" data-v-all="ff1">Mở hết ĐDKD</button><button class="btn" data-v-all="ff0">Thu gọn</button><span class="note" style="margin:0">Bấm tên Team (▸) để xổ từng ĐDKD · xếp %TH thấp → cao</span></div>`;
- const ttl={th:'%TH doanh số theo từng ĐDKD so với tiến độ',kpi:'KPI nền tảng T11 theo Team và ĐDKD',cat:'Sell Out theo ngành hàng theo Team và ĐDKD (Triệu)',grp:'Kết quả theo ngành hàng / nhóm hàng và KH đã lấy hàng / MCP (Triệu)',aso:'ASO và thực hiện từng nhóm sản phẩm (DMS OBJ) theo ĐDKD – '+OV.aso,vip:'KH đã bán & thực hiện theo kênh / nhóm VIP (Triệu)',on:'Mục tiêu kênh ON – mở 30 ASO ở 7 loại hình và số quầy đã lấy Trà Búp Non Tea 365'}[tab];
- let pane='';
- if(tab==='th')pane=ovChartTH();
- else if(tab==='kpi')pane=bar+v11FundTable(A,rows,callMap,'A')+`<div class="note">Ô xanh đạt chuẩn, đỏ chưa đạt. %TH, %ASO, %PC so với tiến độ thời gian ${P1(prog)} (ASO OFF/ON theo mốc 80% MCP). <b>PC / Call</b> = KH có lịch VT trong ngày (02/11, tuần lẻ) có đơn / KH có lịch VT trong ngày — chuẩn OFF 65%, ON 50%. <b>Tổng kênh / Kênh OFF</b>: ALL CAT gồm mọi ngành hàng, -Meat/Bia loại Processed Meats và Beer; PC/ngày/ĐDKD chuẩn 12, LPPC mức 1 chuẩn 4,5, BQ/đơn = DS sau CK / số đơn (nghìn đồng). LPPC Meat từ 3,8. Rê chuột lên tên nhóm để xem mức thưởng.</div>`;
- else if(tab==='cat')pane=bar+v11FundTable(B,rows,callMap,'B');
- else if(tab==='grp')pane=ovTree();
- else if(tab==='aso')pane=bar+ovAso();
- else if(tab==='vip')pane=ovVip();
- else pane=ovOn();
- V11.host().innerHTML=`<div id="v11"><div class="sec"><b>★</b>TỔNG QUAN THEO TEAM / ĐDKD · ĐƠN ĐẾN 02/11 · ${days}/${wd} NGÀY LÀM VIỆC · ${scopeLabel().toUpperCase()}</div>${cards}<div class="chips">${chips}</div><div class="ttl" style="margin-top:8px">${ttl}</div>${pane}</div>`;
+ const ttl={th:'%TH doanh số theo từng ĐDKD so với tiến độ',kpi:'KPI nền tảng T11 theo Team và ĐDKD',cat:'Sell Out theo ngành hàng theo Team và ĐDKD (Triệu)',grp:'Ngành hàng / nhóm hàng và KH đã lấy hàng / MCP (Triệu)',aso:'ASO và thực hiện từng nhóm sản phẩm (DMS OBJ) theo ĐDKD – '+OV.aso,vip:'KH đã bán & thực hiện theo kênh / nhóm VIP (Triệu)',on:'Kênh ON – mở 30 ASO ở 7 loại hình và số quầy lấy Trà Búp Non Tea 365'};
+ const note=`<div class="note">Ô xanh đạt chuẩn, đỏ chưa đạt. %TH, %ASO, %PC so với tiến độ thời gian ${P1(prog)} (ASO OFF/ON theo mốc 80% MCP). <b>PC / Call</b> = KH có lịch VT trong ngày (02/11, tuần lẻ) có đơn / KH có lịch VT trong ngày — chuẩn OFF 65%, ON 50%. <b>ALL CAT</b> gồm mọi ngành hàng, <b>-Meat/Bia</b> loại Processed Meats và Beer; PC/ngày/ĐDKD chuẩn 12, LPPC mức 1 chuẩn 4,5, BQ/đơn = DS sau CK / số đơn (nghìn đồng). LPPC Meat từ 3,8.</div>`;
+ const P={th:ovChartTH(),kpi:bar+v11FundTable(A,rows,callMap,'A')+note,cat:bar+v11FundTable(B,rows,callMap,'B'),grp:ovTree(),aso:bar+ovAso(),vip:ovVip(),on:ovOn()};
+ const jump=chips0=>chips0;
+ const sections=chipsA.map(c=>`<section class="ovs" id="ov-${c[0]}"><header><u>${v11i(c[3])}</u><div><h3>${c[2]}</h3><span>${ttl[c[0]]}</span></div><b>${c[1]}/7</b></header><div class="ovb">${P[c[0]]}</div></section>`).join('');
+ const nav=chipsA.map(c=>`<button class="chip" onclick="document.getElementById('ov-${c[0]}').scrollIntoView({behavior:'smooth',block:'start'})"><b>${v11i(c[3])}</b>${c[2]}</button>`).join('');
+ V11.host().innerHTML=`<div id="v11"><div class="sec"><b>★</b>TỔNG QUAN THEO TEAM / ĐDKD · ĐƠN ĐẾN 02/11 · ${days}/${wd} NGÀY LÀM VIỆC · ${scopeLabel().toUpperCase()}</div>${cards}<div class="chips">${nav}</div>${sections}</div>`;setTimeout(v11Fit,0);requestAnimationFrame(v11Fit);
 }
-function renderFund11(){renderOverviewBase();const i=document.querySelector('#content .section-intro');if(i){i.insertAdjacentHTML('afterend',overviewCharts(filtered()));i.insertAdjacentHTML('afterend','<div id="v11ov"></div>')}v11Mount(v11Fund)}
+function renderFund11(){renderOverviewBase();const i=document.querySelector('#content .section-intro');if(i){i.insertAdjacentHTML('afterend','<div id="v11ov"></div>');const h=document.getElementById('v11ov');while(h.nextElementSibling)h.nextElementSibling.remove()}v11Mount(v11Fund)}
+
+function v11Fit(){document.querySelectorAll('#v11 .ovf table').forEach(t=>{t.style.zoom='';const f=t.closest('.ovf');const k=f.clientWidth/t.scrollWidth;if(k<1)t.style.zoom=Math.max(.4,k)*.995.toFixed(3)})}
+window.addEventListener('resize',()=>{clearTimeout(window.__vf);window.__vf=setTimeout(v11Fit,200)});
 
 function displayPhotoPassed(d){
  if(d.photoSixStatus!=null&&String(d.photoSixStatus).trim())return String(d.photoSixStatus).trim().toLocaleLowerCase('vi')==='đạt';
@@ -4091,6 +4093,62 @@ html body.theme-original.design-108 #content .rk11 :is(td,th){background-image:n
 html body.theme-original.design-108 #content .rk11 tbody td{background-color:#fff!important}
 html body.theme-original.design-108 #content .rk11 tbody tr:nth-child(even) td{background-color:#f5f8ff!important}
 html body.theme-original.design-108 #content .rk11 th{color:#fff!important;background-color:#1c2f8c!important}
+/* ===== v117 overview: all 7 sections stacked ===== */
+html body.theme-original.design-108 #v11 .ovs{background:#fff;border:1px solid #dbe3f3;border-radius:16px;margin:16px 0;box-shadow:0 1px 2px rgba(16,24,58,.04),0 8px 24px rgba(20,40,110,.06);overflow:hidden}
+html body.theme-original.design-108 #v11 .ovs>header{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #e6ecf8;background:linear-gradient(90deg,#f5f8ff,#fff)}
+
+html body.theme-original.design-108 #v11 .ovs>header h3{margin:0;font-size:15px;font-weight:800;color:#10183a;text-transform:uppercase;letter-spacing:.4px}
+html body.theme-original.design-108 #v11 .ovs>header span{margin-left:auto;font-size:12px;color:#5a6788;text-align:right}
+html body.theme-original.design-108 #v11 .ovb{padding:12px 14px}
+html body.theme-original.design-108 #v11 .ovf{max-height:none!important;overflow:visible!important;border:1px solid #e6ecf8;border-radius:12px}
+html body.theme-original.design-108 #v11 .ovf table{width:100%!important;min-width:0!important;font-variant-numeric:tabular-nums}
+html body.theme-original.design-108 #v11 .ovf th,html body.theme-original.design-108 #v11 .ovf td{padding:4px 6px!important;font-size:11.5px!important;line-height:1.2!important;white-space:nowrap}
+html body.theme-original.design-108 #v11 .ovf thead th{position:static!important;height:auto!important;white-space:normal;text-align:center}
+html body.theme-original.design-108 #v11 .ovf tbody tr:nth-child(even) td{background:#f7f9ff}
+html body.theme-original.design-108 #v11 .ovf td.nm{min-width:150px}
+html body.theme-original.design-108 #v11 .ovcard>div[style*=overflow]{overflow:visible!important}
+html body.theme-original.design-108 #v11 .ovcard svg{min-width:0!important;width:100%!important;height:auto!important;max-height:300px}
+html body.theme-original.design-108 #v11 .chips{position:sticky;top:0;z-index:20;background:rgba(244,247,253,.92);backdrop-filter:blur(8px);padding:8px 0;margin:8px 0;display:flex;flex-wrap:wrap;gap:8px}
+html body.theme-original.design-108 #v11 .chip{background:#fff!important;border:1px solid #dbe3f3!important;color:#10183a!important;border-radius:999px!important;padding:6px 12px!important;font-weight:700;cursor:pointer}
+html body.theme-original.design-108 #v11 .chip b{background:#2f55d4;color:#fff;border-radius:999px;padding:1px 7px;margin-right:6px;font-size:11px}
+html body.theme-original.design-108 #v11 .chip:hover{background:#10183a!important;color:#fff!important}
+html body.theme-original.design-108 #v11 .ovf :is(th,td){min-width:0!important;width:auto!important;padding:3px 4px!important;font-size:11px!important}
+html body.theme-original.design-108 #v11 .ovf td.nm,html body.theme-original.design-108 #v11 .ovf th.nm,html body.theme-original.design-108 #v11 .ovf th.gs,html body.theme-original.design-108 #v11 .ovf td.gs{min-width:150px!important}
+html body.theme-original.design-108 #v11 .ovf{overflow-x:auto!important;overflow-y:visible!important}
+html body.theme-original.design-108 #v11 .ovf .pill{padding:1px 5px!important;font-size:10.5px!important}
+/* ===== v117 bento + icons ===== */
+html body.theme-original.design-108 #v11 .ovf{max-height:none!important;overflow:visible!important}
+html body.theme-original.design-108 #v11 .ovf thead tr th{position:static!important}
+html body.theme-original.design-108 #v11 .ovb{overflow:visible!important}
+html body.theme-original.design-108 #v11 .sec{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:800;letter-spacing:.9px;color:#10183a;margin:6px 0 12px}
+html body.theme-original.design-108 #v11 .kgrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+html body.theme-original.design-108 #v11 .kc2{position:relative;overflow:hidden;border:1px solid #e1e8f7!important;border-left:1px solid #e1e8f7!important;border-radius:16px!important;padding:14px 16px 12px 16px!important;background:#fff!important;box-shadow:0 1px 2px rgba(16,24,58,.04),0 10px 26px rgba(40,70,160,.09)!important;transition:transform .18s,box-shadow .18s}
+html body.theme-original.design-108 #v11 .kc2:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(40,70,160,.16)!important}
+html body.theme-original.design-108 #v11 .kc2::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#2f55d4,#6f8cff)}
+html body.theme-original.design-108 #v11 .kc2.c1::before{background:linear-gradient(90deg,#12a66a,#5fdba5)}
+html body.theme-original.design-108 #v11 .kc2.c3::before{background:linear-gradient(90deg,#d6244f,#ff7a95)}
+html body.theme-original.design-108 #v11 .kc2.c2::before{background:linear-gradient(90deg,#f0711c,#ffb067)}
+html body.theme-original.design-108 #v11 .kc2 u{position:absolute;right:14px;top:16px;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;text-decoration:none;background:#eef3ff;color:#2f55d4}
+html body.theme-original.design-108 #v11 .kc2.c1 u{background:#e8f8f0;color:#12a66a}html body.theme-original.design-108 #v11 .kc2.c2 u{background:#fff1e6;color:#f0711c}html body.theme-original.design-108 #v11 .kc2.c3 u{background:#ffeaf0;color:#d6244f}
+html body.theme-original.design-108 #v11 .kc2 small{color:#5a6788!important;font-size:11.5px!important;letter-spacing:.4px;text-transform:uppercase;padding-right:48px}
+html body.theme-original.design-108 #v11 .kc2 b{font-size:30px!important;font-weight:800;letter-spacing:-.5px;margin:4px 0 2px;color:#10183a!important}
+html body.theme-original.design-108 #v11 .kc2.c1 b{color:#0f8a57!important}html body.theme-original.design-108 #v11 .kc2.c2 b{color:#10183a!important}html body.theme-original.design-108 #v11 .kc2.c3 b{color:#d6244f!important}
+html body.theme-original.design-108 #v11 .kc2 span{color:#6a7799!important;font-size:12px!important}
+html body.theme-original.design-108 #v11 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 6px}
+html body.theme-original.design-108 #v11 .chip{background:#fff!important;border:1px solid #dbe3f3!important;color:#1f2a44!important;border-radius:999px!important;padding:5px 14px 5px 5px!important;box-shadow:0 2px 8px rgba(30,50,120,.06)}
+html body.theme-original.design-108 #v11 .chip:hover{border-color:#2f55d4!important;color:#2f55d4!important}
+html body.theme-original.design-108 #v11 .chip b{width:26px!important;height:26px!important;border-radius:50%!important;background:linear-gradient(135deg,#2f55d4,#6f8cff)!important;color:#fff!important}
+html body.theme-original.design-108 #v11 .chip b svg{width:14px;height:14px}
+html body.theme-original.design-108 #v11 .ovs{border-radius:20px!important;border:1px solid #e1e8f7!important;box-shadow:0 1px 2px rgba(16,24,58,.04),0 14px 34px rgba(40,70,160,.09)!important;margin:18px 0!important;scroll-margin-top:150px}
+html body.theme-original.design-108 #v11 .ovs>header{padding:14px 20px!important;background:linear-gradient(100deg,#10183a 0%,#1c2f8c 60%,#2f55d4 100%)!important;border-bottom:0!important}
+html body.theme-original.design-108 #v11 .ovs>header u{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;text-decoration:none;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.25);flex:none}
+html body.theme-original.design-108 #v11 .ovs>header h3{color:#fff!important;font-size:15px!important}
+html body.theme-original.design-108 #v11 .ovs>header>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+html body.theme-original.design-108 #v11 .ovs>header span{margin:0!important;color:#c5d2ff!important;text-align:left!important;font-size:12px!important}
+html body.theme-original.design-108 #v11 .ovs>header>b{margin-left:auto;background:rgba(255,255,255,.14)!important;color:#fff!important;width:auto!important;height:auto!important;padding:4px 11px;border-radius:999px!important;font-size:11.5px!important;letter-spacing:.5px;border:1px solid rgba(255,255,255,.25)}
+html body.theme-original.design-108 #v11 .ovb{padding:12px 16px 14px}
+@media(max-width:1000px){html body.theme-original.design-108 #v11 .kgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+html body.theme-original.design-108 #v11 .ovf{overflow:hidden!important}
 </style><style id="rk11-css">html body.theme-original.design-108 .rk11{padding:10px 14px!important}html body.theme-original.design-108 .rk11 .table-scroll,html body.theme-original.design-108 .rk11 .table-wrap{max-height:none!important;overflow:visible!important}html body.theme-original.design-108 .rk11 table{width:100%!important;min-width:0!important;table-layout:fixed}html body.theme-original.design-108 .rk11 th,html body.theme-original.design-108 .rk11 td{padding:4px 10px!important;font-size:12.5px!important;line-height:1.2!important;height:auto!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}html body.theme-original.design-108 .rk11 .rank{transform:scale(.8);margin:-4px 0!important}html body.theme-original.design-108 .rk11 .person a,html body.theme-original.design-108 .rk11 .person *{line-height:1.1!important;font-size:12.5px!important}html body.theme-original.design-108 .rk11 .person [class*=360],html body.theme-original.design-108 .rk11 .person small,html body.theme-original.design-108 .rk11 .person i,html body.theme-original.design-108 .rk11 .person sup{font-size:9px!important;padding:1px 4px!important;margin:0 0 0 4px!important}html body.theme-original.design-108 .rk11 .table-panel{padding:6px 10px!important;margin:0!important;border:0!important;box-shadow:none!important}html body.theme-original.design-108 .rk11 .table-panel .panel-head,html body.theme-original.design-108 .rk11 .table-panel .table-head{margin:0 0 4px!important;padding:0!important}html body.theme-original.design-108 .rk11 tbody td{background:#fff!important}html body.theme-original.design-108 .rk11 tbody tr:nth-child(even) td{background:#f5f8ff!important}html body.theme-original.design-108 .rk11 tr{height:auto!important}</style><script id="shot-h2c">/*!
  * html2canvas 1.4.1 <https://html2canvas.hertzen.com>
  * Copyright (c) 2022 Niklas von Hertzen <https://hertzen.com>
