@@ -2871,10 +2871,21 @@ function v11Css(){if(V11.css)return;V11.css=true;const s=document.createElement(
 #v11 .neg{color:#d6244f;font-weight:800}#v11 .pos{color:#168a52;font-weight:800}
 #v11 .pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;background:#e9f6ee;color:#168a52}
 #v11 .pill.o{background:#fff1d6;color:#a86500}#v11 .pill.g{background:#e8ebf3;color:#58627f}#v11 .pill.off{background:#e3ebff;color:#2f55d4}#v11 .pill.on{background:#ece4ff;color:#6a2fc9}#v11 .pill.nh{background:#ffe9dc;color:#c2500c}
-html body #v11 table.fund th,html body #v11 table.fund td{border:1px solid #bcc7e3!important;padding:6px 7px}
-html body #v11 table.fund .gs{border-left:2.5px solid #4a5fa8!important}
-html body #v11 .fundwrap{border:2px solid #4a5fa8!important;border-radius:8px}
-html body #v11 table.fund tr.rep td{border-bottom:1px solid #bcc7e3!important}
+html body #v11 .fundwrap{border:1px solid #cbd5ec!important;border-radius:14px;box-shadow:0 6px 22px rgba(30,50,120,.10);background:#fff;overflow:auto}
+html body #v11 table.fund{border-collapse:separate!important;border-spacing:0;width:100%;font-size:13px}
+html body #v11 table.fund th,html body #v11 table.fund td{border:0!important;border-bottom:1px solid #e3e8f5!important;border-right:1px solid #eef1f9!important;padding:11px 16px!important;min-width:84px;white-space:nowrap;text-align:center;vertical-align:middle}
+html body #v11 table.fund thead th{border-bottom:1px solid rgba(255,255,255,.28)!important;border-right:1px solid rgba(255,255,255,.18)!important;padding:12px 14px!important;font-size:12.5px;letter-spacing:.2px}
+html body #v11 table.fund thead tr:first-child th{font-size:13.5px;padding:14px!important}
+html body #v11 table.fund .gs{border-left:2px solid #5b6fb5!important}
+html body #v11 table.fund thead .gs{border-left:2px solid rgba(255,255,255,.65)!important}
+html body #v11 table.fund td.nm{min-width:210px;text-align:left!important;padding-left:18px!important;position:sticky;left:0;z-index:2;box-shadow:2px 0 0 #dfe5f4}
+html body #v11 table.fund thead tr:first-child th:first-child{position:sticky;left:0;z-index:3}
+html body #v11 table.fund tbody tr.rep:nth-child(even) td{background:#f8f9fd!important}
+html body #v11 table.fund tbody tr.rep:hover td{background:#eaf0ff!important}
+html body #v11 table.fund tr.tot td{background:#dfe8fb!important;border-top:2px solid #5b6fb5!important;font-size:13.5px}
+html body #v11 table.fund tr.team td{background:#fdf1c4!important;font-size:13.5px}
+html body #v11 table.fund tbody tr:last-child td{border-bottom:0!important}
+html body #v11 table.fund .pill{min-width:58px;text-align:center;padding:4px 10px;font-size:12px}
 html body #v11 .pill.r{background:#ffe1e6!important;color:#d6244f!important}
 #v11 .tp{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;background:#e1f6e9;color:#168a52}#v11 .tp.ds{background:#ece4ff;color:#6a2fc9}
 #v11 .det{padding:12px;text-align:left}
@@ -3087,6 +3098,8 @@ function v11Fund(){
  const rows=DATA.kpis.filter(k=>(!V11.team||k.team===V11.team)&&(!V11.rep||k.rep===V11.rep));
  const callMap={};D.fund.forEach(x=>callMap[x.name]=x);
  const f1=v=>M1(v),pc=(v,thr)=>`<span class="pill ${v>=thr?'':'r'}">${P1(v)}</span>`;
+ const ca=(L,u,k)=>L.reduce((t,x)=>t+((u.callMap[x.rep]||{all:{}}).all[k]||0),0);
+ const cl=(L,u,ch,thr)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k)ch.forEach(h=>{c+=k.call[h][0];b+=k.call[h][1]})});const v=u.dv(b,c);return `<span class="pill ${v>=thr?'':'r'}">${P1(v)}</span>`};
  const dec=v=>v.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
  const T3=(t,cls,key,tk,ak,fmt,thr)=>({t,cls,cols:[{h:'TH',f:(L,u)=>fmt(u.S(L,ak))},{h:'CT',f:(L,u)=>fmt(u.S(L,tk))},{h:'%',f:(L,u)=>pc(u.dv(u.S(L,ak),u.S(L,tk)),thr??prog)}]});
  const defs=DATA.meta.foundationMetrics||[];
@@ -3099,8 +3112,8 @@ function v11Fund(){
   M('ASO Trận Xanh','g3','ASO Trận Xanh • Focus Tết'),M('ASO Trận Vàng','g4','ASO Trận Vàng • Hạt nêm Chinsu'),
   M('PC OFF','g2','PC OFF • Total sản phẩm'),M('PC ON','g1','PC ON • Tất cả đơn ON'),
   lp('LPPC trừ Meat','g5','LPPC trừ Meat & Beer • BS',4.5),lp('LPPC Meat','g4','LPPC Meat • BT',3.8),
-  {t:'PC / Call (KH VT trong ngày có đơn)',cls:'g3',tip:'KH có lịch viếng thăm trong ngày 02/11 có đơn / KH có lịch viếng thăm trong ngày',cols:[{h:'Tổng',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.off[0]+k.call.on[0];b+=k.call.off[1]+k.call.on[1]}});return `<span class="pill ${u.dv(b,c)>=.6?'':'r'}">${P1(u.dv(b,c))}</span>`}},{h:'OFF',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.off[0];b+=k.call.off[1]}});return `${N0(b)}/${N0(c)} `+`<span class="pill ${u.dv(b,c)>=.65?'':'r'}">${P1(u.dv(b,c))}</span>`}},{h:'ON',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.on[0];b+=k.call.on[1]}});return `${N0(b)}/${N0(c)} `+`<span class="pill ${u.dv(b,c)>=.5?'':'r'}">${P1(u.dv(b,c))}</span>`}}]},
-  {t:'Tổng kênh · ALL CAT',cls:'s2',tip:'Toàn bộ ngành hàng, đơn 02/11',cols:[{h:'PC/ngày /ĐDKD',f:(L,u)=>{let p=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k)p+=k.all.pc});const v=u.dv(p,u.days*L.length);return `<span class="pill ${v>=12?'':'r'}">${v.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1})}</span>`}},{h:'LPPC',f:(L,u)=>{let p=0,l=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){p+=k.all.pc;l+=k.all.lines}});const v=u.dv(l,p);return `<span class="pill ${v>=4.5?'':'r'}">${v.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2})}</span>`}},{h:'BQ/đơn (k)',f:(L,u)=>{let d=0,o=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){d+=k.all.ds;o+=k.all.orders}});return `<b>${o?Math.round(d/o/1000).toLocaleString('vi-VN'):'–'}</b>`}}]}
+  {t:'PC / Call',cls:'g3',tip:'KH có lịch viếng thăm trong ngày 02/11 có đơn / KH có lịch viếng thăm trong ngày',cols:[{h:'Tổng',f:(L,u)=>cl(L,u,['off','on'],.6)},{h:'OFF',f:(L,u)=>cl(L,u,['off'],.65)},{h:'ON',f:(L,u)=>cl(L,u,['on'],.5)}]},
+  {t:'Tổng kênh · ALL CAT',cls:'g2',tip:'Tất cả ngành hàng, gồm Meat & Beer',cols:[{h:'PC/ngày /ĐDKD',f:(L,u)=>{const v=u.dv(ca(L,u,'pc'),u.days*L.length);return `<span class="pill ${v>=12?'':'r'}">${v.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1})}</span>`}},{h:'LPPC',f:(L,u)=>{const v=u.dv(ca(L,u,'lines'),ca(L,u,'pc'));return `<span class="pill ${v>=4.5?'':'r'}">${dec(v)}</span>`}},{h:'BQ/đơn (k)',f:(L,u)=>`<b>${N0(u.dv(ca(L,u,'ds'),ca(L,u,'orders'))/1000)}</b>`}]}
  ].filter(Boolean);
  const cats=[['Seasoning','Seasoning'],['Convenience Foods','Convenience'],['Home Care','HomeCare'],['Refreshment Drinks','Refreshment'],['Processed Meats','Processed'],['Nutrition','Nutrition'],['Coffee','Coffee'],['Rice base','Rice'],['Beer','Beer']];
  const cc=['g2','g1','g3','g4','g5','g2','g1','g3','g4'];
@@ -3110,7 +3123,7 @@ function v11Fund(){
  <div class="sec"><b>1</b>BẢNG FUNDAMENTAL THEO TEAM VÀ ĐDKD</div><div class="ttl">KPI nền tảng T11 theo Team và ĐDKD<small>(Doanh số: Triệu · bấm tên Team để xổ ĐDKD, xếp %TH thấp → cao)</small></div>
  <div class="tools"><button class="btn" data-v-all="ff1">Mở hết ĐDKD</button><button class="btn" data-v-all="ff0">Thu gọn</button><button class="btn dark" data-v-shot="1">📷 Chụp ảnh bảng</button></div>
  ${v11FundTable(A,rows,callMap,'A')}
- <div class="note">Ô xanh đạt chuẩn, đỏ chưa đạt. %TH, %ASO, %PC so với tiến độ thời gian ${P1(prog)} (ASO OFF/ON theo mốc 80% MCP). <b>PC / Call</b> = KH có lịch VT trong ngày (02/11, tuần lẻ) có đơn / KH có lịch VT trong ngày — chuẩn OFF 65%, ON 50%. LPPC: TH là trung bình các ĐDKD, chuẩn trừ Meat &amp; Beer &gt; 4,5, Meat từ 3,8. Rê chuột lên tên nhóm để xem mức thưởng.</div>
+ <div class="note">Ô xanh đạt chuẩn, đỏ chưa đạt. %TH, %ASO, %PC so với tiến độ thời gian ${P1(prog)} (ASO OFF/ON theo mốc 80% MCP). <b>PC / Call</b> = KH có lịch VT trong ngày (02/11, tuần lẻ) có đơn / KH có lịch VT trong ngày — chuẩn OFF 65%, ON 50%. <b>Tổng kênh ALL CAT</b> = tất cả ngành hàng (gồm Meat &amp; Beer): PC/ngày chuẩn 12, LPPC chuẩn 4,5, BQ/đơn = DS sau CK / số đơn (nghìn đồng). LPPC: TH là trung bình các ĐDKD, chuẩn trừ Meat &amp; Beer &gt; 4,5, Meat từ 3,8. Rê chuột lên tên nhóm để xem mức thưởng.</div>
  <div class="sec o"><b>2</b>SELL OUT THEO NGÀNH HÀNG</div><div class="ttl">Sell Out theo ngành hàng theo Team và ĐDKD<small>(Triệu)</small></div>
  ${v11FundTable(B,rows,callMap,'B')}
  <div class="sec"><b>3</b>MỨC THƯỞNG KPI NỀN TẢNG</div><ul class="note" style="columns:2;list-style:square;padding-left:22px">${rw}</ul></div>`;
