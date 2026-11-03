@@ -2057,8 +2057,8 @@ html body.theme-original.design-108:not([data-view=overview]) .welcome.welcome-v
         <button class="nav-item" data-view="bonus"><span><svg viewBox="0 0 24 24"><path d="M8 4h8v3a4 4 0 01-8 0zM10 11h4v4h-4zM7 20h10M12 15v5M6 5H3v2a4 4 0 004 4M18 5h3v2a4 4 0 01-4 4"/></svg></span>Bonus DDKD</button>
         <button class="nav-item" data-view="monthly"><span><svg viewBox="0 0 24 24"><path d="M4 19V8M10 19V4M16 19v-7M22 19H2M4 9l6-4 6 6 5-4"/></svg></span>CT–TH theo tháng</button>
         <button class="nav-item" data-view="growth"><span><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8M15 7h5v5"/></svg></span>Tăng doanh số</button>
-        <button class="nav-item" data-view="combo"><span><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM8 7V5h8v2M8 12h8M12 9v6"/></svg></span>Combo mở mới</button>
-        <button class="nav-item" data-view="mbs"><span><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7zM8 12l2.5 2.5L16 9"/></svg></span>Hội Viên Doanh Nhân Masan</button>
+        <button class="nav-item" data-view="combo"><span><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM8 7V5h8v2M8 12h8M12 9v6"/></svg></span>COMBO</button>
+        <button class="nav-item" data-view="mbs"><span><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7zM8 12l2.5 2.5L16 9"/></svg></span>HỘI VIÊN</button>
         <button class="nav-item" data-view="display"><span><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span>Trưng bày</button>
         <button class="nav-item" data-view="mcp"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>MCP</button>
         <button class="nav-item" data-view="aso"><span><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>Doanh số & ASO</button>
@@ -2116,7 +2116,7 @@ let BONUS_TEAM = DATA.meta.bonusTeam || 'Lê Ngọc Dự';
 let BONUS_SCOPE = 'Team SS Pháp';
 const LPPC_TARGET = 5.0;
 const state = { month: MONTH_KEYS[MONTH_KEYS.length-1], view: 'overview', team: PHAP_TEAM, rep: '', ward: '', day: '', search: '', mcpUnpurchased: true, mcpTea365:'all', mcpHistory: 'all', mcpProgram: 'all', mcpChannel: 'all', growthProgram: 'seasoning', comboProgram: 'all', bonusProgram: 'seasoning', mbsCondition:'all' };
-const titles = { overview:'Tổng quan KPI', review:'Review 360°', bonus:'Bonus DDKD', monthly:'Chỉ tiêu – Thực hiện theo tháng', growth:'Gắn kết & Tăng doanh số', combo:'Combo mở mới', mbs:'Hội Viên Doanh Nhân Masan', display:'Tracking trưng bày', mcp:'Danh sách MCP', aso:'Doanh số & ASO', salary:'KPI lương theo SS', birthday:'Sinh nhật khách hàng', le:'LE tháng 10', sun:'Plan Chủ Nhật' };
+const titles = { overview:'TỔNG QUAN KPI', review:'REVIEW 360°', bonus:'BONUS DDKD', monthly:'CHỈ TIÊU – THỰC HIỆN THEO THÁNG', growth:'GẮN KẾT & TĂNG DOANH SỐ', combo:'COMBO', mbs:'HỘI VIÊN', display:'TRACKING TRƯNG BÀY', mcp:'DANH SÁCH MCP', aso:'DOANH SỐ & ASO', salary:'KPI LƯƠNG THEO SS', birthday:'SINH NHẬT KHÁCH HÀNG', le:'LE THÁNG 10', sun:'PLAN CHỦ NHẬT' };
 const el = id => document.getElementById(id);
 const fmtNumber = n => new Intl.NumberFormat('vi-VN',{maximumFractionDigits:0}).format(Math.ceil(Number(n)||0));
 const fmtDecimal = n => new Intl.NumberFormat('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:2}).format(Number(n)||0);
@@ -2842,7 +2842,7 @@ function renderMbs(){
 }
 const V11={team:'Nguyễn Văn Pháp',rep:'',css:false,mb:{open:new Set(),tOpen:new Set(['Nguyễn Văn Pháp','Lê Ngọc Dự']),filter:'push',day:{},tab:'all'},cb:{open:new Set(),tOpen:new Set(['Nguyễn Văn Pháp','Lê Ngọc Dự']),prog:'all',pf:{},st:{},day:{}}};
 V11.gr={open:new Set(),tOpen:new Set(['Nguyễn Văn Pháp','Lê Ngọc Dự']),sec:'A',prog:'all',st:{},day:{},pf:{},tab:'all'};
-V11.host=V11.host||(()=>el('content'));
+V11.host=()=>((state.view==='overview'&&document.getElementById('v11ov'))||el('content'));
 const TN={'Nguyễn Văn Pháp':'Team SS Pháp','Lê Ngọc Dự':'Team SS Dự'};
 function v11Css(){if(V11.css)return;V11.css=true;const s=document.createElement('style');s.textContent=`
 #v11{font-family:system-ui,"Be Vietnam Pro",sans-serif;color:#1f2a44;--b:#2f55d4}
@@ -3065,7 +3065,7 @@ function v11Growth(){
  const I0=A?grItems():dpItems(),pf=g.prog,I=pf==='all'?I0:I0.filter(x=>x.pg===pf);
  const okf=x=>A?x.th>=x.ct:x.ok,rwf=x=>A?x.rw:(x.ok?x.mx:0);
  const cells=L=>{const kh=new Set(L.map(x=>x.c)).size,buy=L.filter(x=>x.th>0).length,ct=sm(L,'ct'),th=sm(L,'th'),ok=L.filter(okf).length,near=L.filter(x=>!okf(x)&&x.ct&&x.th/x.ct>=.7).length,rw=sm(L,rwf);
-  return `<td>${N0(L.length)}<small class="s">${N0(kh)} KH</small></td><td>${N0(buy)}</td><td><span class="pill ${L.length&&buy/L.length>=prog?'':'o'}">${P1(L.length?buy/L.length:0)}</span></td>${A?`<td>${M1(sm(L,x=>x.ct/GPR[x.pg][0]))}</td>`:''}<td>${M1(ct)}</td><td><b>${M1(th)}</b></td><td><span class="pill ${ct&&th/ct>=prog?'':'o'}">${P1(ct?th/ct:0)}</span></td><td class="pos">${N0(ok)}</td><td>${P1(L.length?ok/L.length:0)}</td><td style="color:#a86500;font-weight:800">${N0(near)}</td><td><b>${rw>=1e6?M1(rw)+' Tr':Math.round(rw/1000)+'k'}</b></td>`};
+  return `<td>${N0(L.length)}<small class="s">${N0(kh)} KH</small></td><td>${N0(buy)}</td><td><span class="pill ${L.length&&buy/L.length>=prog?'':'o'}">${P1(L.length?buy/L.length:0)}</span></td><td>${M1(ct)}</td><td><b>${M1(th)}</b></td><td><span class="pill ${ct&&th/ct>=prog?'':'o'}">${P1(ct?th/ct:0)}</span></td><td class="pos">${N0(ok)}</td><td>${P1(L.length?ok/L.length:0)}</td><td style="color:#a86500;font-weight:800">${N0(near)}</td><td><b>${rw>=1e6?M1(rw)+' Tr':Math.round(rw/1000)+'k'}</b></td>`};
  const gt=g;
  const detail=(rep,L0)=>{const st=g.st[rep]||'push',dy=g.day[rep]||'all',pp=g.pf[rep]||'all';
   const L=L0.filter(x=>pp==='all'||x.pg===pp);
@@ -3077,29 +3077,29 @@ function v11Growth(){
   const bt=(a,k,t,cur)=>`<button class="btn ${cur===k?'on':''}" data-v-${a}="${k}" data-rep="${esc2(rep)}">${t}</button>`;
   const pgs=[...new Set(L0.map(x=>x.pg))];
   const lab=x=>A?(GP.find(p=>p[0]===x.pg)||[])[1]:x.pg;
-  const rows=S.slice(0,500).map(x=>{const pc=x.ct?x.th/x.ct:0,need=Math.max(x.ct-x.th,0);return `<tr><td class="nm" style="text-align:left">${esc2(x.n)} <small style="color:#6a7596;font-weight:600">${esc2(x.c)} · ${esc2(dayOf(x.visit).join('-'))}</small></td><td><span class="pill ${A?(x.pg==='mi'?'nh':x.pg==='ch'?'off':'on'):'on'}">${esc2(lab(x))}</span>${!A?`<small class="s">${esc2(String(x.lvl||'').split(':')[0])}</small>`:''}</td><td>${A?M2(x.ct/GPR[x.pg][0]):N0(x.mx||0)}</td><td>${A?M2(x.ct):N0(x.ct)}</td><td><b>${A?M2(x.th):N0(x.th)}</b></td><td><span class="pill ${pc>=1?'':'o'}">${x.th>0?P1(pc):'Chưa mua'}</span></td><td class="${need?'neg':'pos'}">${A?M2(need):N0(need)}</td><td>${rwf(x)?`<b class="pos">${N0(rwf(x))}</b>`:'–'}</td></tr>`}).join('');
-  return `<div class="det"><div class="tools"><b class="lb">${esc2(rep)} · ${L.length} lượt KH</b>${bt('grst','push','Chưa đạt mốc',st)}${bt('grst','near','Gần đạt (≥70%)',st)}${bt('grst','none','Chưa mua',st)}${bt('grst','ok','Đã đạt',st)}${bt('grst','all','Tất cả',st)}</div><div class="tools"><span class="lb">Chương trình:</span>${bt('grpf','all','Tất cả',pp)}${pgs.map(k=>bt('grpf',k,esc2(A?(GP.find(p=>p[0]===k)||[])[1]:k),pp)).join('')}</div>${dc}<div class="wrap"><table class="st2"><thead><tr><th class="s1" style="text-align:left">Khách hàng</th><th class="s1">Chương trình</th><th class="s2">${A?'DS nền':'Mốc ĐS'}</th><th class="s2">${A?'Mốc':'Chỉ tiêu'}</th><th class="s3">DS MTD</th><th class="s3">% mốc</th><th class="s4">Còn thiếu</th><th class="s6">Thưởng KH</th></tr></thead><tbody>${rows||'<tr><td colspan="8">Không có KH</td></tr>'}</tbody></table></div></div>`};
- const head=`<tr><th rowspan="2" class="g5" style="text-align:left">Team / ĐDKD</th><th colspan="3" class="g1">Khách hàng tham gia</th><th colspan="${A?4:3}" class="g2">${A?'Doanh số so với mốc thưởng':'Doanh số so với chỉ tiêu'}</th><th colspan="3" class="g3">Kết quả đạt mốc</th><th rowspan="2" class="g6">Thưởng<br>dự kiến KH</th></tr><tr><th class="s1">Lượt KH</th><th class="s1">Đã mua</th><th class="s1">% mua</th>${A?'<th class="s2">DS nền</th>':''}<th class="s2">${A?'Mốc tăng trưởng':'Chỉ tiêu'}</th><th class="s2">DS MTD</th><th class="s2">% mốc</th><th class="s3">Đạt mốc</th><th class="s3">% đạt</th><th class="s3">Gần đạt ≥70%</th></tr>`;
+  const rows=S.slice(0,500).map(x=>{const pc=x.ct?x.th/x.ct:0,need=Math.max(x.ct-x.th,0);return `<tr><td class="nm" style="text-align:left">${esc2(x.n)} <small style="color:#6a7596;font-weight:600">${esc2(x.c)} · ${esc2(dayOf(x.visit).join('-'))}</small></td><td><span class="pill ${A?(x.pg==='mi'?'nh':x.pg==='ch'?'off':'on'):'on'}">${esc2(lab(x))}</span>${!A?`<small class="s">${esc2(String(x.lvl||'').split(':')[0])}</small>`:''}</td><td>${A?M2(x.ct):N0(x.ct)}</td><td><b>${A?M2(x.th):N0(x.th)}</b></td><td><span class="pill ${pc>=1?'':'o'}">${x.th>0?P1(pc):'Chưa mua'}</span></td><td class="${need?'neg':'pos'}">${A?M2(need):N0(need)}</td><td>${rwf(x)?`<b class="pos">${N0(rwf(x))}</b>`:'–'}</td></tr>`}).join('');
+  return `<div class="det"><div class="tools"><b class="lb">${esc2(rep)} · ${L.length} lượt KH</b>${bt('grst','push','Chưa đạt CT',st)}${bt('grst','near','Gần đạt (≥70%)',st)}${bt('grst','none','Chưa mua',st)}${bt('grst','ok','Đã đạt',st)}${bt('grst','all','Tất cả',st)}</div><div class="tools"><span class="lb">Chương trình:</span>${bt('grpf','all','Tất cả',pp)}${pgs.map(k=>bt('grpf',k,esc2(A?(GP.find(p=>p[0]===k)||[])[1]:k),pp)).join('')}</div>${dc}<div class="wrap"><table class="st2"><thead><tr><th class="s1" style="text-align:left">Khách hàng</th><th class="s1">Chương trình</th><th class="s2">Chỉ tiêu</th><th class="s3">DS MTD</th><th class="s3">%TH</th><th class="s4">Còn thiếu</th><th class="s6">Thưởng KH</th></tr></thead><tbody>${rows||'<tr><td colspan="${A?7:8}">Không có KH</td></tr>'}</tbody></table></div></div>`};
+ const head=`<tr><th rowspan="2" class="g5" style="text-align:left">Team / ĐDKD</th><th colspan="3" class="g1">Khách hàng tham gia</th><th colspan="3" class="g2">Doanh số so với chỉ tiêu</th><th colspan="3" class="g3">Kết quả đạt chỉ tiêu</th><th rowspan="2" class="g6">Thưởng<br>dự kiến KH</th></tr><tr><th class="s1">Lượt KH</th><th class="s1">Đã mua</th><th class="s1">% mua</th><th class="s2">Chỉ tiêu</th><th class="s2">DS MTD</th><th class="s2">%TH</th><th class="s3">Đạt CT</th><th class="s3">% đạt</th><th class="s3">Gần đạt ≥70%</th></tr>`;
  const body=treeRows(I,'rep',cells,detail,g);
  const progs=A?GP.map(p=>[p[0],p[1],p[2]]):[...new Set(I0.map(x=>x.pg))].map(k=>[k,k,'linear-gradient(90deg,#1c3fb5,#10183a)']);
- const pcard=progs.map(p=>{const L=I0.filter(x=>x.pg===p[0]),ok=L.filter(okf),buy=L.filter(x=>x.th>0);return `<div class="pc" data-v-grprog="${esc2(p[0])}" style="cursor:pointer${pf===p[0]?';outline:3px solid #2f6bff':''}"><div class="hd" style="background:${p[2]}"><b>${esc2(p[1])}</b><span>${N0(L.length)} lượt KH trong danh sách</span></div><div class="bd"><div class="rule">${A?`DS tích lũy đạt <b>≥${Math.round(GPR[p[0]][0]*100)}%</b> DS nền`:'Đại sứ ngành hàng · chỉ tiêu theo mức trưng bày'}</div><div class="gift" style="font-size:12px">${A?GPR[p[0]][1]:'Thưởng theo mức đạt'}</div><div class="mx"></div><div class="st"><div><b>${N0(L.length)}</b><small>KH áp dụng</small></div><div><b>${N0(buy.length)}</b><small>KH đã mua</small></div><div><b>${N0(ok.length)}</b><small>KH đạt mốc</small></div><div><b>${(()=>{const r=sm(L,rwf);return r>=1e6?M1(r)+'M':Math.round(r/1000)+'k'})()}</b><small>Thưởng KH</small></div></div></div></div>`}).join('');
+ const pcard=progs.map(p=>{const L=I0.filter(x=>x.pg===p[0]),ok=L.filter(okf),buy=L.filter(x=>x.th>0);return `<div class="pc" data-v-grprog="${esc2(p[0])}" style="cursor:pointer${pf===p[0]?';outline:3px solid #2f6bff':''}"><div class="hd" style="background:${p[2]}"><b>${esc2(p[1])}</b><span>${N0(L.length)} lượt KH trong danh sách</span></div><div class="bd"><div class="rule">${A?`Chỉ tiêu tăng trưởng <b>≥${Math.round(GPR[p[0]][0]*100)}%</b>`:'Đại sứ ngành hàng · chỉ tiêu theo mức trưng bày'}</div><div class="gift" style="font-size:12px">${A?GPR[p[0]][1]:'Thưởng theo mức đạt'}</div><div class="mx"></div><div class="st"><div><b>${N0(L.length)}</b><small>KH áp dụng</small></div><div><b>${N0(buy.length)}</b><small>KH đã mua</small></div><div><b>${N0(ok.length)}</b><small>KH đạt CT</small></div><div><b>${(()=>{const r=sm(L,rwf);return r>=1e6?M1(r)+'M':Math.round(r/1000)+'k'})()}</b><small>Thưởng KH</small></div></div></div></div>`}).join('');
  const T=I0,ct=sm(T,'ct'),th=sm(T,'th'),okn=T.filter(okf).length,near=T.filter(x=>!okf(x)&&x.ct&&x.th/x.ct>=.7).length,buy=T.filter(x=>x.th>0).length,rw=sm(T,rwf);
  // table 2: by program
  const t2=progs.map(p=>{const L=I.length&&pf!=='all'&&pf!==p[0]?[]:I0.filter(x=>x.pg===p[0]);return `<tr><td class="nm" style="text-align:left">${esc2(p[1])}</td>${cells(L)}</tr>`}).join('')+`<tr class="tot"><td class="nm" style="text-align:left">Tổng ${A?'Gắn kết':'SP tập trung'}</td>${cells(T)}</tr>`;
  const sb=(k,t)=>`<button class="btn ${g.sec===k?'on':''}" data-v-grsec="${k}" style="border-radius:999px;${g.sec===k?'':'background:'+(k==='A'?'#2e7d6b':'#b45309')+';color:#fff;border-color:transparent'}">${t}</button>`;
  const pb=(k,t)=>`<button class="btn ${pf===k?'on':''}" data-v-grprog="${esc2(k)}">${t}</button>`;
- V11.host().innerHTML=`<div id="v11"><div class="h1">Gắn kết & Sản phẩm tập trung – Tháng 11/2026</div><div class="sub">Tính từ file Tracking KPI T11 đến 02/11 · ${scopeLabel()} · tiến độ thời gian ${P1(prog)}${V11.team==='Lê Ngọc Dự'?' · <b style="color:#d6244f">Team Dự chưa có dữ liệu Tăng DS trong file</b>':''}</div>${v11Filter()}
+ V11.host().innerHTML=`<div id="v11"><div class="h1">GẮN KẾT & SẢN PHẨM TẬP TRUNG – THÁNG 11/2026</div><div class="sub">Tính từ file Tracking KPI T11 đến 02/11 · ${scopeLabel()} · tiến độ thời gian ${P1(prog)}${V11.team==='Lê Ngọc Dự'?' · <b style="color:#d6244f">Team Dự chưa có dữ liệu Tăng DS trong file</b>':''}</div>${v11Filter()}
  <div class="tools">${sb('A','A. Gắn kết')}${sb('B','B. SP tập trung')}</div>
- <div class="ttl" style="background:linear-gradient(90deg,${A?'#1f6f5f,#1c4d44':'#a24a08,#6a2a00'});font-size:20px">${A?'A · GẮN KẾT – TĂNG TRƯỞNG DOANH SỐ':'B · SẢN PHẨM TẬP TRUNG – ĐẠI SỨ NGÀNH HÀNG'}<small>${A?'So với doanh số nền của từng KH · 3 chương trình':'Chỉ tiêu và thưởng theo mức trưng bày của từng KH'}</small></div>
- <div class="cards"><div class="kc"><small>${A?'KH tham gia gắn kết':'KH tham gia SP tập trung'}</small><b>${N0(T.length)}</b><span>${N0(new Set(T.map(x=>x.c)).size)} KH · tất cả chương trình</span></div><div class="kc c2"><small>DS tích lũy / ${A?'mốc tăng trưởng':'chỉ tiêu'}</small><b>${P1(ct?th/ct:0)}</b><div class="bar"><i style="width:${Math.min(100,ct?th/ct*100:0)}%"></i></div><span>${M1(th)} / ${M1(ct)} Tr · tiến độ ${P1(prog)}</span></div><div class="kc c3"><small>Lượt KH đã đạt mốc</small><b style="color:#168a52">${N0(okn)}</b><span>Đã mua ${N0(buy)} · gần đạt (≥70%) ${N0(near)}</span></div><div class="kc c4"><small>Thưởng dự kiến cho KH</small><b>${rw>=1e6?M1(rw)+' Tr':Math.round(rw/1000)+'k'}</b><span>${A?'Tính trên DS đã đạt mốc · 100 điểm = 1 đ':'Theo mức thưởng từng KH đã đạt chỉ tiêu'}</span></div></div>
- <div class="banner" style="font-size:22px;background:linear-gradient(90deg,#3f6b1a,#7aa63a)">CHƯƠNG TRÌNH ${A?'GẮN KẾT':'SP TẬP TRUNG'} · bấm thẻ để lọc</div><div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(${A?300:230}px,1fr))">${pcard}</div>
+ <div class="ttl" style="background:linear-gradient(90deg,${A?'#1f6f5f,#1c4d44':'#a24a08,#6a2a00'});font-size:20px">${A?'A · GẮN KẾT – TĂNG DOANH SỐ':'B · SẢN PHẨM TẬP TRUNG – ĐẠI SỨ NGÀNH HÀNG'}<small>${A?'Chỉ tiêu theo từng KH · 3 chương trình':'Chỉ tiêu và thưởng theo mức trưng bày của từng KH'}</small></div>
+ <div class="cards"><div class="kc"><small>${A?'KH tham gia gắn kết':'KH tham gia SP tập trung'}</small><b>${N0(T.length)}</b><span>${N0(new Set(T.map(x=>x.c)).size)} KH · tất cả chương trình</span></div><div class="kc c2"><small>DS tích lũy / chỉ tiêu</small><b>${P1(ct?th/ct:0)}</b><div class="bar"><i style="width:${Math.min(100,ct?th/ct*100:0)}%"></i></div><span>${M1(th)} / ${M1(ct)} Tr · tiến độ ${P1(prog)}</span></div><div class="kc c3"><small>Lượt KH đã đạt chỉ tiêu</small><b style="color:#168a52">${N0(okn)}</b><span>Đã mua ${N0(buy)} · gần đạt (≥70%) ${N0(near)}</span></div><div class="kc c4"><small>Thưởng dự kiến cho KH</small><b>${rw>=1e6?M1(rw)+' Tr':Math.round(rw/1000)+'k'}</b><span>${A?'Tính trên DS đã đạt chỉ tiêu · 100 điểm = 1 đ':'Theo mức thưởng từng KH đã đạt chỉ tiêu'}</span></div></div>
+ <div class="banner" style="font-size:22px;background:linear-gradient(90deg,#3f6b1a,#7aa63a)">CHƯƠNG TRÌNH ${A?'GẮN KẾT':'SP TẬP TRUNG'} · BẤM THẺ ĐỂ LỌC</div><div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(${A?300:230}px,1fr))">${pcard}</div>
  <div class="sec"><b>1</b>${A?'GẮN KẾT':'SP TẬP TRUNG'} · THEO TEAM / ĐDKD</div><div class="ttl">${A?'Gắn kết':'SP tập trung'} theo Team / ĐDKD · ${pf==='all'?'Tất cả chương trình':esc2(A?(GP.find(p=>p[0]===pf)||[])[1]:pf)}<small>(Triệu, sau chiết khấu)</small></div>
  <div class="tools"><span class="lb">Chương trình:</span>${pb('all','Tất cả')}${progs.map(p=>pb(p[0],esc2(p[1]))).join('')}</div>
  <div class="tools"><button class="btn" data-v-all="gr1">Mở hết ĐDKD</button><button class="btn" data-v-all="gr0">Thu gọn</button><button class="btn dark" data-v-shot="1">📷 Chụp ảnh bảng</button></div>
  <div class="wrap"><table><thead>${head}</thead><tbody>${body}</tbody></table></div>
  <div class="sec o"><b>2</b>${A?'GẮN KẾT':'SP TẬP TRUNG'} · THEO CHƯƠNG TRÌNH</div><div class="ttl">${A?'Gắn kết':'SP tập trung'} theo chương trình · ${scopeLabel()}<small>(Triệu)</small></div>
  <div class="wrap"><table><thead>${head.replace('Team / ĐDKD','Chương trình')}</thead><tbody>${t2}</tbody></table></div>
- <div class="note">${A?'Mốc tăng trưởng = DS nền × % yêu cầu (Mì 120% · Chanté 115% · Cà phê 130%). Thưởng dự kiến = DS tích lũy × hệ số điểm (giới hạn mức tối đa/KH), 100 điểm = 1 đ, chỉ tính KH đã đạt mốc. Phạm vi: Mì = Omachi (trừ Sườn, Bò, Spa Bò gói) + Kokomi 75&90 gói/trộn gói; Chanté = nhãn Chanté; Cà phê = ngành cà phê.':'Chỉ tiêu và mức thưởng lấy từ file SP tập trung (Đại sứ ngành hàng). KH đạt = DS MTD ≥ chỉ tiêu; thưởng = mức thưởng tối đa của KH khi đạt.'} Bấm vào ĐDKD để khoan xuống từng cửa hàng.</div></div>`;
+ <div class="note">${A?'Chỉ tiêu tăng trưởng: Mì ≥120% · Chanté ≥115% · Cà phê ≥130%. Thưởng dự kiến = DS tích lũy × hệ số điểm (giới hạn mức tối đa/KH), 100 điểm = 1 đ, chỉ tính KH đã đạt chỉ tiêu. Phạm vi: Mì = Omachi (trừ Sườn, Bò, Spa Bò gói) + Kokomi 75&90 gói/trộn gói; Chanté = nhãn Chanté; Cà phê = ngành cà phê.':'Chỉ tiêu và mức thưởng lấy từ file SP tập trung (Đại sứ ngành hàng). KH đạt = DS MTD ≥ chỉ tiêu; thưởng = mức thưởng tối đa của KH khi đạt.'} Bấm vào ĐDKD để khoan xuống từng cửa hàng.</div></div>`;
 }
 function renderGrowth11(){v11Mount(v11Growth)}
 function renderMbs11(){v11Mount(v11Mbs)}
@@ -3203,6 +3203,7 @@ function v11FundTable(spec,rows,callMap,id){
  return `<div class="wrap fundwrap ovf"><table class="fund"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
 function v11Fund(){
+ V11.rep=(typeof state!=='undefined'&&state.rep)||'';
  const D=window.T11_DATA,prog=DATA.meta.progress||.04,days=DATA.meta.elapsedDays||1,wd=DATA.meta.workingDays||25;
  const rows=DATA.kpis.filter(k=>(!V11.team||k.team===V11.team)&&(!V11.rep||k.rep===V11.rep));
  const callMap={};D.fund.forEach(x=>callMap[x.name]=x);
@@ -3249,9 +3250,9 @@ function v11Fund(){
  else if(tab==='aso')pane=bar+ovAso();
  else if(tab==='vip')pane=ovVip();
  else pane=ovOn();
- V11.host().innerHTML=`<div id="v11"><div class="h1">Tổng quan tháng 11/2026</div><div class="sub">Đơn hàng đến 02/11 · ${days}/${wd} ngày làm việc · tiến độ ${P1(prog)} · ${scopeLabel()} → ĐDKD</div>${v11Filter()}${cards}<div class="chips">${chips}</div><div class="ttl" style="margin-top:8px">${ttl}</div>${pane}</div>`;
+ V11.host().innerHTML=`<div id="v11"><div class="sec"><b>★</b>TỔNG QUAN THEO TEAM / ĐDKD · ĐƠN ĐẾN 02/11 · ${days}/${wd} NGÀY LÀM VIỆC · ${scopeLabel().toUpperCase()}</div>${cards}<div class="chips">${chips}</div><div class="ttl" style="margin-top:8px">${ttl}</div>${pane}</div>`;
 }
-function renderFund11(){v11Mount(v11Fund)}
+function renderFund11(){renderOverviewBase();const i=document.querySelector('#content .section-intro');if(i){i.insertAdjacentHTML('afterend',overviewCharts(filtered()));i.insertAdjacentHTML('afterend','<div id="v11ov"></div>')}v11Mount(v11Fund)}
 
 function displayPhotoPassed(d){
  if(d.photoSixStatus!=null&&String(d.photoSixStatus).trim())return String(d.photoSixStatus).trim().toLocaleLowerCase('vi')==='đạt';
@@ -4021,7 +4022,42 @@ b.addEventListener('click',function(){d=!d;ap(d);try{localStorage.setItem(K,d?'d
  if(host&&!document.getElementById('presentToggle')){var b=document.createElement('button');b.id='presentToggle';b.type='button';b.className='focus-button';b.title='Trình chiếu từng mục toàn màn hình';b.textContent='▶ Trình chiếu';b.onclick=enter;var f=document.getElementById('focusToggle');f?f.after(b):host.prepend(b)}
 })();
 </script>
-<script id="shot-h2c">/*!
+<style id="theme-v2">:root{--nv:#10183a;--bl:#2f55d4;--or:#f0711c;--bd:#dbe3f3;--tx:#1f2a44}
+html body.theme-original.design-108{background:linear-gradient(180deg,#e8eefa 0%,#f4f7fd 60%)!important;font-family:"Be Vietnam Pro",Manrope,system-ui,sans-serif!important;color:var(--tx)}
+html body.theme-original.design-108 .app-shell{background:transparent!important}
+html body.theme-original.design-108 .sidebar{background:#fff!important;border:0!important;border-bottom:3px solid transparent!important;border-image:linear-gradient(90deg,#10183a,#2f55d4,#f0711c) 1!important;box-shadow:0 6px 24px rgba(20,40,110,.10)!important}
+html body.theme-original.design-108 .sidebar .brand div,html body.theme-original.design-108 .sidebar .brand *{color:var(--nv)!important}
+html body.theme-original.design-108 .sidebar nav .nav-item{text-transform:uppercase!important;font-size:11.5px!important;letter-spacing:.45px!important;font-weight:800!important;color:#3a4670!important;border-radius:999px!important;padding:9px 13px!important;background:transparent!important;box-shadow:none!important;border:1px solid transparent!important}
+html body.theme-original.design-108 .sidebar nav .nav-item span{color:#6a7bb0!important;background:transparent!important}
+html body.theme-original.design-108 .sidebar nav .nav-item:hover{background:#eaf0ff!important;color:var(--bl)!important}
+html body.theme-original.design-108 .sidebar nav .nav-item.active,html body.theme-original.design-108 .sidebar nav .nav-item.active:hover{background:var(--nv)!important;color:#fff!important;box-shadow:0 4px 12px rgba(16,24,58,.28)!important}
+html body.theme-original.design-108 .sidebar nav .nav-item.active span{color:#f2c200!important}
+html body.theme-original.design-108 .sidebar-note{background:#f1f5ff!important;color:var(--tx)!important;border:1px solid var(--bd)!important}
+html body.theme-original.design-108 .sidebar-note *{color:var(--tx)!important}
+html body.theme-original.design-108 .topbar h1,html body.theme-original.design-108 .page-heading h1,html body.theme-original.design-108 .section-intro h1,html body.theme-original.design-108 .section-intro h2{color:var(--nv)!important;font-weight:800!important;letter-spacing:.2px}
+html body.theme-original.design-108 .filterbar,html body.theme-original.design-108 .panel,html body.theme-original.design-108 .source-trust-strip,html body.theme-original.design-108 .export-dashboard-bar,html body.theme-original.design-108 .ss-scope-controls{background:#fff!important;border:1px solid var(--bd)!important;border-radius:16px!important;box-shadow:0 4px 18px rgba(20,40,110,.07)!important}
+html body.theme-original.design-108 .filterbar label{color:#4a5678!important}
+html body.theme-original.design-108 select,html body.theme-original.design-108 input[type=search],html body.theme-original.design-108 input[type=text]{background:#f6f8fd!important;border:1px solid var(--bd)!important;color:var(--tx)!important;border-radius:10px!important}
+html body.theme-original.design-108 .ghost-button,html body.theme-original.design-108 .header-actions button{border-radius:10px!important}
+html body.theme-original.design-108 .welcome.welcome-v108{background:linear-gradient(120deg,#ffffff 0%,#e7eeff 100%)!important;border:1px solid var(--bd)!important;border-radius:18px!important;box-shadow:0 6px 24px rgba(20,40,110,.08)!important}
+html body.theme-original.design-108 .welcome.welcome-v108 :is(h1,h2,h3,strong,b){color:var(--nv)!important}
+html body.theme-original.design-108 .welcome.welcome-v108 :is(p,span,small,em){color:#4a5678!important}
+html body.theme-original.design-108 .metric-card,html body.theme-original.design-108 .foundation-card,html body.theme-original.design-108 .card{background:#fff!important;border:1px solid var(--bd)!important;border-radius:14px!important;box-shadow:0 3px 14px rgba(20,40,110,.06)!important}
+html body.theme-original.design-108 .panel-head h3,html body.theme-original.design-108 .digital-kicker{color:var(--nv)!important}
+html body.theme-original.design-108 .digital-kicker{letter-spacing:.8px}
+html body.theme-original.design-108 table th{background:#1c2f8c!important;color:#fff!important}
+html:root body.theme-original.design-108{--canvas:#eef2fb;--paper:#ffffff;--accent-soft:#e7eeff;--accent-edge:#c9d6f5;--accent:#2f55d4;--blue:#2f55d4;--blue2:#10183a;--cyan:#2f55d4;--tile:#fff;--tile-soft:#f3f6fd;--tile-edge:#dbe3f3;--exec-bg:#eef2fb;--exec-blue:#2f55d4;--exec-line:#dbe3f3;--exec-navy:#10183a;--navy:#10183a}
+html body.theme-original.design-108 #nav .nav-item.active,html body.theme-original.design-108 #nav .nav-item.active:hover{background:#10183a!important;color:#fff!important;border-color:#10183a!important}
+html body.theme-original.design-108 #nav .nav-item.active *{color:#fff!important}
+html body.theme-original.design-108 #nav .nav-item{color:#3a4670!important}
+html body.theme-original.design-108 .welcome,html body.theme-original.design-108 .welcome.welcome-v108{background:linear-gradient(120deg,#fff,#e7eeff)!important}
+html body.theme-original.design-108 .welcome h1,html body.theme-original.design-108 .welcome h2{color:#10183a!important}
+html body.theme-original.design-108 .filterbar,html body.theme-original.design-108 .ss-scope-controls,html body.theme-original.design-108 .export-dashboard-bar,html body.theme-original.design-108 .panel{background:#fff!important}
+html body.theme-original.design-108 .welcome .kpi-ring,html body.theme-original.design-108 .welcome [class*=ring]{background:transparent!important}
+html body.theme-original.design-108 .welcome,html body.theme-original.design-108 .welcome.welcome-v108{background-image:linear-gradient(120deg,#fff,#e7eeff)!important;background-color:#fff!important}
+html body.theme-original.design-108 :is(.ghost-button,.chip-button,.scope-pill,.status-pill,.progress-ring,.ring,[class*=ring] > div){background-color:#f1f5ff!important;color:#10183a!important}
+html body.theme-original.design-108 select{background-color:#f6f8fd!important}
+</style><script id="shot-h2c">/*!
  * html2canvas 1.4.1 <https://html2canvas.hertzen.com>
  * Copyright (c) 2022 Niklas von Hertzen <https://hertzen.com>
  * Released under MIT License
