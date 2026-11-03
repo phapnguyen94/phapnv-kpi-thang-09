@@ -2838,14 +2838,84 @@ function renderMbs(){
  table(['Mã CH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','DDKD','Loại HV','DS nền tảng','DS thực hiện','% DS','KQ duy trì','Chi tiết duy trì','KQ mở mới','Chi tiết mở mới','Hệ số thưởng','Tiền thưởng','Kết quả thưởng','Điều kiện MBS còn thiếu',...(gameApplicable()?['Đã có quay game','Chuẩn quay game','Còn thiếu','Thiếu gì để quay game','Kết quả quay game']:[])],rows.map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person customer-cell" title="${esc(d.customer)}">${customerNameLink(d)}</td><td class="muted address-cell" title="${esc(d.address)}">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${repNameLink(d.rep)}</td><td><span class="member-type-pill ${String(d.memberType).startsWith('CAT')?'cat':'brand'}">${uiIcon(String(d.memberType).startsWith('CAT')?'layers':'gift')}${esc(d.memberType)}</span></td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td><strong>${esc(d.maintenance)}</strong><small class="condition-count">${fmtNumber(d.maintenanceAchieved)} / ${fmtNumber(d.maintenanceRequired)} ${memberUnit(d)} đạt MOQ</small></td><td>${catDetailCell(d.maintenanceDetail,d.maintenance)}</td><td><strong>${esc(d.newBrand)}</strong><small class="condition-count">${fmtNumber(d.newBrandAchieved)} ${memberUnit(d)} đạt MOQ</small></td><td>${catDetailCell(d.newBrandDetail,d.newBrand)}</td><td>${fmtPct(d.rewardRate)}</td><td class="money"><strong>${fmtFull(d.estimatedReward)}</strong></td><td><span class="status-pill ${d.rewardEligible?'green':'red'}">${esc(d.rewardStatus)}</span></td><td class="muted">${esc(memberWording(d.missing,memberUnit(d)))}</td>${gameApplicable()?`<td>${fmtNumber(d.gameCurrent)}</td><td>${fmtNumber(d.gameTarget)}</td><td><strong class="${d.gameMissingCount?'red':'green'}">${fmtNumber(d.gameMissingCount)}</strong></td><td class="muted">${esc(d.gameMissingDetail)}</td><td><span class="status-pill ${d.gameEligible?'green':'red'}">${esc(d.gameStatus)}</span></td>`:''}</tr>`),'mbs-table');
  bindMemberConditionFilter();
 }
+const MBS11={open:new Set(),filter:'push',day:{},css:false};
+function mbs11Css(){if(MBS11.css)return;MBS11.css=true;const s=document.createElement('style');s.textContent=`
+#mb11{font-family:system-ui,"Be Vietnam Pro",sans-serif;color:#1f2a44}
+#mb11 .mb-title{background:linear-gradient(90deg,#1c2f8c,#2f55d4);color:#fff;border-radius:12px;padding:12px 18px;font-weight:800;font-size:18px;margin:6px 0 12px}
+#mb11 .mb-title small{font-weight:600;font-size:12px;opacity:.85;margin-left:8px}
+#mb11 .mb-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+#mb11 .mb-btn{border:1px solid #cfd6e6;background:#fff;color:#1f2a44;border-radius:8px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer}
+#mb11 .mb-btn.dark{background:#10183a;color:#fff;border-color:#10183a}
+#mb11 .mb-btn.on{background:#2f6bff;color:#fff;border-color:#2f6bff}
+#mb11 .mb-wrap{overflow:auto;border-radius:12px;border:1px solid #d5dcec;background:#fff}
+#mb11 table{border-collapse:collapse;width:100%;font-size:13px}
+#mb11 th,#mb11 td{padding:9px 10px;text-align:center;border-bottom:1px solid #e6eaf4;white-space:nowrap}
+#mb11 thead th{color:#fff;font-weight:800}
+#mb11 .g1{background:#2f55d4}#mb11 .g2{background:#2e9e6b}#mb11 .g3{background:#7a3de0}#mb11 .g4{background:#d6244f}#mb11 .g5{background:#1c2f8c}
+#mb11 .s1{background:#2748b8}#mb11 .s2{background:#268a5c}#mb11 .s3{background:#6a2fc9}#mb11 .s4{background:#bd1c43}
+#mb11 td.nm{text-align:left;font-weight:700}
+#mb11 tr.tot td{background:#dfe8fb;font-weight:800}
+#mb11 tr.team td{background:#fbefb5;font-weight:800}
+#mb11 tr.rep{cursor:pointer}#mb11 tr.rep:hover td{background:#f3f6ff}
+#mb11 tr.rep td.nm{color:#1f4fd0;padding-left:26px}
+#mb11 small{display:block;color:#6a7596;font-weight:600;font-size:11px}
+#mb11 .neg{color:#d6244f;font-weight:800}#mb11 .pos{color:#168a52;font-weight:800}
+#mb11 .pill{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;background:#e9f6ee;color:#168a52}
+#mb11 .pill.o{background:#fff1d6;color:#a86500}#mb11 .pill.g{background:#e8ebf3;color:#58627f}
+#mb11 .det{background:#f7f9ff;padding:12px;text-align:left}
+#mb11 .det .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-weight:800}
+#mb11 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+#mb11 .dayc{border:2px solid #e1e6f3;background:#fff;border-radius:10px;padding:8px;text-align:center;cursor:pointer;font-size:12px}
+#mb11 .dayc b{display:block;font-size:15px}#mb11 .dayc.on{border-color:#2f6bff}
+#mb11 .dayc em{display:block;font-style:normal;color:#168a52}#mb11 .dayc i{display:block;font-style:normal;color:#d6244f}
+#mb11 .st thead th{background:#2f3f9a}
+#mb11 .st td.nm small{display:inline;margin-left:4px}
+#mb11 .tp{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;background:#e1f6e9;color:#168a52}
+#mb11 .tp.ds{background:#ece4ff;color:#6a2fc9}
+`;document.head.appendChild(s)}
+function mbs11Run(){
+ const rows=filtered().filter(d=>d.m3!==undefined);const M=n=>(n/1e6).toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
+ const isDs=d=>String(d.memberType).includes('DAISU');
+ const brands=d=>[d.nn,d.cs,d.kk,d.chn];
+ const agg=L=>{const ct=sumRows(L,'target'),th=sumRows(L,'actual'),m3=sumRows(L,'m3'),ds=L.filter(isDs),ok4=ds.filter(d=>brands(d).every(v=>v>=150000)).length;
+  return {n:L.length,ds:ds.length,vip:L.length-ds.length,bought:L.filter(d=>d.actual>0).length,ct,th,m3,pct:ct?th/ct:0,gap:th-m3,l1:L.filter(d=>d.lvl>=1).length,l2:L.filter(d=>d.lvl>=2).length,l3:L.filter(d=>d.lvl>=3).length,ok4,dsn:ds.length,ok:L.filter(d=>d.rewardEligible).length}};
+ const reps={};rows.forEach(d=>{(reps[d.rep]??=[]).push(d)});
+ const names=Object.keys(reps).sort((a,b)=>sumRows(reps[b],'target')-sumRows(reps[a],'target'));
+ const cells=(a)=>`<td>${fmtNumber(a.n)}<small>VIP ${a.vip} · ĐS ${a.ds}</small></td><td>${fmtNumber(a.bought)}</td><td><span class="pill ${a.n&&a.bought/a.n>=.3?'':'o'}">${fmtPct(a.n?a.bought/a.n:0)}</span></td><td>${M(a.ct)}</td><td><b>${M(a.th)}</b></td><td><span class="pill ${a.pct>=1?'':'o'}">${fmtPct(a.pct)}</span></td><td class="${a.gap<0?'neg':'pos'}">${M(a.gap)}</td><td>${a.l1}</td><td>${a.l2}</td><td>${a.l3}</td><td>${a.ok4} / ${a.dsn}</td><td><span class="pill ${a.ok?'':'g'}">${a.ok}KH</span></td>`;
+ const dayOf=d=>String(d.routeDay||'').split(',').map(x=>x.trim()).filter(Boolean).map(x=>x.replace('Thứ ','T').replace('Chủ nhật','CN'));
+ const detail=(nm)=>{
+  const L=reps[nm],fl=MBS11.filter,dy=MBS11.day[nm]||'all';
+  const byF=L.filter(d=>fl==='all'?true:fl==='none'?d.actual<=0:fl==='m1'?d.lvl>=1:d.actual<d.m3);
+  const dayList=['T2','T3','T4','T5','T6','T7','CN'].filter(x=>L.some(d=>dayOf(d).includes(x)));
+  const dayCards=`<div class="days"><div class="dayc ${dy==='all'?'on':''}" data-mb-day="all" data-rep="${esc(nm)}"><b>Cả tuần</b>${L.length} KH<em>${L.filter(d=>d.lvl>=1).length} đạt M1+</em><i>${L.filter(d=>d.actual<=0).length} chưa mua</i></div>${dayList.map(x=>{const Q=L.filter(d=>dayOf(d).includes(x));return `<div class="dayc ${dy===x?'on':''}" data-mb-day="${x}" data-rep="${esc(nm)}"><b>${x}</b>${Q.length} KH<em>${Q.filter(d=>d.lvl>=1).length} đạt M1+</em><i>${Q.filter(d=>d.actual<=0).length} chưa mua</i></div>`}).join('')}</div>`;
+  const S=(dy==='all'?byF:byF.filter(d=>dayOf(d).includes(dy))).slice().sort((a,b)=>(b.m3-b.actual)-(a.m3-a.actual));
+  const fb=(k,t)=>`<button type="button" class="mb-btn ${fl===k?'on':''}" data-mb-f="${k}">${t}</button>`;
+  const money=v=>v>0?`<span class="pos">${v>=1e6?M(v):Math.round(v/1000)+'k'}</span>`:'–';
+  const tr=S.map(d=>{const need=Math.max(d.m3-d.actual,0),n95=Math.max(d.target*.95-d.actual,0),nb=brands(d).filter(v=>v>=150000).length;
+   return `<tr><td class="nm">${esc(d.customer)}<small>${esc(d.customerCode)} · ${esc(dayOf(d).join('-'))}</small></td><td><span class="tp ${isDs(d)?'ds':''}">${isDs(d)?'Đại sứ':'VIP'}</span></td><td>${M(d.target)}</td><td>${d.actual?M(d.actual):'0,00'}</td><td><span class="pill ${d.achievement>=1?'':'o'}">${fmtPct(d.achievement)}</span></td><td class="${n95?'neg':'pos'}">${n95?M(n95):'✓'}</td><td class="${need?'neg':'pos'}">${need?M(need):'✓'}</td><td>${money(d.chn)}</td><td>${money(d.cs)}</td><td>${money(d.kk)}</td><td>${money(d.nn)}</td><td>${money(Math.max(d.actual-d.b4,0))}</td><td>${d.lvl?'M'+d.lvl:'–'}${isDs(d)?`<small>${nb}/4 nhãn</small>`:''}</td></tr>`}).join('');
+  return `<div class="det"><div class="hd">${esc(nm)} <span style="font-weight:600;color:#6a7596">${L.length} KH hội viên</span>${fb('push','Cần đẩy (dưới 105%)')}${fb('none','Chưa mua')}${fb('m1','Đạt M1+')}${fb('all','Tất cả')}</div>${dayCards}<div class="mb-wrap"><table class="st"><thead><tr><th>Khách hàng</th><th>Loại</th><th>CT nền</th><th>Đã mua</th><th>%</th><th>Thiếu đến 95%</th><th>Thiếu đến 105% (M3)</th><th>Chanté</th><th>Chinsu</th><th>Kokomi</th><th>Nam Ngư</th><th>Others</th><th>Mức</th></tr></thead><tbody>${tr||'<tr><td colspan="13">Không có KH phù hợp bộ lọc</td></tr>'}</tbody></table></div></div>`;
+ };
+ const T=agg(rows);
+ let body=`<tr class="tot"><td class="nm">TỔNG (${names.length} ĐDKD)</td>${cells(T)}</tr><tr class="team"><td class="nm">▾ Team SS Pháp (${names.length})</td>${cells(T)}</tr>`;
+ names.forEach(nm=>{const a=agg(reps[nm]),o=MBS11.open.has(nm);
+  body+=`<tr class="rep" data-mb-rep="${esc(nm)}"><td class="nm">${o?'▾':'▸'} ${esc(nm)}</td>${cells(a)}</tr>`+(o?`<tr><td colspan="13" style="padding:0">${detail(nm)}</td></tr>`:'');});
+ el('content').innerHTML=`<div id="mb11"><div class="mb-title">Hội viên doanh nhân theo Team và ĐDKD<small>(Triệu, sau chiết khấu • mục tiêu = Mức 3: 105% chỉ tiêu nền)</small></div>
+ <div class="mb-tools"><button class="mb-btn" data-mb-all="1">Mở hết ĐDKD</button><button class="mb-btn" data-mb-all="0">Thu gọn</button><button class="mb-btn dark" data-mb-shot="1">📷 Chụp ảnh bảng</button></div>
+ <div class="mb-wrap"><table><thead><tr><th rowspan="2" class="g5" style="text-align:left">Team / ĐDKD</th><th colspan="3" class="g1">Khách hàng hội viên</th><th colspan="4" class="g2">Doanh số so với chỉ tiêu nền</th><th colspan="3" class="g3">Số KH theo mức đạt</th><th class="g4">VIP Đại sứ</th><th rowspan="2" class="g5">KH đủ ĐK<br>xét thưởng</th></tr>
+ <tr><th class="s1">Tổng KH</th><th class="s1">Đã mua</th><th class="s1">% mua</th><th class="s2">CT nền</th><th class="s2">Thực hiện</th><th class="s2">%TH</th><th class="s2">Còn thiếu đến 105%</th><th class="s3">≥95% (M1)</th><th class="s3">≥100% (M2)</th><th class="s3">≥105% (M3)</th><th class="s4">Đủ 4 nhãn ≥150k</th></tr></thead><tbody>${body}</tbody></table></div></div>`;
+ document.querySelectorAll('#mb11 [data-mb-rep]').forEach(()=>{});
+}
 function renderMbs11(){
- const scope=filtered(),rows=scope,t=sumRows(rows,'target'),a=sumRows(rows,'actual'),reward=sumRows(rows,'estimatedReward'),passed=rows.filter(d=>d.rewardEligible).length,nv1=rows.filter(d=>d.salesEligible).length,nv2=rows.filter(d=>d.catBrandEligible).length,zero=rows.filter(d=>!d.actual).length;
- const lv=n=>rows.filter(d=>Number(d.lvl)===n).length;
- const grp={};rows.forEach(d=>{(grp[d.memberType]??=[]).push(d)});
- const grpTable=table(['Nhóm hội viên','Số KH','KH đã mua','CT nền','Thực hiện','% đạt','Đạt NV1 (Mức 1+)','Đạt NV2 (nhãn trọng điểm)','Đạt thưởng','Thưởng dự kiến'],Object.entries(grp).sort((x,y)=>y[1].length-x[1].length).map(([g,L])=>{const tt=sumRows(L,'target'),aa=sumRows(L,'actual');return `<tr><td><span class="member-type-pill ${g.includes('DAISU')?'cat':'brand'}">${esc(g)}</span></td><td>${fmtNumber(L.length)}</td><td>${fmtNumber(L.filter(d=>d.actual>0).length)}</td><td class="money">${fmtFull(tt)}</td><td class="money">${fmtFull(aa)}</td><td><strong class="${color(tt?aa/tt:0)}">${fmtPct(tt?aa/tt:0)}</strong></td><td>${fmtNumber(L.filter(d=>d.salesEligible).length)}</td><td>${fmtNumber(L.filter(d=>d.catBrandEligible).length)}</td><td>${fmtNumber(L.filter(d=>d.rewardEligible).length)}</td><td class="money">${fmtFull(sumRows(L,'estimatedReward'))}</td></tr>`}),'mbs-grp').replace('<h3>Chi tiết</h3>','<h3>Tổng hợp theo nhóm hội viên</h3>');
- const body=table(['Mã CH','Khách hàng','Phường / Xã','Thứ','DDKD','Nhóm HV','CT nền','Mức 3 (105%)','Thực hiện','% nền','Mức đạt','Nam Ngư','Chinsu','Kokomi','Chanté','NV2 nhãn trọng điểm','DS tính thưởng','Kết quả','Thưởng dự kiến','Điều kiện còn thiếu'],[...rows].sort((x,y)=>y.actual-x.actual).map(d=>`<tr><td>${esc(d.customerCode)}</td><td class="person customer-cell">${customerNameLink(d)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${repNameLink(d.rep)}</td><td><span class="member-type-pill ${String(d.memberType).includes('DAISU')?'cat':'brand'}">${esc(d.memberType)}</span></td><td class="money">${fmtFull(d.target)}</td><td class="money">${fmtFull(d.m3)}</td><td class="money">${fmtFull(d.actual)}</td><td><strong class="${color(d.achievement)}">${fmtPct(d.achievement)}</strong></td><td>${Number(d.lvl)?'Mức '+d.lvl:'—'}</td><td class="money">${fmtFull(d.nn)}</td><td class="money">${fmtFull(d.cs)}</td><td class="money">${fmtFull(d.kk)}</td><td class="money">${fmtFull(d.chn)}</td><td>${esc(d.nv2||'—')}</td><td class="money">${fmtFull(d.dsTT)}</td><td><span class="status-pill ${d.rewardEligible?'green':'red'}">${esc(d.rewardStatus)}</span></td><td class="money"><strong>${fmtFull(d.estimatedReward)}</strong></td><td class="muted">${esc(d.missing||'')}</td></tr>`),'mbs-table');
- el('content').innerHTML=intro('Hội Viên Doanh Nhân Masan','Tháng 11 • NV1: DS total Masan đạt Mức 1/2/3 = 95% / 100% / 105% chỉ tiêu nền (thưởng 1,2% / 1,5% / 2%) • NV2: nhãn trọng điểm (Đại sứ ≥150.000đ/nhãn; VIP còn lại tổng 4 nhãn ≥500.000đ)',passed,'KH đạt thưởng')+
- `<div class="cards">${metricCard('TỔNG KH HỘI VIÊN',fmtNumber(rows.length),`${fmtNumber(zero)} quầy chưa phát sinh DS`,null,'◎')}${metricCard('DS NỀN TẢNG',fmtMoney(t),'Chỉ tiêu nền T11',null,'◇')}${metricCard('DS THỰC HIỆN',fmtMoney(a),status(t?a/t:0),t?a/t:0,'↗')}${metricCard('ĐẠT NV1 (≥ MỨC 1)',fmtNumber(nv1),`Mức 1: ${lv(1)} • Mức 2: ${lv(2)} • Mức 3: ${lv(3)}`,null,'◇')}${metricCard('ĐẠT NV2',fmtNumber(nv2),'Nhãn trọng điểm',null,'★')}${metricCard('KH ĐẠT THƯỞNG',fmtNumber(passed),'NV1 + NV2',null,'◇')}${metricCard('THƯỞNG DỰ KIẾN',fmtMoney(reward),'Theo điều kiện hiện tại',null,'₫')}</div>`+grpTable+body;
+ mbs11Css();mbs11Run();
+ const c=el('content');if(!c._mb11){c._mb11=1;c.addEventListener('click',e=>{
+  if(!c.querySelector('#mb11'))return;const t=e.target;
+  const f=t.closest('[data-mb-f]');if(f){MBS11.filter=f.dataset.mbF;mbs11Run();return}
+  const dd=t.closest('[data-mb-day]');if(dd){MBS11.day[dd.dataset.rep]=dd.dataset.mbDay;mbs11Run();return}
+  const a=t.closest('[data-mb-all]');if(a){if(a.dataset.mbAll==='1')filtered().forEach(d=>MBS11.open.add(d.rep));else MBS11.open.clear();mbs11Run();return}
+  if(t.closest('[data-mb-shot]')){const b=[...document.querySelectorAll('button')].find(x=>/Chụp ảnh$/.test(x.textContent.trim())&&!x.dataset.mbShot);if(b)b.click();return}
+  if(t.closest('.det'))return;
+  const r=t.closest('[data-mb-rep]');if(r){const n=r.dataset.mbRep;MBS11.open.has(n)?MBS11.open.delete(n):MBS11.open.add(n);mbs11Run()}
+ })}
 }
 
 function displayPhotoPassed(d){
