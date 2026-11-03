@@ -2955,6 +2955,23 @@ function treeRows(items,repKey,cells,detail,S,rowsAll){
 }
 /* ============ COMBO ============ */
 const CP=[['off','KH lẻ L1 OFF','OFF'],['on','Total KH L1 ON','ON'],['nh','L2 Quán ăn + Nhà hàng','NH']];
+function v11CombDay(){
+ const D=window.T11_DATA,names=D.reps.filter(inScope).map(r=>r.name),pf=V11.cb.prog;
+ const ev=(D.cev||[]).filter(e=>names.includes(e.rep)&&(pf==='all'||e.g===pf));
+ const asOf=Math.max(1,parseInt(String(DATA.meta.displayUpdated||'03/11').slice(0,2),10)-1),Y=2026,Mo=11,nd=new Date(Y,Mo,0).getDate();
+ const dn=['CN','T2','T3','T4','T5','T6','T7'],dow=d=>new Date(Y,Mo-1,d).getDay();
+ const cnt={};ev.forEach(e=>{const d=+e.d.slice(8,10);const k=e.rep+'|'+d;cnt[k]=(cnt[k]||0)+1});
+ const days=Array.from({length:nd},(_,i)=>i+1);
+ const head=`<tr><th class="nm" rowspan="2" style="text-align:left;min-width:190px">ĐDKD</th>${days.map(d=>`<th class="${dow(d)===0?'cn':''}">${d}</th>`).join('')}<th rowspan="2">Tổng đơn</th><th rowspan="2">Ngày đã bán</th><th rowspan="2" class="red">Ngày chưa bán</th></tr><tr>${days.map(d=>`<th class="${dow(d)===0?'cn':''}" style="font-weight:600;font-size:10.5px">${dn[dow(d)]}</th>`).join('')}</tr>`;
+ let tot=[0,0,0];
+ const rows=names.map(n=>{let s=0,sold=0,miss=0;const tds=days.map(d=>{const c=cnt[n+'|'+d]||0;
+   if(d>asOf)return '<td class="cf">·</td>';
+   if(dow(d)===0)return c?`<td class="cs">${c}</td>`:'<td class="cc">CN</td>';
+   if(c){s+=c;sold++;return `<td class="cs">${c}</td>`}miss++;return '<td class="cr">0</td>'}).join('');
+   tot[0]+=s;tot[1]+=sold;tot[2]+=miss;
+   return `<tr><td class="nm">${typeof repNameLink==='function'?repNameLink(n):esc2(n)}</td>${tds}<td><b>${s}</b></td><td><b class="gn">${sold}</b></td><td><b class="rd">${miss}</b></td></tr>`}).join('');
+ const tr=`<tr class="tot"><td class="nm">TỔNG (${names.length} ĐDKD)</td>${days.map(d=>{if(d>asOf)return '<td class="cf">·</td>';const c=names.reduce((t,n)=>t+(cnt[n+'|'+d]||0),0);return dow(d)===0&&!c?'<td class="cc">CN</td>':`<td class="${c?'cs':'cr'}">${c}</td>`}).join('')}<td><b>${tot[0]}</b></td><td><b class="gn">${tot[1]}</b></td><td><b class="rd">${tot[2]}</b></td></tr>`;
+ return `<div class="sec"><b>2</b>COMBO BÁN THEO NGÀY · TỪNG ĐDKD</div><div class="ttl">Số đơn combo bán mỗi ngày<small>(xanh = có bán, đỏ = chưa bán · tính đến ${asOf}/11 · ${pf==='all'?'tất cả chương trình':'chương trình đang chọn'})</small></div><div class="ovf cdy"><table class="cdt"><thead>${head}</thead><tbody>${tr}${rows}</tbody></table></div><div class="note">Mỗi số = số đơn có hàng tặng combo trong ngày. Ô <b style="color:#12a66a">xanh</b>: ngày có bán · ô <b style="color:#d6244f">đỏ</b>: ngày làm việc chưa bán · CN: nghỉ, không tính vào “ngày chưa bán” · dấu “·”: ngày chưa đến. Ví dụ đến ngày 10 mà bán 2 ngày → 8 ngày chưa bán (không tính Chủ nhật).</div>`}
 function v11Combo(){
  const D=window.T11_DATA,C=D.cust.filter(inScope),cp=D.meta.combo;
  const has=(x,p)=>x.prog.includes(p);
@@ -2985,7 +3002,7 @@ function v11Combo(){
  <div class="tools"><span class="lb">Chương trình:</span>${pb('all','Tất cả')}${pb('off','KH lẻ L1 OFF')}${pb('on','Total KH L1 ON')}${pb('nh','L2 Quán ăn + Nhà hàng')}</div>
  <div class="tools"><button class="btn" data-v-all="cb1">Mở hết ĐDKD</button><button class="btn" data-v-all="cb0">Thu gọn</button><button class="btn dark" data-v-shot="1">📷 Chụp ảnh bảng</button></div>
  <div class="wrap"><table><thead><tr><th rowspan="2" class="g5" style="text-align:left">Team / ĐDKD</th><th colspan="4" class="g1">Danh sách KH combo</th><th colspan="5" class="g2">Thực hiện combo</th><th colspan="3" class="g6">Nhóm KH đã mua</th></tr><tr><th class="s1">Số lượng KH</th><th class="s1">CTSO</th><th class="s1">DS MTD</th><th class="s1">% chỉ tiêu</th><th class="s2">KH đã mua</th><th class="s2">% KH mua</th><th class="s2">KH đã nhận</th><th class="s2">Suất combo</th><th class="s2">% KH tham gia</th><th class="s6">CTSO nhóm</th><th class="s6">DS MTD nhóm</th><th class="s6">%</th></tr></thead><tbody>${body}</tbody></table></div>
- <div class="note">CTSO = chỉ tiêu KH tháng (Tr) · DS MTD = doanh số lũy kế đến 02/11 · "Nhóm KH đã mua" = CT và DS của các KH đã có đơn. KH đã nhận combo xác định từ dòng hàng tặng (FREE_ITEM_FLAG = Y). Bấm vào ĐDKD để xem từng cửa hàng.</div></div>`;
+ <div class="note">CTSO = chỉ tiêu KH tháng (Tr) · DS MTD = doanh số lũy kế đến 02/11 · "Nhóm KH đã mua" = CT và DS của các KH đã có đơn. KH đã nhận combo xác định từ dòng hàng tặng (FREE_ITEM_FLAG = Y). Bấm vào ĐDKD để xem từng cửa hàng.</div>${v11CombDay()}</div>`;
 }
 /* ============ HỘI VIÊN ============ */
 function v11Mbs(){
@@ -4271,6 +4288,25 @@ html body.theme-original.design-108 #content .bonus-ranking :is(div,span,i):not(
 html body.theme-original.design-108 #content .bonus-ranking [class*=bar],html body.theme-original.design-108 #content .bonus-ranking [class*=track]{background-color:#e8eefb!important}
 html body.theme-original.design-108 #content .bonus-rule-panel :is(.bonus-rule-metrics span,p){background:#f5f8ff!important}
 html body.theme-original.design-108 #content .bonus-rank-label b{background:#eef3ff!important;color:#2f55d4!important}
+/* v121 combo theo ngày + viền nhẹ phân cách */
+html body.theme-original.design-108 #content #v11 table.cdt{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+html body.theme-original.design-108 #content #v11 table.cdt th{background:#1c2f8c!important;color:#fff!important;padding:5px 6px!important;text-align:center;border-left:1px solid rgba(255,255,255,.2);white-space:nowrap}
+html body.theme-original.design-108 #content #v11 table.cdt th.cn{background:#6a7599!important}html body.theme-original.design-108 #content #v11 table.cdt th.red{background:#c2254a!important}
+html body.theme-original.design-108 #content #v11 table.cdt td{padding:4px 6px!important;text-align:center;border-bottom:1px solid #e3e9f6;border-left:1px solid #eef2fb;min-width:32px;background:#fff!important}
+html body.theme-original.design-108 #content #v11 table.cdt td.nm{text-align:left;position:sticky;left:0;z-index:2;font-weight:700;min-width:190px;background:#fff!important}
+html body.theme-original.design-108 #content #v11 table.cdt td.cs{background:#d9f5e6!important;color:#0b7a46;font-weight:800}
+html body.theme-original.design-108 #content #v11 table.cdt td.cr{background:#ffdde4!important;color:#c2254a;font-weight:800}
+html body.theme-original.design-108 #content #v11 table.cdt td.cc{background:#eef0f6!important;color:#8a94b3;font-size:10.5px}
+html body.theme-original.design-108 #content #v11 table.cdt td.cf{background:#f7f8fc!important;color:#c0c7dc}
+html body.theme-original.design-108 #content #v11 table.cdt tr.tot td{border-top:2px solid #2f55d4;font-weight:800}
+html body.theme-original.design-108 #content #v11 table.cdt .gn{color:#0b7a46}html body.theme-original.design-108 #content #v11 table.cdt .rd{color:#c2254a}
+/* viền nhẹ phân cách các mục */
+html body.theme-original.design-108 #content :is(.panel,.ovs,.bonus-hero,.metric-card,.foundation-card,.kc2,.bc,.pc){border:1px solid #cfd9ef!important}
+html body.theme-original.design-108 #content #v11 .sec{border-bottom:1px solid #d3dcf0;padding-bottom:8px;margin:22px 0 12px}
+html body.theme-original.design-108 #content #v11 :is(.ovf,.wrap){border:1px solid #cfd9ef!important;border-radius:12px}
+html body.theme-original.design-108 #content table td{border-bottom:1px solid #e3e9f6!important}
+html body.theme-original.design-108 #content table tbody td+td{border-left:1px solid #eef2fb}
+html body.theme-original.design-108 #content section{scroll-margin-top:150px}
 </style><style id="rk11-css">html body.theme-original.design-108 .rk11{padding:10px 14px!important}html body.theme-original.design-108 .rk11 .table-scroll,html body.theme-original.design-108 .rk11 .table-wrap{max-height:none!important;overflow:visible!important}html body.theme-original.design-108 .rk11 table{width:100%!important;min-width:0!important;table-layout:fixed}html body.theme-original.design-108 .rk11 th,html body.theme-original.design-108 .rk11 td{padding:4px 10px!important;font-size:12.5px!important;line-height:1.2!important;height:auto!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}html body.theme-original.design-108 .rk11 .rank{transform:scale(.8);margin:-4px 0!important}html body.theme-original.design-108 .rk11 .person a,html body.theme-original.design-108 .rk11 .person *{line-height:1.1!important;font-size:12.5px!important}html body.theme-original.design-108 .rk11 .person [class*=360],html body.theme-original.design-108 .rk11 .person small,html body.theme-original.design-108 .rk11 .person i,html body.theme-original.design-108 .rk11 .person sup{font-size:9px!important;padding:1px 4px!important;margin:0 0 0 4px!important}html body.theme-original.design-108 .rk11 .table-panel{padding:6px 10px!important;margin:0!important;border:0!important;box-shadow:none!important}html body.theme-original.design-108 .rk11 .table-panel .panel-head,html body.theme-original.design-108 .rk11 .table-panel .table-head{margin:0 0 4px!important;padding:0!important}html body.theme-original.design-108 .rk11 tbody td{background:#fff!important}html body.theme-original.design-108 .rk11 tbody tr:nth-child(even) td{background:#f5f8ff!important}html body.theme-original.design-108 .rk11 tr{height:auto!important}</style><script id="shot-h2c">/*!
  * html2canvas 1.4.1 <https://html2canvas.hertzen.com>
  * Copyright (c) 2022 Niklas von Hertzen <https://hertzen.com>
