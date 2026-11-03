@@ -3869,7 +3869,7 @@ var TABS=[['combo','🎁 Combo',combo],['hv','🏅 Hội viên',hv],['gk','📈 
 function shell(){
   var m=D().meta;
   return '<div class="top"><div class="top-r1"><div class="logo">🏪</div><div><h1>Theo dõi tiến độ & Push ĐDKD – NPP Tâm Hạnh – Tháng 11/2026</h1><div class="s">đơn hàng đến 02/11 · Tiến độ thời gian <b style="color:#ffd23f">'+pc(m.progress)+'</b> · Doanh số đạt <b style="color:#ffd23f">'+pc(ratio(sum(D().reps,function(r){return r.th}),sum(D().reps,function(r){return r.ct}))) +'</b> ('+m1(sum(D().reps,function(r){return r.th}))+' / '+m1(sum(D().reps,function(r){return r.ct}))+' Tr)</div></div></div>'
-   +'<div class="top-r2"><span class="pl on">T11</span><button class="pl" data-a="t10">T10 · xem lại</button><button class="pl" data-a="t9">T9 · xem lại</button><span class="pl">Tiến độ chuẩn '+pc(m.progress,0)+'</span><span class="pl">Ngày công '+m.elapsed+'/'+m.workingDays+'</span></div>'
+   +'<div class="top-r2"><span class="pl on">T11</span><button class="pl" data-a="t10">T10 · xem lại</button>'+(typeof window.switchMonth==='function'?'<button class="pl" data-a="t9">T9 · xem lại</button>':'')+'<span class="pl">Tiến độ chuẩn '+pc(m.progress,0)+'</span><span class="pl">Ngày công '+m.elapsed+'/'+m.workingDays+'</span></div>'
    +'<nav>'+TABS.map(function(t){return '<button class="'+(st.tab===t[0]?'on':'')+'" data-a="tab" data-v="'+t[0]+'">'+t[1]+'</button>'}).join('')+'</nav></div><div class="wrap" id="t11-view"></div>';
 }
 var root,pill_;
