@@ -2519,6 +2519,7 @@ function bonusValue(value,unit){return unit==='money'?fmtMoney(value):fmtNumber(
 function bonusCell(value,kind='money'){return kind==='pct'?fmtPct(value):kind==='number'?fmtNumber(value):fmtFull(value)}
 function renderBonus(){
  if(DATA.meta.monthNumber===11)return renderBonus11();
+ if(DATA.meta.monthNumber===11)return renderBonus11();
  if(DATA.meta.bonusSchema==='october-2026-rewards-v2')return renderCurrentBonus();
  const rows=filtered(),program=BONUS_PROGRAMS[state.bonusProgram],rules=DATA.bonusRules||{};
  const target=rows.reduce((sum,row)=>sum+row[program.target],0),actual=rows.reduce((sum,row)=>sum+row[program.actual],0),achievement=target?actual/target:0;
@@ -2962,17 +2963,16 @@ function v11CombDay(){
  const asOf=Math.max(1,parseInt(String(DATA.meta.displayUpdated||'03/11').slice(0,2),10)-1),Y=2026,Mo=11,nd=new Date(Y,Mo,0).getDate();
  const dn=['CN','T2','T3','T4','T5','T6','T7'],dow=d=>new Date(Y,Mo-1,d).getDay();
  const cnt={};ev.forEach(e=>{const d=+e.d.slice(8,10);const k=e.rep+'|'+d;cnt[k]=(cnt[k]||0)+1});
- const days=Array.from({length:nd},(_,i)=>i+1);
+ const days=Array.from({length:nd},(_,i)=>i+1).filter(d=>dow(d)!==0);
  const head=`<tr><th class="nm" rowspan="2" style="text-align:left;min-width:190px">ĐDKD</th>${days.map(d=>`<th class="${dow(d)===0?'cn':''}">${d}</th>`).join('')}<th rowspan="2">Tổng đơn</th><th rowspan="2">Ngày đã bán</th><th rowspan="2" class="red">Ngày chưa bán</th></tr><tr>${days.map(d=>`<th class="${dow(d)===0?'cn':''}" style="font-weight:600;font-size:10.5px">${dn[dow(d)]}</th>`).join('')}</tr>`;
  let tot=[0,0,0];
  const rows=names.map(n=>{let s=0,sold=0,miss=0;const tds=days.map(d=>{const c=cnt[n+'|'+d]||0;
    if(d>asOf)return '<td class="cf">·</td>';
-   if(dow(d)===0)return c?`<td class="cs">${c}</td>`:'<td class="cc">CN</td>';
    if(c){s+=c;sold++;return `<td class="cs">${c}</td>`}miss++;return '<td class="cr">0</td>'}).join('');
    tot[0]+=s;tot[1]+=sold;tot[2]+=miss;
    return `<tr><td class="nm">${typeof repNameLink==='function'?repNameLink(n):esc2(n)}</td>${tds}<td><b>${s}</b></td><td><b class="gn">${sold}</b></td><td><b class="rd">${miss}</b></td></tr>`}).join('');
- const tr=`<tr class="tot"><td class="nm">TỔNG (${names.length} ĐDKD)</td>${days.map(d=>{if(d>asOf)return '<td class="cf">·</td>';const c=names.reduce((t,n)=>t+(cnt[n+'|'+d]||0),0);return dow(d)===0&&!c?'<td class="cc">CN</td>':`<td class="${c?'cs':'cr'}">${c}</td>`}).join('')}<td><b>${tot[0]}</b></td><td><b class="gn">${tot[1]}</b></td><td><b class="rd">${tot[2]}</b></td></tr>`;
- return `<div class="sec"><b>2</b>COMBO BÁN THEO NGÀY · TỪNG ĐDKD</div><div class="ttl">Số đơn combo bán mỗi ngày<small>(xanh = có bán, đỏ = chưa bán · tính đến ${asOf}/11 · ${pf==='all'?'tất cả chương trình':'chương trình đang chọn'})</small></div><div class="ovf cdy"><table class="cdt"><thead>${head}</thead><tbody>${tr}${rows}</tbody></table></div><div class="note">Mỗi số = số đơn có hàng tặng combo trong ngày. Ô <b style="color:#12a66a">xanh</b>: ngày có bán · ô <b style="color:#d6244f">đỏ</b>: ngày làm việc chưa bán · CN: nghỉ, không tính vào “ngày chưa bán” · dấu “·”: ngày chưa đến. Ví dụ đến ngày 10 mà bán 2 ngày → 8 ngày chưa bán (không tính Chủ nhật).</div>`}
+ const tr=`<tr class="tot"><td class="nm">TỔNG (${names.length} ĐDKD)</td>${days.map(d=>{if(d>asOf)return '<td class="cf">·</td>';const c=names.reduce((t,n)=>t+(cnt[n+'|'+d]||0),0);return `<td class="${c?'cs':'cr'}">${c}</td>`}).join('')}<td><b>${tot[0]}</b></td><td>–</td><td>–</td></tr>`;
+ return `<div class="sec"><b>2</b>COMBO BÁN THEO NGÀY · TỪNG ĐDKD</div><div class="ttl">Số đơn combo bán mỗi ngày<small>(xanh = có bán, đỏ = chưa bán · tính đến ${asOf}/11 · ${pf==='all'?'tất cả chương trình':'chương trình đang chọn'})</small></div><div class="ovf cdy"><table class="cdt"><thead>${head}</thead><tbody>${tr}${rows}</tbody></table></div><div class="note">Mỗi số = số đơn có hàng tặng combo trong ngày. Ô <b style="color:#12a66a">xanh</b>: ngày có bán · ô <b style="color:#d6244f">đỏ</b>: ngày làm việc chưa bán · đã bỏ các ngày Chủ Nhật · Ngày đã bán / chưa bán chỉ tính cho từng ĐDKD · dấu “·”: ngày chưa đến. Ví dụ đến ngày 10 mà bán 2 ngày → 8 ngày chưa bán (không tính Chủ nhật).</div>`}
 function v11Combo(){
  const D=window.T11_DATA,C=D.cust.filter(inScope),cp=D.meta.combo;
  const has=(x,p)=>x.prog.includes(p);
