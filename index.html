@@ -3892,12 +3892,14 @@ function onChange(e){var b=e.target.closest('[data-a]');if(!b)return;if(b.datase
 function onInput(e){var b=e.target.closest('[data-a=q]');if(!b)return;st.q=b.value;var p=b.selectionStart;draw(true);var n=root.querySelector('[data-a=q]');if(n){n.focus();try{n.setSelectionRange(p,p)}catch(_){}}}
 function boot(){
   root=document.createElement('div');root.id='t11-app';root.innerHTML=shell();document.body.appendChild(root);
-  pill_=document.createElement('button');pill_.id='t11-pill';pill_.hidden=true;pill_.textContent='◀ Tháng 11';document.body.appendChild(pill_);
+  pill_=document.createElement('button');pill_.id='t11-pill';pill_.hidden=false;pill_.textContent='🆕 Xem dữ liệu tháng 11';document.body.appendChild(pill_);
   pill_.onclick=function(){root.hidden=false;pill_.hidden=true;if(typeof window.switchMonth==='function'){try{window.switchMonth('2026-11')}catch(_){}}try{history.replaceState(null,'','#t11-'+st.tab)}catch(_){}};
   root.addEventListener('click',onClick);root.addEventListener('change',onChange);root.addEventListener('input',onInput);
   var h=(location.hash||'').replace('#','');
   var m=/^t11-(combo|hv|gk)$/.exec(h);if(m)st.tab=m[1];
   draw(false);
+  if(!m){root.hidden=true;pill_.hidden=false}
+  else{root.hidden=false;pill_.hidden=true}
   if(h==='t10'||h==='t9'){root.hidden=true;pill_.hidden=false;if(typeof window.switchMonth==='function'){try{window.switchMonth(h==='t9'?'2026-09':'2026-10')}catch(_){}}}
 }
 window.T11={boot:boot,state:st,html:function(v){var t=TABS.filter(function(x){return x[0]===v})[0];return t[2]()}};
