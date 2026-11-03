@@ -2871,6 +2871,10 @@ function v11Css(){if(V11.css)return;V11.css=true;const s=document.createElement(
 #v11 .neg{color:#d6244f;font-weight:800}#v11 .pos{color:#168a52;font-weight:800}
 #v11 .pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;background:#e9f6ee;color:#168a52}
 #v11 .pill.o{background:#fff1d6;color:#a86500}#v11 .pill.g{background:#e8ebf3;color:#58627f}#v11 .pill.off{background:#e3ebff;color:#2f55d4}#v11 .pill.on{background:#ece4ff;color:#6a2fc9}#v11 .pill.nh{background:#ffe9dc;color:#c2500c}
+html body #v11 table.fund th,html body #v11 table.fund td{border:1px solid #bcc7e3!important;padding:6px 7px}
+html body #v11 table.fund .gs{border-left:2.5px solid #4a5fa8!important}
+html body #v11 .fundwrap{border:2px solid #4a5fa8!important;border-radius:8px}
+html body #v11 table.fund tr.rep td{border-bottom:1px solid #bcc7e3!important}
 html body #v11 .pill.r{background:#ffe1e6!important;color:#d6244f!important}
 #v11 .tp{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;background:#e1f6e9;color:#168a52}#v11 .tp.ds{background:#ece4ff;color:#6a2fc9}
 #v11 .det{padding:12px;text-align:left}
@@ -3002,7 +3006,7 @@ function v11Mount(fn){
    if(x=t.closest('[data-v-cbpf]')){V11.cb.pf[x.dataset.rep]=x.dataset.vCbpf;run();return}
    if(x=t.closest('[data-v-cbst]')){V11.cb.st[x.dataset.rep]=x.dataset.vCbst;run();return}
    if(x=t.closest('[data-v-cbday]')){V11.cb.day[x.dataset.rep]=x.dataset.vCbday;run();return}
-   if(x=t.closest('[data-v-all]')){const k=x.dataset.vAll,S=k.startsWith('cb')?V11.cb:k.startsWith('gr')?V11.gr:k.startsWith('ff')?V11.ff:V11.mb;if(k.endsWith('1'))window.T11_DATA.reps.forEach(r=>S.open.add(r.name));else S.open.clear();run();return}
+   if(x=t.closest('[data-v-all]')){if(x.dataset.vAll.startsWith('ff')){const F=V11.ff;if(x.dataset.vAll==='ff1'){F.tOpen.add('Nguyễn Văn PhápA');F.tOpen.add('Nguyễn Văn PhápB')}else F.tOpen.clear();run();return}const k=x.dataset.vAll,S=k.startsWith('cb')?V11.cb:k.startsWith('gr')?V11.gr:k.startsWith('ff')?V11.ff:V11.mb;if(k.endsWith('1'))window.T11_DATA.reps.forEach(r=>S.open.add(r.name));else S.open.clear();run();return}
    if(t.closest('[data-v-shot]')){const b=[...document.querySelectorAll('button')].find(z=>/Chụp ảnh$/.test(z.textContent.trim())&&!z.dataset.vShot);if(b)b.click();return}
    if(t.closest('.det'))return;
    if(x=t.closest('[data-v-team-toggle]')){const n=x.dataset.vTeamToggle,S=state.view==='combo'?V11.cb:state.view==='growth'?V11.gr:state.view==='overview'?V11.ff:V11.mb;S.tOpen.has(n)?S.tOpen.delete(n):S.tOpen.add(n);run();return}
@@ -3062,41 +3066,53 @@ function v11Growth(){
 function renderGrowth11(){v11Mount(v11Growth)}
 function renderMbs11(){v11Mount(v11Mbs)}
 function renderCombo11(){v11Mount(v11Combo)}
-/* ============ TỔNG QUAN: KPI NỀN TẢNG THEO TEAM / ĐDKD ============ */
-V11.ff={open:new Set(),tOpen:new Set(['Nguyễn Văn Pháp'])};
+/* ============ TỔNG QUAN: KPI NỀN TẢNG THEO TEAM / ĐDKD (giữ nội dung cũ, đổi giao diện) ============ */
+V11.ff={open:new Set(),tOpen:new Set(['Nguyễn Văn PhápA','Nguyễn Văn PhápB'])};
+function v11FundTable(spec,rows,callMap,id){
+ const prog=DATA.meta.progress||.04,days=DATA.meta.elapsedDays||1;
+ const S=(L,k)=>L.reduce((s,x)=>s+(Number(x[k])||0),0),dv=(a,b)=>b?a/b:0;
+ const F=V11.ff;
+ const pill=(v,ok)=>`<span class="pill ${ok?'':'r'}">${v}</span>`;
+ const cellsOf=L=>spec.map(g=>g.cols.map((c,i)=>`<td class="${i===0?'gs':''}">${c.f(L,{S,dv,prog,days,pill,callMap})}</td>`).join('')).join('');
+ const head=`<tr><th rowspan="2" class="g5 gs" style="text-align:left;min-width:190px">Team / ĐDKD</th>${spec.map(g=>`<th colspan="${g.cols.length}" class="${g.cls} gs" title="${esc2(g.tip||'')}">${g.t}</th>`).join('')}</tr><tr>${spec.map(g=>g.cols.map((c,i)=>`<th class="${g.cls} ${i===0?'gs':''}">${c.h}</th>`).join('')).join('')}</tr>`;
+ let body=`<tr class="tot"><td class="nm gs">TỔNG (${rows.length} ĐDKD)</td>${cellsOf(rows)}</tr>`;
+ const t='Nguyễn Văn Pháp',L=rows.filter(x=>x.team===t);
+ if(L.length){const o=F.tOpen.has(t+id);
+  body+=`<tr class="team" data-v-team-toggle="${esc2(t+id)}"><td class="nm gs">${o?'▾':'▸'} ${TN[t]} (${L.length})</td>${cellsOf(L)}</tr>`;
+  if(o)L.slice().sort((a,b)=>dv(a.actual,a.target)-dv(b.actual,b.target)).forEach(x=>{body+=`<tr class="rep"><td class="nm gs">${(typeof repNameLink==='function')?repNameLink(x.rep):esc2(x.rep)}</td>${cellsOf([x])}</tr>`})}
+ return `<div class="wrap fundwrap"><table class="fund"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
 function v11Fund(){
- const D=window.T11_DATA,prog=D.meta.progress||.04,days=D.meta.elapsed||1,wd=D.meta.workingDays||25;
- const I=D.fund.filter(inScope);
- const S=(L,f)=>L.reduce((s,x)=>s+f(x),0),dv=(a,b)=>b?a/b:0;
- const pillC=(v,ok,warn)=>`<span class="pill ${ok(v)?'':(warn&&warn(v)?'o':'r')}">`;
- const pp=(v,thr)=>`<span class="pill ${v>=thr?'':'r'}">${P1(v)}</span>`;
- const k1=v=>v?Math.round(v/1000).toLocaleString('vi-VN'):'–';
- const cells=L=>{
-  const ct=S(L,x=>x.ct),th=S(L,x=>x.th),pct=dv(th,ct),mt=S(L,x=>x.mcp[2]),mo=S(L,x=>x.mcp[0]),mn=S(L,x=>x.mcp[1]),ao=S(L,x=>x.act[0]),af=S(L,x=>x.act[1]),an=S(L,x=>x.act[2]);
-  const cf=S(L,x=>x.call.off[0]),cfb=S(L,x=>x.call.off[1]),cn=S(L,x=>x.call.on[0]),cnb=S(L,x=>x.call.on[1]);
-  const g=(k)=>({pc:S(L,x=>x[k].pc),ln:S(L,x=>x[k].lines),ds:S(L,x=>x[k].ds),od:S(L,x=>x[k].orders)});
-  const A=g('all'),X=g('xm'),F=g('off');
-  const trio=a=>{const pd=dv(a.pc,days*L.length),lp=dv(a.ln,a.pc);return `<td><span class="pill ${pd>=12?'':'r'}">${pd.toLocaleString('vi-VN',{maximumFractionDigits:1,minimumFractionDigits:1})}</span></td><td><span class="pill ${lp>=4.5?'':'r'}">${lp.toLocaleString('vi-VN',{maximumFractionDigits:2,minimumFractionDigits:2})}</span></td><td><b>${k1(dv(a.ds,a.od))}</b></td>`};
-  return `<td>${M1(th)}</td><td>${M1(ct)}</td><td><span class="pill ${pct>=prog?'':'r'}">${P1(pct)}</span></td><td>${M1(th/days)}</td><td>${dv(th,ao)?M2(dv(th,ao)):'–'}</td>
-  <td>${N0(ao)}/${N0(mt)}</td><td>${pp(dv(ao,mt),.8*prog).replace('</span>','</span>')}</td><td>${N0(af)}/${N0(mo)}</td><td>${pp(dv(af,mo),.8*prog)}</td><td>${N0(an)}/${N0(mn)}</td><td>${pp(dv(an,mn),.8*prog)}</td>
-  <td><span class="pill ${dv(cfb+cnb,cf+cn)>=.6?'':'r'}">${P1(dv(cfb+cnb,cf+cn))}</span></td><td>${pp(dv(cfb,cf),.65)}</td><td>${pp(dv(cnb,cn),.5)}</td>${trio(A)}${trio(X)}${trio(F)}`};
- const F=V11.ff,teams=['Nguyễn Văn Pháp'];
- let body=`<tr class="tot"><td class="nm">TỔNG (${I.length} ĐDKD)</td>${cells(I)}</tr>`;
- teams.forEach(t=>{const L=I.filter(x=>x.team===t);if(!L.length)return;const o=F.tOpen.has(t);
-  body+=`<tr class="team" data-v-team-toggle="${esc2(t)}"><td class="nm">${o?'▾':'▸'} ${TN[t]} (${L.length})</td>${cells(L)}</tr>`;
-  if(o)L.slice().sort((a,b)=>dv(a.th,a.ct)-dv(b.th,b.ct)).forEach(x=>{body+=`<tr class="rep"><td class="nm">${(typeof repNameLink==='function')?repNameLink(x.name):esc2(x.name)}</td>${cells([x])}</tr>`})});
- const T=I,ct=S(T,x=>x.ct),th=S(T,x=>x.th),mt=S(T,x=>x.mcp[2]),ao=S(T,x=>x.act[0]);
- const cf=S(T,x=>x.call.off[0]+x.call.on[0]),cb=S(T,x=>x.call.off[1]+x.call.on[1]);
- const px=S(T,x=>x.xm.pc),lx=S(T,x=>x.xm.lines),pa=S(T,x=>x.all.pc),la=S(T,x=>x.all.lines);
- const h2=(c,t,s)=>`<th colspan="${s}" class="${c}">${t}</th>`;
- const sub=(c,a)=>a.map(t=>`<th class="${c}">${t}</th>`).join('');
- const head=`<tr><th rowspan="2" class="g5" style="text-align:left">Team / ĐDKD</th>${h2('g2','Doanh số (Triệu)',5)}${h2('g1','Độ phủ (ASO / MCP)',6)}${h2('g3','PC / Call',3)}${h2('s2','Tổng kênh · ALL CAT',3)}${h2('s6','Tổng kênh · trừ Meat/Bia',3)}${h2('g4','Kênh OFF · trừ Meat/Bia',3)}</tr><tr>${sub('s2',['TH','CT','%TH','BQ/ngày','VPO KH'])}${sub('s1',['ASO/MCP','%ASO','OFF/MCP','%OFF','ON/MCP','%ON'])}${sub('s3',['Tổng','OFF','ON'])}${sub('s2',['PC/ngày /ĐDKD','LPPC','BQ/đơn (k)'])}${sub('s6',['PC/ngày /ĐDKD','LPPC','BQ/đơn (k)'])}${sub('s4',['PC/ngày /ĐDKD','LPPC','BQ/đơn (k)'])}</tr>`;
+ const D=window.T11_DATA,prog=DATA.meta.progress||.04,days=DATA.meta.elapsedDays||1,wd=DATA.meta.workingDays||25;
+ const rows=DATA.kpis.filter(k=>(!V11.team||k.team===V11.team)&&(!V11.rep||k.rep===V11.rep));
+ const callMap={};D.fund.forEach(x=>callMap[x.name]=x);
+ const f1=v=>M1(v),pc=(v,thr)=>`<span class="pill ${v>=thr?'':'r'}">${P1(v)}</span>`;
+ const dec=v=>v.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+ const T3=(t,cls,key,tk,ak,fmt,thr)=>({t,cls,cols:[{h:'TH',f:(L,u)=>fmt(u.S(L,ak))},{h:'CT',f:(L,u)=>fmt(u.S(L,tk))},{h:'%',f:(L,u)=>pc(u.dv(u.S(L,ak),u.S(L,tk)),thr??prog)}]});
+ const defs=DATA.meta.foundationMetrics||[];
+ const byLabel=l=>defs.find(d=>d.label.startsWith(l));
+ const M=(l,cls,t)=>{const d=byLabel(l);if(!d)return null;return T3(t||d.label,cls,0,d.targetKey,d.actualKey,d.unit==='money'?f1:N0,prog)};
+ const lp=(l,cls,t,thr)=>{const d=byLabel(l);if(!d)return null;return {t:t||d.label,cls,tip:d.reward,cols:[{h:'TH (TB)',f:(L,u)=>{const v=u.dv(u.S(L,d.actualKey),L.length);return `<span class="pill ${v>=thr?'':'r'}">${dec(v)}</span>`}},{h:'CT',f:()=>dec(d.targetValue)}]}};
+ const A=[
+  {t:'Doanh số (Triệu)',cls:'g2',cols:[{h:'TH',f:(L,u)=>f1(u.S(L,'actual'))},{h:'CT',f:(L,u)=>f1(u.S(L,'target'))},{h:'%TH',f:(L,u)=>pc(u.dv(u.S(L,'actual'),u.S(L,'target')),prog)},{h:'BQ/ngày',f:(L,u)=>f1(u.S(L,'actual')/u.days)}]},
+  {t:'Active ASO MCP OFF + ON',cls:'g1',cols:[{h:'TH',f:(L,u)=>N0(u.S(L,'activeActual'))},{h:'CT',f:(L,u)=>N0(u.S(L,'activeTarget'))},{h:'%',f:(L,u)=>pc(u.dv(u.S(L,'activeActual'),u.S(L,'activeTarget')),prog)},{h:'OFF/MCP',f:(L,u)=>N0(u.S(L,'mcpActiveOff'))+'/'+N0(u.S(L,'mcpOff'))},{h:'%OFF',f:(L,u)=>pc(u.dv(u.S(L,'mcpActiveOff'),u.S(L,'mcpOff')),.8*prog)},{h:'ON/MCP',f:(L,u)=>N0(u.S(L,'mcpActiveOn'))+'/'+N0(u.S(L,'mcpOn'))},{h:'%ON',f:(L,u)=>pc(u.dv(u.S(L,'mcpActiveOn'),u.S(L,'mcpOn')),.8*prog)}]},
+  M('ASO Trận Xanh','g3','ASO Trận Xanh • Focus Tết'),M('ASO Trận Vàng','g4','ASO Trận Vàng • Hạt nêm Chinsu'),
+  M('PC OFF','g2','PC OFF • Total sản phẩm'),M('PC ON','g1','PC ON • Tất cả đơn ON'),
+  {t:'PC / Call (KH VT trong ngày có đơn)',cls:'g3',tip:'KH có lịch viếng thăm trong ngày 02/11 có đơn / KH có lịch viếng thăm trong ngày',cols:[{h:'Tổng',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.off[0]+k.call.on[0];b+=k.call.off[1]+k.call.on[1]}});return `<span class="pill ${u.dv(b,c)>=.6?'':'r'}">${P1(u.dv(b,c))}</span>`}},{h:'OFF',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.off[0];b+=k.call.off[1]}});return `${N0(b)}/${N0(c)} `+`<span class="pill ${u.dv(b,c)>=.65?'':'r'}">${P1(u.dv(b,c))}</span>`}},{h:'ON',f:(L,u)=>{let c=0,b=0;L.forEach(x=>{const k=u.callMap[x.rep];if(k){c+=k.call.on[0];b+=k.call.on[1]}});return `${N0(b)}/${N0(c)} `+`<span class="pill ${u.dv(b,c)>=.5?'':'r'}">${P1(u.dv(b,c))}</span>`}}]},
+  lp('LPPC trừ Meat','g5','LPPC trừ Meat & Beer • BS',4.5),lp('LPPC Meat','g4','LPPC Meat • BT',3.8)
+ ].filter(Boolean);
+ const cats=[['Seasoning','Seasoning'],['Convenience Foods','Convenience'],['Home Care','HomeCare'],['Refreshment Drinks','Refreshment'],['Processed Meats','Processed'],['Nutrition','Nutrition'],['Coffee','Coffee'],['Rice base','Rice'],['Beer','Beer']];
+ const cc=['g2','g1','g3','g4','g5','g2','g1','g3','g4'];
+ const B=cats.map((c,i)=>T3(c[0],cc[i],0,'sellout'+c[1]+'Target','sellout'+c[1]+'Actual',f1,prog));
+ const rw=defs.map(d=>`<li><b>${esc2(d.label)}</b> — ${esc2(d.reward||'')}</li>`).join('');
  V11.host().innerHTML=`<div id="v11"><div class="h1">Tổng quan KPI nền tảng – Tháng 11/2026</div><div class="sub">Dữ liệu file Tracking KPI T11 đến 02/11 (${days}/${wd} ngày làm việc) · ${scopeLabel()} · tiến độ thời gian ${P1(prog)}</div>${v11Filter()}
- <div class="cards"><div class="kc"><small>Sell Out thực hiện</small><b>${M1(th)} Tr</b><span>Chỉ tiêu ${M1(ct)} Tr · ${I.length} ĐDKD</span></div><div class="kc c2"><small>% hoàn thành chỉ tiêu</small><b>${P1(ct?th/ct:0)}</b><div class="bar"><i style="width:${Math.min(100,ct?th/ct*100:0)}%"></i></div><span>Tiến độ thời gian ${P1(prog)} · GAP ${((ct?th/ct:0)-prog>=0?'+':'')}${(((ct?th/ct:0)-prog)*100).toFixed(2).replace('.',',')} điểm %</span></div><div class="kc c3"><small>ASO / MCP</small><b>${N0(ao)}/${N0(mt)}</b><span>${P1(mt?ao/mt:0)} · chuẩn ${P1(.8*prog)} theo tiến độ</span></div><div class="kc c4"><small>PC / Call · LPPC (trừ Meat/Bia)</small><b>${P1(cf?cb/cf:0)}</b><span>${N0(cb)}/${N0(cf)} KH có lịch VT có đơn · LPPC ${(px?lx/px:0).toLocaleString('vi-VN',{maximumFractionDigits:2,minimumFractionDigits:2})}</span></div></div>
- <div class="sec"><b>2</b>BẢNG FUNDAMENTAL THEO TEAM VÀ ĐDKD</div><div class="ttl">Bảng Fundamental T11 theo Team và ĐDKD</div>
- <div class="tools"><button class="btn" data-v-all="ff1">Mở hết ĐDKD</button><button class="btn" data-v-all="ff0">Thu gọn</button><span style="color:#6a7596;font-size:12px;align-self:center">Bấm tên Team (▸) để xổ ra từng ĐDKD (xếp từ %TH doanh số thấp đến cao)</span></div>
- <div class="wrap"><table class="fund"><thead>${head}</thead><tbody>${body}</tbody></table></div>
- <div class="note">Màu ô: xanh đạt chuẩn, đỏ chưa đạt. %TH doanh số so với tiến độ thời gian ${P1(prog)} · % ASO so với mốc 80% MCP theo tiến độ (${P1(.8*prog)}). <b>PC/Call</b> = số KH có lịch viếng thăm trong ngày (02/11, tuần lẻ) có đơn hàng / số KH có lịch viếng thăm trong ngày, chuẩn OFF 65% · ON 50%. <b>PC/ngày/ĐDKD</b> chuẩn 12 · <b>LPPC</b> = line / đơn, chuẩn 4,5 · <b>BQ/đơn</b> = DS sau CK / số đơn (nghìn đồng). "Trừ Meat/Bia" loại Processed Meats và Beer. VPO KH = DS (Tr) / số KH ASO.</div></div>`;
+ <div class="sec"><b>1</b>BẢNG FUNDAMENTAL THEO TEAM VÀ ĐDKD</div><div class="ttl">KPI nền tảng T11 theo Team và ĐDKD<small>(Doanh số: Triệu · bấm tên Team để xổ ĐDKD, xếp %TH thấp → cao)</small></div>
+ <div class="tools"><button class="btn" data-v-all="ff1">Mở hết ĐDKD</button><button class="btn" data-v-all="ff0">Thu gọn</button><button class="btn dark" data-v-shot="1">📷 Chụp ảnh bảng</button></div>
+ ${v11FundTable(A,rows,callMap,'A')}
+ <div class="note">Ô xanh đạt chuẩn, đỏ chưa đạt. %TH, %ASO, %PC so với tiến độ thời gian ${P1(prog)} (ASO OFF/ON theo mốc 80% MCP). <b>PC / Call</b> = KH có lịch VT trong ngày (02/11, tuần lẻ) có đơn / KH có lịch VT trong ngày — chuẩn OFF 65%, ON 50%. LPPC: TH là trung bình các ĐDKD, chuẩn trừ Meat &amp; Beer &gt; 4,5, Meat từ 3,8. Rê chuột lên tên nhóm để xem mức thưởng.</div>
+ <div class="sec o"><b>2</b>SELL OUT THEO NGÀNH HÀNG</div><div class="ttl">Sell Out theo ngành hàng theo Team và ĐDKD<small>(Triệu)</small></div>
+ ${v11FundTable(B,rows,callMap,'B')}
+ <div class="sec"><b>3</b>MỨC THƯỞNG KPI NỀN TẢNG</div><ul class="note" style="columns:2;list-style:square;padding-left:22px">${rw}</ul></div>`;
 }
 function renderFund11(){v11Mount(v11Fund)}
 
