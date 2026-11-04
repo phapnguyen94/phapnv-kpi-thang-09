@@ -3431,6 +3431,18 @@ function fxCls(n){return n<=0?['g0','Bán liên tục']:n<=2?['g1','Không bán 
 function fxStat(r,fi,dates){ // -> {work,sold,miss,na}
  const idx=FXF[fi][2];let work=0,sold=0;dates.forEach(d=>{const v=r.days[d];if(v[0]>0){work++;if(v[idx]>0)sold++}});
  const na=(fi===2&&r.nOn===0)||(fi===3&&r.nOff===0);return {work,sold,miss:work-sold,na}}
+
+function fxMonthTable(fi,RS,sss){
+ const D=window.T11_DATA,dates=D.fx.dates,idx=FXF[fi][2],asOf=Math.max(...dates.map(d=>+d.slice(0,2)),1),Y=2026,Mo=11,nd=new Date(Y,Mo,0).getDate();
+ const dn=['CN','T2','T3','T4','T5','T6','T7'],dow=d=>new Date(Y,Mo-1,d).getDay(),days=Array.from({length:nd},(_,i)=>i+1).filter(d=>dow(d)!==0);
+ const key=d=>String(d).padStart(2,'0')+'/11',na=r=>(fi===2&&r.nOn===0)||(fi===3&&r.nOff===0);
+ const head=`<tr><th class="nm g5" rowspan="2" style="text-align:left;min-width:190px">ĐDKD</th>${days.map(d=>`<th>${d}</th>`).join('')}<th rowspan="2">Tổng</th><th rowspan="2">Ngày đã bán</th><th rowspan="2" class="red">Ngày chưa bán</th></tr><tr>${days.map(d=>`<th style="font-weight:600;font-size:10.5px">${dn[dow(d)]}</th>`).join('')}</tr>`;
+ const val=(r,d)=>{const v=r.days[key(d)];return v?v[idx]:0};
+ let tot=0;const rows=RS.map(r=>{let s=0,sold=0,miss=0;const tds=days.map(d=>{if(d>asOf)return '<td class="cf">·</td>';if(na(r))return '<td class="cf">–</td>';const c=val(r,d);if(c){s+=c;sold++;return `<td class="cs">${c}</td>`}miss++;return '<td class="cr">0</td>'}).join('');tot+=s;
+  return `<tr><td class="nm">${typeof repNameLink==='function'?repNameLink(r.name):esc2(r.name)}</td>${tds}<td><b>${s}</b></td><td><b class="gn">${sold}</b></td><td><b class="rd">${na(r)?'–':miss}</b></td></tr>`}).join('');
+ const tr=`<tr class="tot"><td class="nm">TỔNG (${RS.length} ĐDKD)</td>${days.map(d=>{if(d>asOf)return '<td class="cf">·</td>';const c=RS.reduce((t,r)=>t+(na(r)?0:val(r,d)),0);return `<td class="${c?'cs':'cr'}">${c}</td>`}).join('')}<td><b>${tot}</b></td><td>–</td><td>–</td></tr>`;
+ const unit=['','','Số quầy mua Hạt nêm Chinsu Ngọt Thanh mỗi ngày','Số đơn combo bán mỗi ngày','Số quầy ON mua Tea365 mỗi ngày','Số quầy OFF mua Tea365 mỗi ngày'][idx+1];
+ return `<div class="sec ${fi%2?'o':''}"><b>${fi+1}</b>${FXF[fi][1]} THEO NGÀY · TỪNG ĐDKD</div><div class="ttl">${unit}<small>(xanh = có bán, đỏ = chưa bán · tính đến ${asOf}/11)</small></div><div class="ovf cdy"><table class="cdt"><thead>${head}</thead><tbody>${tr}${rows}</tbody></table></div>`}
 function renderFx11(){
  v11Css();fxCss();const D=window.T11_DATA,dates=(D.fx&&D.fx.dates)||[];let R=fxScopeReps();
  const sss=[...new Set(R.map(r=>r.ss))];if(FXS.ss!=='all'&&!sss.includes(FXS.ss))FXS.ss='all';
@@ -3445,6 +3457,7 @@ function renderFx11(){
   const cnt=FXF.map((_,i)=>{const o=[0,0,0,0];RS.forEach(r=>{const x=fxStat(r,i,dates);if(!x.na)o[x.miss<=0?0:x.miss<=2?1:x.miss<=4?2:3]++});return o});
   body=`<div class="cards">${FXF.map((f,i)=>`<div class="kc ${['','c2','c4','c3'][i]}"><small>${f[1]} · ${f[3]}</small><b>${cnt[i][0]} / ${cnt[i].reduce((a,b)=>a+b,0)}</b><span>ĐDKD bán liên tục · không bán 1-2 ngày: ${cnt[i][1]} · 3-4 ngày: ${cnt[i][2]} · ≥5 ngày: ${cnt[i][3]}</span></div>`).join('')}</div><div class="wrap"><table class="fxt"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
   <div class="note">Ngày làm việc = số ngày ĐDKD có đơn (đã bỏ Chủ nhật, đến ${dates[dates.length-1]||'—'}). <b>Số ngày không bán</b> = ngày làm việc mà ĐDKD không bán được focus đó. Trận Vàng = Hạt nêm Chinsu Ngọt Thanh · Đơn CB = đơn có hàng tặng combo (ngày 03/11 suy từ KPI THÁNG trừ sheet COMBO ÁP DỤNG) · Tea ON / Tea OFF = có bán Trà Búp Non Tea365 tại quầy MCP kênh ON / OFF. Phân loại: bán liên tục · không bán 1-2 · 3-4 · ≥5 ngày.</div>`;
+  body+=FXF.map((_,i)=>fxMonthTable(i,RS,sss)).join('');
  }else{
   const fi=FXF.findIndex(f=>f[0]===FXS.tab),idx=FXF[fi][2];
   const head=`<tr><th class="nm" rowspan="2" style="min-width:190px;text-align:left">SS / ĐDKD</th>${dates.map(d=>`<th>${d}</th>`).join('')}<th rowspan="2">Tổng</th><th rowspan="2">Ngày bán</th><th rowspan="2" class="red">Không bán</th><th rowspan="2">Phân loại</th></tr><tr>${dates.map(d=>`<th style="font-weight:600;font-size:10.5px">${['CN','T2','T3','T4','T5','T6','T7'][new Date(2026,10,+d.slice(0,2)).getDay()]}</th>`).join('')}</tr>`;
