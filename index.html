@@ -2947,7 +2947,7 @@ function v11Filter(){ // team + rep chooser
  return `<div class="flt"><b>Lọc:</b><button class="btn on" data-v-team="Nguyễn Văn Pháp">Team SS Pháp</button><select data-v-rep="1"><option value="">– Chọn ĐDKD (${reps.length}) –</option>${reps.map(r=>`<option value="${esc2(r.name)}" ${V11.rep===r.name?'selected':''}>${esc2(r.name)}</option>`).join('')}</select><span style="color:#6a7596">Đang xem: <b>${V11.rep||TN['Nguyễn Văn Pháp']}</b></span></div>`;
 }
 function scopeLabel(){return V11.rep||(V11.team?TN[V11.team]:'Tổng NPP')}
-function inScope(x){return (!V11.team||x.team===V11.team)&&(!V11.rep||x.rep===V11.rep)}
+function inScope(x){const n=x.rep||x.name;return (!V11.team||x.team===V11.team)&&(!V11.rep||n===V11.rep)}
 function treeRows(items,repKey,cells,detail,S,rowsAll){
  // items: array with team,rep ; returns tbody html. S = state {open,tOpen}
  const teams=['Nguyễn Văn Pháp','Lê Ngọc Dự'].filter(t=>items.some(x=>x.team===t));
