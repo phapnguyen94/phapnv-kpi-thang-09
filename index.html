@@ -3586,7 +3586,7 @@ if(!window.__nbClick){window.__nbClick=1;
 const MT={day:null,ss:'all',rep:'',open:new Set(),flt:{},hm:'ds'};
 function mtCss(){if(document.getElementById('mt-css'))return;const s=document.createElement('style');s.id='mt-css';s.textContent=`
 #mtn .mtp{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap}
-#mtn .mtp.g{background:#dff5e8;color:#0d7a45}#mtn .mtp.y{background:#fff2cc;color:#8a6100}#mtn .mtp.r{background:#fde0e3;color:#b3122f}#mtn .mtp.n{background:#eef0f6;color:#7a84a0}#mtn .mtp.p{background:#ece6ff;color:#5b2fd0}
+#mtn .mtp.g{background:#c9f5d9;color:#0a6b3a}#mtn .mtp.y{background:#ffecb0;color:#8a5a00}#mtn .mtp.r{background:#ffd3da;color:#b3122f}#mtn .mtp.p{background:#e3d7ff;color:#5424c9}#mtn .mtp.n{background:#eef0f6;color:#7a84a0}
 #mtn .chips2{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px;align-items:center}#mtn .chips2>b{font-size:12.5px;color:#34406a;min-width:118px}
 #mtn .dchip{border:1.5px solid #d6deef;background:#fff;border-radius:12px;padding:5px 10px;text-align:center;cursor:pointer;min-width:62px;line-height:1.25;font-size:12px}
 #mtn .dchip b{display:block;font-size:12.5px;color:#12204f}#mtn .dchip small{display:block;font-size:11px;font-weight:800}
@@ -3594,10 +3594,11 @@ function mtCss(){if(document.getElementById('mt-css'))return;const s=document.cr
 #mtn table.mtt td,#mtn table.mtt th{text-align:center;padding:7px 8px;font-size:12.5px;white-space:nowrap}#mtn table.mtt td.nm,#mtn table.mtt th.nm{text-align:left}
 #mtn table.mtt tr.ssr td{background:#fff2c9;font-weight:800;color:#12204f}#mtn table.mtt tr.tt td{background:#dde6fb;font-weight:900}
 #mtn table.mtt tr.rp{cursor:pointer}#mtn table.mtt tr.rp:hover td{background:#f3f6ff}
-#mtn .hm td{font-weight:700}#mtn .hm td.a{background:#d7f3e0;color:#0d6b3c}#mtn .hm td.b{background:#fff1c4;color:#7a5a00}#mtn .hm td.c{background:#fbd9de;color:#a1122c}#mtn .hm td.z{background:#f4f5fa;color:#9aa3bd}
+#mtn .hm td{font-weight:700}#mtn table.mtt.hm tbody tr td.g{background:#c9f5d9!important;color:#0a6b3a}#mtn table.mtt.hm tbody tr td.y{background:#ffecb0!important;color:#7a5200}#mtn table.mtt.hm tbody tr td.r{background:#ffd3da!important;color:#a1122c}#mtn table.mtt.hm tbody tr td.p{background:#dccbff!important;color:#4b1fb8}#mtn table.mtt.hm tbody tr td.z{background:#f4f5fa;color:#9aa3bd}
 #mtn .hm th.dh{cursor:pointer}#mtn .hm th.dh.cur{background:#2f5be7;color:#fff}
 #mtn table.mtt th{background:#223f9c!important;color:#fff!important;font-weight:800;position:static!important}#mtn table.mtt th.dh.cur{background:#ef6c00!important}#mtn .ovf{max-height:none!important;overflow-y:visible!important;overflow-x:auto}#mtn table.mtt td{color:#12204f}
-#mtn table.mtt td.nm,#mtn table.mtt th.nm{position:sticky!important;left:0;z-index:3;background:#fff!important;min-width:215px;max-width:260px;box-shadow:2px 0 5px rgba(30,45,100,.10);overflow:hidden;text-overflow:ellipsis}#mtn table.mtt th.nm{z-index:5;background:#223f9c!important}#mtn table.mtt tr.ssr td.nm{background:#fff2c9!important}#mtn table.mtt tr.tt td.nm{background:#dde6fb!important}#mtn table.mtt tr.rp:hover td.nm{background:#f3f6ff!important}#mtn table.mtt .mtd td.nm,#mtn .mtd table.mtt td.nm,#mtn .mtd table.mtt th.nm{position:static!important;box-shadow:none;max-width:none;background:transparent!important}#mtn .mtd table.mtt th.nm{background:#223f9c!important}
+#mtn table.mtt td.nm,#mtn table.mtt th.nm{position:sticky!important;left:0;z-index:3;min-width:215px;max-width:260px;box-shadow:2px 0 5px rgba(30,45,100,.10);overflow:hidden;text-overflow:ellipsis}#mtn table.mtt th.nm{z-index:5;background:#223f9c!important}#mtn table.mtt tr.ssr td.nm{background:#fff2c9!important}#mtn table.mtt tr.tt td.nm{background:#dde6fb!important}#mtn table.mtt tr.rp:hover td.nm{background:#f3f6ff!important}#mtn table.mtt .mtd td.nm,#mtn .mtd table.mtt td.nm,#mtn .mtd table.mtt th.nm{position:static!important;box-shadow:none;max-width:none;background:transparent!important}#mtn .mtd table.mtt th.nm{background:#223f9c!important}
+#mtn table.mtt tbody td{background:#fff!important}#mtn table.mtt tbody tr:nth-child(even) td{background:#f3f8ff!important}#mtn table.mtt tbody tr.ssr td{background:#fff2c9!important}#mtn table.mtt tbody tr.tt td{background:#dde8ff!important}#mtn table.mtt tbody tr.rp:hover td{background:#e6f0ff!important}
 #mtn .hmbtn{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
 #mtn .mtd{background:#f7f9ff;border:1px solid #dbe3f6;border-radius:12px;padding:10px 12px;margin:4px 0 10px}
 #mtn .mtd .tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px}
@@ -3620,7 +3621,8 @@ function mtStat(M,r,d){ // thống kê 1 ĐDKD, 1 ngày
   if(pn){s.no++;if(c&&(c[2]==='on'||c[2]==='nh')){s.nod++;s.noq+=c[1]}}});
  kh.forEach(k=>{if(!mtOn(k,d)&&(k.o[dd]||0)>0){s.out++;const c=k.cb[dd];if(c){if(c[2]==='off')s.xo++;else s.xn++}}});s.fut=fut;return s}
 function mtSum(L0){const hasD=L0.some(s=>!s.fut),L=hasD?L0.filter(s=>!s.fut):L0;const o={ct:0,rr:0,th:0,n:0,ord:0,out:0,hv:0,hvo:0,fo:0,fod:0,foq:0,no:0,nod:0,noq:0,xo:0,xn:0,fut:L.length?!hasD:false};L.forEach(s=>{Object.keys(o).forEach(k=>{if(k!=='fut')o[k]+=s[k]})});return o}
-function mtPill(a,b,g,y){if(!b)return '<span class="mtp n">–</span>';const v=a/b;return `<span class="mtp ${v>=g?'g':v>=y?'y':'r'}">${P1(v)}</span>`}
+function mtCl(v){return v>=1.1?'p':v>=1?'g':v>=.9?'y':'r'}
+function mtPill(a,b){if(!b)return '<span class="mtp n">–</span>';const v=a/b;return `<span class="mtp ${mtCl(v)}">${P1(v)}</span>`}
 function mtDayLabel(d){return d.dd+'/11'}
 function mtRow(label,s,cls,tog,open){
  const f=s.fut,ph=(a,b,g,y)=>f?'<span class="mtp n">·</span>':mtPill(a,b,g||1,y||.9),n=v=>f?'·':N0(v);
@@ -3653,7 +3655,7 @@ function renderMtn11(){
  const scopeLbl=MT.rep?MT.rep:MT.ss==='all'?(D.fxScope?teamName(D.fxScope):'Tổng NPP'):teamName(MT.ss);
  const filt=`<div class="tools"><b class="lb">Lọc:</b>${SSL.length>1?`<button class="btn ${MT.ss==='all'&&!MT.rep?'on':''}" data-mt-ss="all">Tổng NPP</button>`:''}${SSL.map(s=>`<button class="btn ${MT.ss===s&&!MT.rep?'on':''}" data-mt-ss="${esc2(s)}">${teamName(s)}</button>`).join('')}<select class="sel" data-mt-rep><option value="">– Chọn ĐDKD (${M.reps.filter(r=>(!D.fxScope||r.ss===D.fxScope)&&(MT.ss==='all'||r.ss===MT.ss)).length}) –</option>${M.reps.filter(r=>(!D.fxScope||r.ss===D.fxScope)&&(MT.ss==='all'||r.ss===MT.ss)).map(r=>`<option value="${esc2(r.name)}" ${MT.rep===r.name?'selected':''}>${esc2(r.name)}</option>`).join('')}</select><span class="sub" style="margin:0 0 0 8px">Đang xem: <b>${esc2(scopeLbl)}</b></span></div>`;
  const chip=x=>{const T=mtSum(RS.map(r=>mtStat(M,r,x))),fut=+x.dd>M.asOf,p=T.ct?T.th/T.ct:0;
-  return `<div class="dchip ${fut?'fut':'done'} ${x.dd===MT.day?'cur':''}" data-mt-d="${x.dd}"><b>${x.wd.replace('Thứ ','T')}<br>${mtDayLabel(x)}</b><small style="color:${fut?'#8790ab':p>=1?'#0d7a45':p>=.9?'#8a6100':'#c1163a'}">${fut?(x.par==='Odd Week'?'lẻ':'chẵn'):Math.round(p*100)+'%'}</small></div>`};
+  return `<div class="dchip ${fut?'fut':'done'} ${x.dd===MT.day?'cur':''}" data-mt-d="${x.dd}"><b>${x.wd.replace('Thứ ','T')}<br>${mtDayLabel(x)}</b><small style="color:${fut?'#8790ab':p>=1.1?'#6a2fe0':p>=1?'#0d7a45':p>=.9?'#9a6a00':'#d0183b'}">${fut?(x.par==='Odd Week'?'lẻ':'chẵn'):Math.round(p*100)+'%'}</small></div>`};
  const done=M.days.filter(x=>+x.dd<=M.asOf),next=M.days.filter(x=>+x.dd>M.asOf);
  const cards=`<div class="cards"><div class="kc c2"><small>Doanh số ngày: thực hiện / chỉ tiêu</small><b>${tot.fut?'–':P1(tot.ct?tot.th/tot.ct:0)}</b><div class="bar"><i style="width:${Math.min(100,tot.ct?tot.th/tot.ct*100:0)}%"></i></div><span>TH ${tot.fut?'·':M1(tot.th)} / CT ${M1(tot.ct)} Tr · dự kiến RR3M ${M1(tot.rr)} Tr (${P1(tot.ct?tot.rr/tot.ct:0)} CT)</span></div>
  <div class="kc"><small>KH đúng tuyến có đơn</small><b>${tot.fut?N0(tot.n):N0(tot.ord)+' / '+N0(tot.n)}</b><span>${tot.fut?'KH có lịch viếng ngày này':'Phủ tuyến '+P1(tot.n?tot.ord/tot.n:0)+' · ngoài tuyến có đơn: '+N0(tot.out)}</span></div>
@@ -3669,9 +3671,9 @@ function renderMtn11(){
  const HM=[['ds','% đạt chỉ tiêu DS ngày'],['rr','% đạt RR3M'],['cov','% KH tuyến có đơn'],['hv','% hội viên tuyến có đơn'],['cmb','% KH combo tuyến đạt']];
  const val=(s,k)=>k==='ds'?[s.th,s.ct]:k==='rr'?[s.th,s.rr]:k==='cov'?[s.ord,s.n]:k==='hv'?[s.hvo,s.hv]:[s.fod+s.nod,s.fo+s.no];
  const thr=k=>k==='cov'?[.6,.5]:k==='hv'?[.5,.35]:k==='cmb'?[.5,.3]:[1,.9];
- const cell=(s,fut)=>{if(fut)return '<td class="z">·</td>';const[a,b]=val(s,MT.hm);if(!b)return '<td class="z">–</td>';const v=a/b,[g,y]=thr(MT.hm);return `<td class="${v>=g?'a':v>=y?'b':'c'}">${Math.round(v*100)}%</td>`};
+ const cell=(s,fut)=>{if(fut)return '<td class="z">·</td>';const[a,b]=val(s,MT.hm);if(!b)return '<td class="z">–</td>';const v=a/b;return `<td class="${mtCl(v)}">${Math.round(v*100)}%</td>`};
  const hmHead=`<tr><th class="nm g5" style="min-width:190px">ĐDKD</th>${done.map(x=>`<th class="dh ${x.dd===MT.day?'cur':''}" data-mt-d="${x.dd}">${x.dd}<br><small>${x.wd.replace('Thứ ','T')}</small></th>`).join('')}<th>Ngày đạt</th><th>TB</th></tr>`;
- const hmRow=(lab,L,cls)=>{const sts=done.map(x=>mtSum(L.map(r=>mtStat(M,r,x)))),ok=sts.filter(s=>{const[a,b]=val(s,MT.hm);return b&&a/b>=thr(MT.hm)[0]}).length,A=sts.reduce((t,s)=>t+val(s,MT.hm)[0],0),B=sts.reduce((t,s)=>t+val(s,MT.hm)[1],0);
+ const hmRow=(lab,L,cls)=>{const sts=done.map(x=>mtSum(L.map(r=>mtStat(M,r,x)))),ok=sts.filter(s=>{const[a,b]=val(s,MT.hm);return b&&a/b>=1}).length,A=sts.reduce((t,s)=>t+val(s,MT.hm)[0],0),B=sts.reduce((t,s)=>t+val(s,MT.hm)[1],0);
   return `<tr class="${cls||''}"><td class="nm">${lab}</td>${sts.map(s=>cell(s,false)).join('')}<td><b>${ok}/${done.length}</b></td><td><b>${B?Math.round(A/B*100)+'%':'–'}</b></td></tr>`};
  let hrows=hmRow('TỔNG '+RS.length+' ĐDKD',RS,'tt');sss.forEach(s=>{const L=RS.filter(r=>r.ss===s);if(sss.length>1)hrows+=hmRow(teamName(s),L,'ssr');L.forEach(r=>hrows+=hmRow(esc2(r.name),[r]))});
  // biểu đồ cột theo ngày
@@ -3693,7 +3695,7 @@ function renderMtn11(){
  <div class="sec o"><b>2</b>TRACKING MỤC TIÊU NGÀY CẢ THÁNG · ${esc2(scopeLbl)}</div>
  <div class="cards"><div class="kc"><small>Lũy kế TH / CT ${M.asOf} ngày</small><b>${M1(cum)}</b><span>CT tháng ${M1(cumCt)} Tr · ${P1(cumCt?cum/cumCt:0)} CT tháng</span></div></div>${chart}
  <div class="hmbtn">${HM.map(h=>`<button class="btn ${MT.hm===h[0]?'on':''}" data-mt-hm="${h[0]}">${h[1]}</button>`).join('')}</div><div class="ovf"><table class="mtt hm"><thead>${hmHead}</thead><tbody>${hrows}</tbody></table></div>
- <div class="note">Ô xanh: đạt (DS ≥100% CT ngày; phủ tuyến ≥60%; hội viên ≥50%; combo ≥50%) · vàng: gần đạt · đỏ: chưa đạt. Bấm ngày trên thanh tiêu đề để xem chi tiết SS → ĐDKD → KH.</div>
+ <div class="note">Màu theo % thực hiện: <b style="color:#5424c9">tím ≥110%</b> · <b style="color:#0a6b3a">xanh 100–109%</b> · <b style="color:#8a5a00">vàng 90–99%</b> · <b style="color:#b3122f">đỏ &lt;90%</b>. Bấm ngày trên thanh tiêu đề để xem chi tiết SS → ĐDKD → KH.</div>
  <div class="sec"><b>3</b>LỊCH MỤC TIÊU CÁC NGÀY TỚI</div>${next.length?`<div class="ovf"><table class="mtt"><thead><tr><th class="nm g5">Ngày</th><th>Chỉ tiêu ngày (Tr)</th><th>Dự kiến RR3M (Tr)</th><th>KH viếng thăm</th><th>HV trên tuyến</th><th>KH combo OFF</th><th>KH combo ON</th></tr></thead><tbody>${futRows}</tbody></table></div><div class="note">Chỉ tiêu ngày giữ bình quân; dự kiến RR3M thay đổi theo số KH của tuyến từng ngày. Bấm 1 ngày để khoan sâu ĐDKD → KH.</div>`:'<div class="note">Đã hết ngày công trong tháng.</div>'}
  </div></div>`;
  H.querySelectorAll('[data-mt-d]').forEach(e=>e.onclick=ev=>{MT.day=e.dataset.mtD;renderMtn11()});
