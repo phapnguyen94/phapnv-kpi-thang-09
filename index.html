@@ -3612,14 +3612,14 @@ function mtData(){
 function mtScope(M){const D=window.T11_DATA;return M.reps.filter(r=>(!D.fxScope||r.ss===D.fxScope)&&(MT.ss==='all'||r.ss===MT.ss)&&(!MT.rep||r.name===MT.rep))}
 function mtStat(M,r,d){ // thống kê 1 ĐDKD, 1 ngày
  const kh=M._ix[r.name].kh,dd=d.dd,route=kh.filter(k=>mtOn(k,d)),fut=+dd>(M.asT[r.ss]||0);
- const s={ct:r.ct/M.wd,rr:0,th:r.day[dd]||0,n:route.length,ord:0,out:0,hv:0,hvo:0,fo:0,fod:0,foq:0,no:0,nod:0,noq:0};
+ const s={ct:r.ct/M.wd,rr:0,th:r.day[dd]||0,n:route.length,ord:0,out:0,hv:0,hvo:0,fo:0,fod:0,foq:0,no:0,nod:0,noq:0,xo:0,xn:0};
  route.forEach(k=>{s.rr+=k._nv?k.rr/k._nv:0;const o=(k.o[dd]||0)>0;if(o)s.ord++;
   if(k.hv){s.hv++;if(o)s.hvo++}
   const po=k.pg.indexOf('off')>=0,pn=k.pg.indexOf('on')>=0||k.pg.indexOf('nh')>=0,c=k.cb[dd];
   if(po){s.fo++;if(c&&c[2]==='off'){s.fod++;s.foq+=c[1]}}
   if(pn){s.no++;if(c&&(c[2]==='on'||c[2]==='nh')){s.nod++;s.noq+=c[1]}}});
- kh.forEach(k=>{if(!mtOn(k,d)&&(k.o[dd]||0)>0)s.out++});s.fut=fut;return s}
-function mtSum(L0){const hasD=L0.some(s=>!s.fut),L=hasD?L0.filter(s=>!s.fut):L0;const o={ct:0,rr:0,th:0,n:0,ord:0,out:0,hv:0,hvo:0,fo:0,fod:0,foq:0,no:0,nod:0,noq:0,fut:L.length?!hasD:false};L.forEach(s=>{Object.keys(o).forEach(k=>{if(k!=='fut')o[k]+=s[k]})});return o}
+ kh.forEach(k=>{if(!mtOn(k,d)&&(k.o[dd]||0)>0){s.out++;const c=k.cb[dd];if(c){if(c[2]==='off')s.xo++;else s.xn++}}});s.fut=fut;return s}
+function mtSum(L0){const hasD=L0.some(s=>!s.fut),L=hasD?L0.filter(s=>!s.fut):L0;const o={ct:0,rr:0,th:0,n:0,ord:0,out:0,hv:0,hvo:0,fo:0,fod:0,foq:0,no:0,nod:0,noq:0,xo:0,xn:0,fut:L.length?!hasD:false};L.forEach(s=>{Object.keys(o).forEach(k=>{if(k!=='fut')o[k]+=s[k]})});return o}
 function mtPill(a,b,g,y){if(!b)return '<span class="mtp n">–</span>';const v=a/b;return `<span class="mtp ${v>=g?'g':v>=y?'y':'r'}">${P1(v)}</span>`}
 function mtDayLabel(d){return d.dd+'/11'}
 function mtRow(label,s,cls,tog,open){
@@ -3629,7 +3629,7 @@ function mtRow(label,s,cls,tog,open){
 <td>${N0(s.n)}</td><td>${n(s.ord)}</td><td>${ph(s.ord,s.n,.6,.5)}</td><td>${n(s.out)}</td>
 <td>${N0(s.hv)}</td><td>${n(s.hvo)}</td><td>${ph(s.hvo,s.hv,.5,.35)}</td>
 <td>${N0(s.fo)}</td><td>${n(s.fod)}</td><td>${f?'·':N0(s.foq)}</td><td>${ph(s.fod,s.fo,.5,.3)}</td>
-<td>${N0(s.no)}</td><td>${n(s.nod)}</td><td>${f?'·':N0(s.noq)}</td><td>${ph(s.nod,s.no,.5,.3)}</td></tr>`}
+<td>${N0(s.no)}</td><td>${n(s.nod)}</td><td>${f?'·':N0(s.noq)}</td><td>${ph(s.nod,s.no,.5,.3)}</td><td>${f?'·':`<b>OFF ${N0(s.xo)}</b> · <b>ON ${N0(s.xn)}</b>`}</td></tr>`}
 function mtDetail(M,r,d){
  const kh=M._ix[r.name].kh,dd=d.dd,f=MT.flt[r.name]||'all',fut=+dd>M.asOf;
  const rt=kh.filter(k=>mtOn(k,d)),out=kh.filter(k=>!mtOn(k,d)&&(k.o[dd]||0)>0);
@@ -3640,8 +3640,9 @@ function mtDetail(M,r,d){
  const row=(k,i)=>{const o=k.o[dd]||0,c=k.cb[dd],tg=[];if(k.hv)tg.push('<span class="mtp p">Hội viên</span>');
   if(isC(k,'off'))tg.push(`<span class="mtp ${c&&c[2]==='off'?'g':'y'}">Combo OFF${c&&c[2]==='off'?' ✓':''}</span>`);
   if(isC(k,'on'))tg.push(`<span class="mtp ${c&&(c[2]==='on'||c[2]==='nh')?'g':'y'}">Combo ON${c&&(c[2]==='on'||c[2]==='nh')?' ✓':''}</span>`);
+  if(c&&!tg.some(x=>/Combo/.test(x)))tg.push(`<span class="mtp g">Combo ${c[2]==='off'?'OFF':'ON'} ✓</span>`);
   return `<tr><td>${i+1}</td><td class="nm">${esc2(k.n)}<br><small style="color:#7a84a0">${esc2(k.c)} · ${esc2(k.a)}</small></td><td>${esc2(k.w)}</td><td>${esc2(k.t)}</td><td>${esc2(k.v)}</td><td>${k._nv&&mtOn(k,d)?M1(k.rr/k._nv):'–'}</td><td>${fut?'·':(o>0?'<b class="gn">'+M1(o)+'</b>':'–')}</td><td>${fut?'<span class="mtp n">·</span>':o>0?'<span class="mtp g">Có đơn</span>':mtOn(k,d)?'<span class="mtp r">Chưa đơn</span>':'<span class="mtp y">Ngoài tuyến</span>'}</td><td class="nm">${tg.join(' ')||'–'}</td></tr>`};
- return `<tr><td colspan="22" style="padding:0"><div class="mtd"><div class="tools"><b class="lb">${esc2(r.name)} · ${mtDayLabel(d)} (${d.wd} · ${d.par==='Odd Week'?'tuần lẻ':'tuần chẵn'}) · ${rt.length} KH trên tuyến</b>${bt('all','Tất cả',rt.length)}${fut?'':bt('ord','Có đơn',rt.filter(k=>(k.o[dd]||0)>0).length)+bt('no','Chưa có đơn',rt.filter(k=>!((k.o[dd]||0)>0)).length)}${bt('hv','Hội viên',rt.filter(k=>k.hv).length)}${bt('off','Combo OFF',rt.filter(k=>isC(k,'off')).length)}${bt('on','Combo ON',rt.filter(k=>isC(k,'on')).length)}${fut?'':bt('out','Ngoài tuyến có đơn',out.length)}</div><div class="ovf"><table class="mtt"><thead><tr><th>#</th><th class="nm">Khách hàng</th><th>Phường/Xã</th><th>Type</th><th>Lịch viếng</th><th>DS dự kiến RR3M (Tr)</th><th>DS thực hiện (Tr)</th><th>Trạng thái</th><th class="nm">Hội viên / Combo</th></tr></thead><tbody>${row0(L,row)}</tbody></table></div></div></td></tr>`}
+ return `<tr><td colspan="23" style="padding:0"><div class="mtd"><div class="tools"><b class="lb">${esc2(r.name)} · ${mtDayLabel(d)} (${d.wd} · ${d.par==='Odd Week'?'tuần lẻ':'tuần chẵn'}) · ${rt.length} KH trên tuyến</b>${bt('all','Tất cả',rt.length)}${fut?'':bt('ord','Có đơn',rt.filter(k=>(k.o[dd]||0)>0).length)+bt('no','Chưa có đơn',rt.filter(k=>!((k.o[dd]||0)>0)).length)}${bt('hv','Hội viên',rt.filter(k=>k.hv).length)}${bt('off','Combo OFF',rt.filter(k=>isC(k,'off')).length)}${bt('on','Combo ON',rt.filter(k=>isC(k,'on')).length)}${fut?'':bt('out','Ngoài tuyến có đơn',out.length)}</div><div class="ovf"><table class="mtt"><thead><tr><th>#</th><th class="nm">Khách hàng</th><th>Phường/Xã</th><th>Type</th><th>Lịch viếng</th><th>DS dự kiến RR3M (Tr)</th><th>DS thực hiện (Tr)</th><th>Trạng thái</th><th class="nm">Hội viên / Combo</th></tr></thead><tbody>${row0(L,row)}</tbody></table></div></div></td></tr>`}
 function row0(L,row){return L.length?L.map(row).join(''):'<tr><td colspan="9">Không có KH</td></tr>'}
 function renderMtn11(){
  mtCss();const D=window.T11_DATA,M=mtData();const H=V11.host();if(!M||!H)return;
@@ -3661,8 +3662,8 @@ function renderMtn11(){
  // bảng chính
  let body=mtRow('TỔNG ('+RS.length+' ĐDKD)',tot,'tt');
  sss.forEach(s=>{const L=RS.filter(r=>r.ss===s);if(sss.length>1)body+=mtRow(teamName(s)+' ('+L.length+')',mtSum(L.map(st)),'ssr');
-  L.forEach(r=>{const o=MT.open.has(r.name);body+=mtRow(esc2(r.name)+' <small style="color:#6a7596">'+esc2(String(r.code).split('.').pop())+'</small>',st(r),'rp',r.name,o)+(o?mtDetail(M,r,d):'')})});
- const head=`<tr><th class="nm g5" rowspan="2" style="min-width:210px">SS / ĐDKD</th><th colspan="6" style="background:#d32f2f">Doanh số ngày (Tr)</th><th colspan="4" style="background:#2f5be7">Viếng thăm đúng tuyến</th><th colspan="3" style="background:#6a3fd6">Hội viên trên tuyến</th><th colspan="4" style="background:#e65100">Combo OFF</th><th colspan="4" style="background:#00897b">Combo ON</th></tr>
+  L.forEach(r=>{const o=MT.open.has(r.name);body+=mtRow(esc2(r.name),st(r),'rp',r.name,o)+(o?mtDetail(M,r,d):'')})});
+ const head=`<tr><th class="nm g5" rowspan="2" style="min-width:210px">SS / ĐDKD</th><th colspan="6" style="background:#d32f2f">Doanh số ngày (Tr)</th><th colspan="4" style="background:#2f5be7">Viếng thăm đúng tuyến</th><th colspan="3" style="background:#6a3fd6">Hội viên trên tuyến</th><th colspan="4" style="background:#e65100">Combo OFF</th><th colspan="4" style="background:#00897b">Combo ON</th><th rowspan="2" style="background:#455a64">Combo ngoài tuyến<br><small>(KH đã nhận)</small></th></tr>
  <tr><th>CT bq ngày</th><th>Dự kiến RR3M</th><th>Thực hiện</th><th>% đạt CT</th><th>% đạt RR</th><th>Chênh CT</th><th>KH tuyến</th><th>Có đơn</th><th>% phủ</th><th>Ngoài tuyến có đơn</th><th>HV tuyến</th><th>HV có đơn</th><th>%</th><th>KH combo OFF</th><th>KH đã nhận</th><th>Suất</th><th>%</th><th>KH combo ON</th><th>KH đã nhận</th><th>Suất</th><th>%</th></tr>`;
  // heatmap cả tháng
  const HM=[['ds','% đạt chỉ tiêu DS ngày'],['rr','% đạt RR3M'],['cov','% KH tuyến có đơn'],['hv','% hội viên tuyến có đơn'],['cmb','% KH combo tuyến đạt']];
