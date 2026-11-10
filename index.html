@@ -3652,24 +3652,24 @@ function row0(L,row){return L.length?L.map(row).join(''):'<tr><td colspan="9">Kh
 /* ===== MỤC 4: ĐDKD BÁN GÌ — ngành hàng · nhãn hàng · PC · LPPC · Trận Xanh/Vàng ===== */
 const NGC={'Seasoning':['Gia vị','#f59e0b'],'Convenience Foods':['Thực phẩm tiện lợi','#ef4444'],'Processed Meats':['Thịt chế biến','#ec4899'],'Refreshment Drinks':['Nước giải khát','#0ea5e9'],'Home Care':['Chăm sóc nhà cửa','#8b5cf6'],'Coffee':['Cà phê','#92400e'],'Nutrition':['Dinh dưỡng','#16a34a'],'Beer':['Bia','#eab308']};
 const ngN=k=>(NGC[k]||[k])[0],ngCol=k=>(NGC[k]||[0,'#94a3b8'])[1];
-function mxAgg(M,L,dds){const o={ng:{},nh:{},ds:0,ord:0,ordx:0,ln:0,pc:0,pon:0,tv:0,tx:0,call:0};
+function mxAgg(M,L,dds){const o={ng:{},nh:{},ds:0,ord:0,ordx:0,ln:0,pc:0,pcr:0,pon:0,tv:0,tx:0,call:0};
  L.forEach(r=>dds.forEach(d=>{const x=r.mix&&r.mix[d.dd];if(!x)return;o.ord+=x.ord;o.ordx+=x.ordx;o.ln+=x.ln;o.pc+=x.pc;o.pon+=x.pon;o.tv+=x.tv;o.tx+=x.tx;
   Object.keys(x.ng).forEach(k=>{o.ng[k]=(o.ng[k]||0)+x.ng[k];o.ds+=x.ng[k]});Object.keys(x.nh).forEach(k=>{o.nh[k]=(o.nh[k]||0)+x.nh[k]});
-  o.call+=M._ix[r.name].kh.filter(k=>mtOn(k,d)).length}));return o}
+  {const q=mtStat(M,r,d);o.call+=q.n;o.pcr+=q.ord}}));return o}
 function mxBars(obj,total,colf,max){const e=Object.entries(obj).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,max||12);if(!e.length)return '<div class="note">Chưa có doanh số.</div>';const top=e[0][1];
  return `<div class="mxb">${e.map(a=>`<div class="mxr"><span class="mxl" title="${esc2(a[0])}">${esc2(colf.n?colf.n(a[0]):a[0])}</span><span class="mxt"><i style="width:${Math.max(2,a[1]/top*100)}%;background:${colf.c(a[0])}"></i></span><span class="mxv"><b>${M1(a[1])}</b> Tr · ${total?P1(a[1]/total):'–'}</span></div>`).join('')}</div>`}
 
 const NHP=['#2f5be7','#f97316','#10b981','#e11d48','#8b5cf6','#0ea5e9','#eab308','#14b8a6','#ec4899','#84cc16','#6366f1','#f43f5e','#64748b'];
 function mxShort(n){const p=String(n).trim().split(/\s+/);return p.length>2?p.slice(-2).join(' '):p.join(' ')}
 // biểu đồ cột đứng: items=[{l,segs:[[v,color,tip]],lab}] · fmt hiển thị nhãn trên đầu cột
-function mxV(items,o){o=o||{};const n=items.length||1,H=o.H||300,L0=52,R0=16,T0=30,B0=o.B0||78,bw=Math.max(o.minBw||44,0),W=Math.max(L0+R0+n*bw,820),pw=W-L0-R0,ph=H-T0-B0,sl=pw/n;
+function mxV(items,o){o=o||{};const n=items.length||1,H=o.H||300,L0=52,R0=o.avg!=null?74:16,T0=30,B0=o.B0||78,bw=Math.max(o.minBw||44,0),W=Math.max(L0+R0+n*bw,820),pw=W-L0-R0,ph=H-T0-B0,sl=pw/n;
  const tot=items.map(i=>i.segs.reduce((t,s)=>t+s[0],0)),mxv=Math.max(1e-9,...tot)*1.12,nice=(()=>{const base=Math.pow(10,Math.floor(Math.log10(mxv/5)));const c=[1,2,2.5,5,10].map(m=>m*base);return c.find(q=>mxv/q<=6)||c[4]})(),top=Math.ceil(mxv/nice)*nice,yy=v=>T0+ph-v/top*ph;
  let g='';for(let v=0;v<=top+1e-9;v+=nice)g+=`<line x1="${L0}" x2="${W-R0}" y1="${yy(v)}" y2="${yy(v)}" stroke="${v===0?'#9aa6c4':'#e3e9f6'}"/><text x="${L0-8}" y="${yy(v)+4}" font-size="11.5" text-anchor="end" fill="#6a7596" font-weight="600">${o.ax?o.ax(v):v}</text>`;
+ if(o.avg!=null){const ya=yy(o.avg);g+=`<line x1="${L0}" x2="${W-R0}" y1="${ya}" y2="${ya}" stroke="#e11d48" stroke-width="1.6" stroke-dasharray="7 5"/><text x="${W-R0+6}" y="${ya-3}" font-size="11" font-weight="800" fill="#e11d48">${o.avgL||'TB'}</text><text x="${W-R0+6}" y="${ya+11}" font-size="11.5" font-weight="800" fill="#e11d48">${o.fmt?o.fmt(o.avg):o.avg}</text>`}
  items.forEach((it,i)=>{const cx=L0+i*sl+sl/2,bwid=Math.min(sl*.62,40);let y0=T0+ph;
   it.segs.forEach(s=>{if(s[0]<=0)return;const h=s[0]/top*ph;y0-=h;g+=`<rect x="${cx-bwid/2}" y="${y0}" width="${bwid}" height="${Math.max(h,1)}" rx="${it.segs.length===1?5:1}" fill="${s[1]}"><title>${esc2(it.l)} · ${esc2(s[2]||'')}</title></rect>`});
   g+=`<text x="${cx}" y="${y0-7}" font-size="12" font-weight="800" text-anchor="middle" fill="#12204f" stroke="#fff" stroke-width="3.5" paint-order="stroke">${it.lab!=null?it.lab:(o.fmt?o.fmt(tot[i]):tot[i])}</text>`;
   const lx=cx,ly=T0+ph+16;g+=o.rot===false?`<text x="${lx}" y="${ly}" font-size="12" text-anchor="middle" fill="#34406a" font-weight="700">${esc2(it.l)}</text>`:`<text transform="translate(${lx+4},${ly}) rotate(-38)" font-size="11.5" text-anchor="end" fill="#34406a" font-weight="700">${esc2(it.l)}</text>`});
- if(o.avg!=null){const ya=yy(o.avg);g+=`<line x1="${L0}" x2="${W-R0}" y1="${ya}" y2="${ya}" stroke="#e11d48" stroke-width="2" stroke-dasharray="7 5"/><text x="${W-R0}" y="${ya-5}" font-size="11.5" font-weight="800" text-anchor="end" fill="#e11d48" stroke="#fff" stroke-width="4" paint-order="stroke">${o.avgL||'TB'} ${o.fmt?o.fmt(o.avg):o.avg}</text>`}
  return `<div class="ovf"><svg viewBox="0 0 ${W} ${H}" style="min-width:${Math.min(W,1000)}px;width:100%;height:auto;display:block" font-family="inherit" text-rendering="geometricPrecision">${g}</svg></div>`}
 function mxCss(){if(document.getElementById('mx-css'))return;const s=document.createElement('style');s.id='mx-css';s.textContent=`
 #mtn .mxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin:8px 0 12px}#mtn .mxc{background:#fff;border:1px solid #dbe3f6;border-radius:14px;padding:12px 14px;box-shadow:0 2px 10px rgba(30,45,100,.06)}
@@ -3681,7 +3681,7 @@ function mxCss(){if(document.getElementById('mx-css'))return;const s=document.cr
 `;document.head.appendChild(s)}
 function mtMix(M,RS,d,teamName,scopeLbl){
  mxCss();const done=M.days.filter(x=>+x.dd<=M.asOf),dds=MT.mx==='m'?done:[d],fut=MT.mx!=='m'&&+d.dd>M.asOf;
- const A=mxAgg(M,RS,dds),lp=A.ordx?A.ln/A.ordx:0,cl=A.call?A.pc/A.call:0;
+ const A=mxAgg(M,RS,dds),lp=A.ordx?A.ln/A.ordx:0,cl=A.call?A.pcr/A.call:0;
  const per=lab=>MT.mx==='m'?'cả tháng đến '+M.asOf+'/11':lab;
  const tg=`<button class="btn ${MT.mx!=='m'?'on':''}" data-mt-mx="d">Ngày ${mtDayLabel(d)}</button><button class="btn ${MT.mx==='m'?'on':''}" data-mt-mx="m">Lũy kế tháng</button>`;
  const card=(c,t,b,sp)=>`<div class="kc ${c}"><small>${t}</small><b>${fut?'·':b}</b><span>${sp}</span></div>`;
@@ -3694,8 +3694,8 @@ function mtMix(M,RS,d,teamName,scopeLbl){
  const ngl=Object.keys(NGC);
  const stack=o=>{const t=o.ds||1;return `<div class="mxs">${Object.entries(o.ng).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).map(a=>`<i title="${esc2(ngN(a[0]))}: ${M1(a[1])} Tr (${P1(a[1]/t)})" style="width:${a[1]/t*100}%;background:${ngCol(a[0])}"></i>`).join('')}</div>`};
  const rows=RS.map(r=>({r,a:mxAgg(M,[r],dds)})).sort((x,y)=>y.a.ds-x.a.ds);
- const rowH=(lab,a,cls,tog,open)=>{const top=Object.entries(a.ng).sort((x,y)=>y[1]-x[1])[0];return `<tr class="${cls||''}"${tog?` data-mt-mxr="${esc2(tog)}"`:''}><td class="nm">${tog?(open?'▾ ':'▸ '):''}${lab}</td><td><b>${M1(a.ds)}</b></td><td>${stack(a)}</td><td>${top?esc2(ngN(top[0]))+' '+P1(top[1]/(a.ds||1)):'–'}</td><td>${N0(a.pc)}</td><td>${N0(a.pon)}</td><td>${a.ordx?(a.ln/a.ordx).toFixed(2):'–'}</td><td>${a.call?P1(a.pc/a.call):'–'}</td><td>${N0(a.tx)}</td><td>${N0(a.tv)}</td></tr>`};
- const det=(r,a)=>`<tr><td colspan="10" style="padding:0"><div class="mtd"><div class="mxg"><div class="mxc"><h4>${esc2(r.name)} · ngành hàng (Tr)</h4>${mxV(Object.entries(a.ng).filter(q=>q[1]>0).sort((p,q)=>q[1]-p[1]).map(q=>({l:ngN(q[0]),segs:[[q[1],ngCol(q[0]),M1(q[1])+' Tr · '+P1(q[1]/(a.ds||1))]],lab:M1(q[1])})),{ax:v=>Math.round(v/1e6),H:260,rot:false,minBw:70,B0:40})}</div><div class="mxc"><h4>${esc2(r.name)} · nhãn hàng (Tr)</h4>${mxV(Object.entries(a.nh).filter(q=>q[1]>0).sort((p,q)=>q[1]-p[1]).slice(0,12).map((q,i)=>({l:q[0],segs:[[q[1],NHP[i%NHP.length],M1(q[1])+' Tr · '+P1(q[1]/(a.ds||1))]],lab:M1(q[1])})),{ax:v=>Math.round(v/1e6),H:260,minBw:52})}</div></div><div class="mxc" style="margin-bottom:10px"><h4>${esc2(r.name)} · doanh số từng ngày theo ngành hàng (Tr)</h4>${mxV(done.map(x=>{const b=mxAgg(M,[r],[x]);return {l:x.dd+'/11',segs:Object.keys(NGC).filter(k=>b.ng[k]>0).map(k=>[b.ng[k],ngCol(k),ngN(k)+': '+M1(b.ng[k])+' Tr']),lab:M1(b.ds)}}),{ax:v=>Math.round(v/1e6),H:260,rot:false,minBw:60,B0:34})}</div><div class="ovf"><table class="mtt"><thead><tr><th class="nm g5">Ngày</th><th>DS (Tr)</th><th>PC</th><th>PC ON</th><th>PC/Call</th><th>LPPC trừ Meat/Bia</th><th>Trận Xanh</th><th>Trận Vàng</th><th>Ngành bán chính</th></tr></thead><tbody>${done.map(x=>{const b=mxAgg(M,[r],[x]),t=Object.entries(b.ng).sort((p,q)=>q[1]-p[1]).slice(0,3).map(e=>ngN(e[0])+' '+M1(e[1])).join(' · ');return `<tr><td class="nm">${x.dd}/11 ${x.wd.replace('Thứ ','T')}</td><td><b>${M1(b.ds)}</b></td><td>${b.pc}</td><td>${b.pon}</td><td>${b.call?P1(b.pc/b.call):'–'}</td><td>${b.ordx?(b.ln/b.ordx).toFixed(2):'–'}</td><td>${b.tx}</td><td>${b.tv}</td><td style="text-align:left">${esc2(t)||'–'}</td></tr>`}).join('')}</tbody></table></div></div></td></tr>`;
+ const rowH=(lab,a,cls,tog,open)=>{const top=Object.entries(a.ng).sort((x,y)=>y[1]-x[1])[0];return `<tr class="${cls||''}"${tog?` data-mt-mxr="${esc2(tog)}"`:''}><td class="nm">${tog?(open?'▾ ':'▸ '):''}${lab}</td><td><b>${M1(a.ds)}</b></td><td>${stack(a)}</td><td>${top?esc2(ngN(top[0]))+' '+P1(top[1]/(a.ds||1)):'–'}</td><td>${N0(a.pc)}</td><td>${N0(a.pon)}</td><td>${a.ordx?(a.ln/a.ordx).toFixed(2):'–'}</td><td>${a.call?P1(a.pcr/a.call):'–'}</td><td>${N0(a.tx)}</td><td>${N0(a.tv)}</td></tr>`};
+ const det=(r,a)=>`<tr><td colspan="10" style="padding:0"><div class="mtd"><div class="mxg"><div class="mxc"><h4>${esc2(r.name)} · ngành hàng (Tr)</h4>${mxV(Object.entries(a.ng).filter(q=>q[1]>0).sort((p,q)=>q[1]-p[1]).map(q=>({l:ngN(q[0]),segs:[[q[1],ngCol(q[0]),M1(q[1])+' Tr · '+P1(q[1]/(a.ds||1))]],lab:M1(q[1])})),{ax:v=>Math.round(v/1e6),H:260,rot:false,minBw:70,B0:40})}</div><div class="mxc"><h4>${esc2(r.name)} · nhãn hàng (Tr)</h4>${mxV(Object.entries(a.nh).filter(q=>q[1]>0).sort((p,q)=>q[1]-p[1]).slice(0,12).map((q,i)=>({l:q[0],segs:[[q[1],NHP[i%NHP.length],M1(q[1])+' Tr · '+P1(q[1]/(a.ds||1))]],lab:M1(q[1])})),{ax:v=>Math.round(v/1e6),H:260,minBw:52})}</div></div><div class="mxc" style="margin-bottom:10px"><h4>${esc2(r.name)} · doanh số từng ngày theo ngành hàng (Tr)</h4>${mxV(done.map(x=>{const b=mxAgg(M,[r],[x]);return {l:x.dd+'/11',segs:Object.keys(NGC).filter(k=>b.ng[k]>0).map(k=>[b.ng[k],ngCol(k),ngN(k)+': '+M1(b.ng[k])+' Tr']),lab:M1(b.ds)}}),{ax:v=>Math.round(v/1e6),H:260,rot:false,minBw:60,B0:34})}</div><div class="ovf"><table class="mtt"><thead><tr><th class="nm g5">Ngày</th><th>DS (Tr)</th><th>PC</th><th>PC ON</th><th>PC/Call</th><th>LPPC trừ Meat/Bia</th><th>Trận Xanh</th><th>Trận Vàng</th><th>Ngành bán chính</th></tr></thead><tbody>${done.map(x=>{const b=mxAgg(M,[r],[x]),t=Object.entries(b.ng).sort((p,q)=>q[1]-p[1]).slice(0,3).map(e=>ngN(e[0])+' '+M1(e[1])).join(' · ');return `<tr><td class="nm">${x.dd}/11 ${x.wd.replace('Thứ ','T')}</td><td><b>${M1(b.ds)}</b></td><td>${b.pc}</td><td>${b.pon}</td><td>${b.call?P1(b.pcr/b.call):'–'}</td><td>${b.ordx?(b.ln/b.ordx).toFixed(2):'–'}</td><td>${b.tx}</td><td>${b.tv}</td><td style="text-align:left">${esc2(t)||'–'}</td></tr>`}).join('')}</tbody></table></div></div></td></tr>`;
  let body='';
  const sss=[...new Set(RS.map(r=>r.ss))];
  sss.forEach(s=>{const L=rows.filter(x=>x.r.ss===s);if(sss.length>1)body+=rowH(teamName(s)+' ('+L.length+')',mxAgg(M,L.map(x=>x.r),dds),'ssr');L.forEach(x=>{const o=MT.mxo.has(x.r.name);body+=rowH(esc2(x.r.name),x.a,'rp',x.r.name,o)+(o?det(x.r,x.a):'')})});
@@ -3716,7 +3716,7 @@ function mtMix(M,RS,d,teamName,scopeLbl){
  const pcP='M'+pd.map((p,i)=>`${L0+i*bw+bw/2},${yp(p.a.pc)}`).join(' L');
   const trend=`<div class="mxc" style="margin-bottom:12px"><h4>Xu hướng theo ngày: doanh số theo ngành hàng (Tr) · bảng PC, LPPC, PC/Call, Trận Xanh/Vàng bên dưới</h4>${legend}<div class="ovf"><svg viewBox="0 0 ${W} ${Hh}" style="min-width:820px;width:100%;height:auto;display:block" font-family="inherit">${tb}</svg></div>
  <div class="ovf"><table class="mtt"><thead><tr><th class="nm g5">Chỉ số</th>${pd.map(p=>`<th>${p.x.dd}/11</th>`).join('')}</tr></thead><tbody>
- <tr><td class="nm">Tổng DS (Tr)</td>${pd.map(p=>`<td>${M1(p.a.ds)}</td>`).join('')}</tr><tr><td class="nm">PC</td>${pd.map(p=>`<td>${p.a.pc}</td>`).join('')}</tr><tr><td class="nm">PC ON</td>${pd.map(p=>`<td>${p.a.pon}</td>`).join('')}</tr><tr><td class="nm">PC/Call</td>${pd.map(p=>`<td>${p.a.call?P1(p.a.pc/p.a.call):'–'}</td>`).join('')}</tr><tr><td class="nm">LPPC trừ Meat/Bia</td>${pd.map(p=>`<td>${p.a.ordx?(p.a.ln/p.a.ordx).toFixed(2):'–'}</td>`).join('')}</tr><tr><td class="nm">Trận Xanh (quầy)</td>${pd.map(p=>`<td>${p.a.tx}</td>`).join('')}</tr><tr><td class="nm">Trận Vàng (quầy)</td>${pd.map(p=>`<td>${p.a.tv}</td>`).join('')}</tr></tbody></table></div></div>`;
+ <tr><td class="nm">Tổng DS (Tr)</td>${pd.map(p=>`<td>${M1(p.a.ds)}</td>`).join('')}</tr><tr><td class="nm">PC</td>${pd.map(p=>`<td>${p.a.pc}</td>`).join('')}</tr><tr><td class="nm">PC ON</td>${pd.map(p=>`<td>${p.a.pon}</td>`).join('')}</tr><tr><td class="nm">PC/Call</td>${pd.map(p=>`<td>${p.a.call?P1(p.a.pcr/p.a.call):'–'}</td>`).join('')}</tr><tr><td class="nm">LPPC trừ Meat/Bia</td>${pd.map(p=>`<td>${p.a.ordx?(p.a.ln/p.a.ordx).toFixed(2):'–'}</td>`).join('')}</tr><tr><td class="nm">Trận Xanh (quầy)</td>${pd.map(p=>`<td>${p.a.tx}</td>`).join('')}</tr><tr><td class="nm">Trận Vàng (quầy)</td>${pd.map(p=>`<td>${p.a.tv}</td>`).join('')}</tr></tbody></table></div></div>`;
  const heat=(a,b)=>{if(!a)return '<td class="z">–</td>';const v=a/b;const c=v>=.4?'p':v>=.2?'g':v>=.1?'y':'z2';return `<td class="${c}">${M1(a)}</td>`};
  const nhTop=Object.entries(A.nh).sort((x,y)=>y[1]-x[1]).slice(0,10).map(e=>e[0]),ngK=Object.keys(A.ng).filter(k=>A.ng[k]>0).sort((x,y)=>A.ng[y]-A.ng[x]);
  const mrow=(lab,a,cls,keys,src)=>`<tr class="${cls||''}"><td class="nm">${lab}</td><td><b>${M1(a.ds)}</b></td>${keys.map(k=>`<td style="background:rgba(47,91,231,${Math.min(.5,(a[src][k]||0)/(a.ds||1)*1.1).toFixed(2)})!important">${a[src][k]?M1(a[src][k]):'–'}</td>`).join('')}</tr>`;
@@ -3727,7 +3727,7 @@ function mtMix(M,RS,d,teamName,scopeLbl){
  const cDS=mxV(ordR.map(x=>({l:nm(x.r),segs:Object.keys(NGC).concat(Object.keys(x.a.ng).filter(k=>!NGC[k])).filter(k=>x.a.ng[k]>0).map(k=>[x.a.ng[k],ngCol(k),ngN(k)+': '+M1(x.a.ng[k])+' Tr']),lab:M1(x.a.ds)})),{ax:v=>Math.round(v/1e6),H:300,avg:A.ds/(ordR.length||1),avgL:'TB/ĐDKD',fmt:v=>M1(v)});
  const cPC=mxV(ordR.map(x=>({l:nm(x.r),segs:[[x.a.pc-x.a.pon,'#2f5be7','PC OFF '+(x.a.pc-x.a.pon)],[x.a.pon,'#14b8a6','PC ON '+x.a.pon]],lab:x.a.pc+(x.a.pon?' ('+x.a.pon+')':'')})),{H:280,avg:A.pc/(ordR.length||1),avgL:'TB',fmt:v=>Math.round(v)});
  const cLP=mxV(ordR.map(x=>({l:nm(x.r),segs:[[x.a.ordx?x.a.ln/x.a.ordx:0,'#8b5cf6','LPPC trừ Meat/Bia']],lab:x.a.ordx?(x.a.ln/x.a.ordx).toFixed(2):'–'})),{H:280,avg:lp,avgL:'Cả nhóm',fmt:v=>v.toFixed(2)});
- const cCL=mxV(ordR.map(x=>({l:nm(x.r),segs:[[x.a.call?x.a.pc/x.a.call:0,'#f59e0b','PC/Call']],lab:x.a.call?Math.round(x.a.pc/x.a.call*100)+'%':'–'})),{H:280,avg:cl,avgL:'Cả nhóm',fmt:v=>Math.round(v*100)+'%',ax:v=>Math.round(v*100)+'%'});
+ const cCL=mxV(ordR.map(x=>({l:nm(x.r),segs:[[x.a.call?x.a.pcr/x.a.call:0,'#f59e0b','PC/Call']],lab:x.a.call?Math.round(x.a.pcr/x.a.call*100)+'%':'–'})),{H:280,avg:cl,avgL:'Cả nhóm',fmt:v=>Math.round(v*100)+'%',ax:v=>Math.round(v*100)+'%'});
  const cTV=mxV(ordR.map(x=>({l:nm(x.r),segs:[[x.a.tv,'#eab308','Trận Vàng']],lab:x.a.tv})),{H:280,fmt:v=>Math.round(v)});
  const cNG=mxV(Object.entries(A.ng).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).map(a=>({l:ngN(a[0]),segs:[[a[1],ngCol(a[0]),M1(a[1])+' Tr · '+P1(a[1]/(A.ds||1))]],lab:M1(a[1])})),{ax:v=>Math.round(v/1e6),H:260,rot:false,minBw:70,B0:34});
  const cNH=mxV(Object.entries(A.nh).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,14).map((a,i)=>({l:a[0],segs:[[a[1],NHP[i%NHP.length],M1(a[1])+' Tr · '+P1(a[1]/(A.ds||1))]],lab:M1(a[1])})),{ax:v=>Math.round(v/1e6),H:260,minBw:44,B0:70});
@@ -3744,7 +3744,7 @@ function mtMix(M,RS,d,teamName,scopeLbl){
  <div class="mxc" style="margin-bottom:12px"><div class="tools" style="margin-bottom:6px"><b class="lb">Ma trận ĐDKD ×</b>${mtab('ng','Ngành hàng')}${mtab('nh','Top 10 nhãn hàng')}</div><div class="ovf"><table class="mtt"><thead><tr><th class="nm g5">ĐDKD</th><th>Tổng DS</th>${(mm==='ng'?ngK:nhTop).map(k=>`<th>${esc2(mm==='ng'?ngN(k):k)}</th>`).join('')}</tr></thead><tbody>${rows.map(x=>mrow(esc2(x.r.name),x.a,'',mm==='ng'?ngK:nhTop,mm)).join('')}${mrow('TỔNG',A,'tt',mm==='ng'?ngK:nhTop,mm)}</tbody></table></div><div class="note">Số = doanh số (Tr); ô càng đậm = tỷ trọng càng cao trong doanh số ĐDKD.</div></div>
  <div class="sec o"><b>T</b>TỔNG ${esc2(scopeLbl)}</div>${kp}
  <div class="mxg">${bx('Doanh số theo ngành hàng (Tr)',cNG)}${bx('Doanh số theo nhãn hàng — Top 14 (Tr)',cNH)}</div>`}
- <div class="note">Doanh số = thành tiền trước chiết khấu, không tính hàng khuyến mại. PC = số điểm bán có đơn trong ngày (cộng dồn khi xem lũy kế); PC ON = PC thuộc kênh On Premise. PC/Call = tỷ lệ viếng thăm có đơn hàng = PC ÷ KH trên tuyến theo lịch viếng (PC gồm cả KH ngoài tuyến nên có thể >100%). LPPC trừ Meat/Bia = số line (không tính Thịt chế biến, Bia) ÷ số đơn có line đó, tính cả đơn 1 line. Trận Vàng = quầy mua Hạt nêm Chinsu Ngọt Thanh; Trận Xanh = quầy mua SKU Tết — hiện chưa phát sinh nên bằng 0. Bấm tên ĐDKD để xem ngành &amp; nhãn hàng của riêng ĐDKD đó.</div>`}
+ <div class="note">Doanh số = thành tiền trước chiết khấu, không tính hàng khuyến mại. PC = số điểm bán có đơn trong ngày (cộng dồn khi xem lũy kế); PC ON = PC thuộc kênh On Premise. PC/Call = tỷ lệ viếng thăm có đơn hàng = số KH có lịch viếng trong ngày phát sinh đơn ÷ số KH có lịch viếng trong ngày (không tính KH ngoài tuyến; số này khớp mục 1). LPPC trừ Meat/Bia = số line (không tính Thịt chế biến, Bia) ÷ số đơn có line đó, tính cả đơn 1 line. Trận Vàng = quầy mua Hạt nêm Chinsu Ngọt Thanh; Trận Xanh = quầy mua SKU Tết — hiện chưa phát sinh nên bằng 0. Bấm tên ĐDKD để xem ngành &amp; nhãn hàng của riêng ĐDKD đó.</div>`}
 
 function renderMtn11(){
  mtCss();const D=window.T11_DATA,M=mtData();const H=V11.host();if(!M||!H)return;
@@ -4786,7 +4786,7 @@ function bg(){var c=getComputedStyle(document.body).backgroundColor;if(!c||/rgba
 function toBlob(c){return new Promise(function(r){c.toBlob(r,'image/png')})}
 async function run(tt,tl){
   var C=ctx(),t=tt||C.t,title=tl||C.title;
-  var W=t.scrollWidth,els=t.querySelectorAll('*');
+  var __bt,W=t.scrollWidth,els=t.querySelectorAll('*');
   for(var i=0;i<els.length;i++){if(els[i].scrollWidth>W&&els[i].scrollWidth<6000)W=els[i].scrollWidth}
   W=Math.max(W,t.clientWidth);
   var ID='shot-'+Date.now();t.setAttribute('data-shot',ID);
@@ -4808,9 +4808,19 @@ async function run(tt,tl){
       });
       var bar=doc.createElement('div');bar.style.cssText='padding:10px 14px;margin:0 0 10px;background:#163a7a;color:#fff;font:700 16px system-ui,sans-serif;display:flex;justify-content:space-between;gap:12px';
       bar.innerHTML='<span></span><span style="font-weight:500;font-size:13px;opacity:.9"></span>';bar.children[0].textContent=title+' · Team SS Pháp';bar.children[1].textContent='Chụp lúc '+stamp();
-      root.insertBefore(bar,root.firstChild);
+      bar.style.height='40px';bar.style.boxSizing='border-box';bar.style.alignItems='center';__bt=[bar.children[0].textContent,bar.children[1].textContent];root.insertBefore(bar,root.firstChild);
     }});
   t.removeAttribute('data-shot');
+  try{ // cắt khoảng trắng thừa bên phải và bên dưới, giữ lại thanh tiêu đề
+    var cw=canvas.width,chh=canvas.height,cx0=canvas.getContext('2d'),Y0=Math.min(50,chh-1);
+    if(__bt&&cw>200&&chh>Y0+20){
+      var px=cx0.getImageData(cw-1,chh-1,1,1).data,br=px[0],bg2=px[1],bb=px[2],dd=cx0.getImageData(0,Y0,cw,chh-Y0).data,mx=0,my=0,rw=cw*4;
+      for(var yy=0;yy<chh-Y0;yy++){var o=yy*rw,hit=false;for(var xx=cw-1;xx>=mx;xx--){var q=o+xx*4;if(Math.abs(dd[q]-br)+Math.abs(dd[q+1]-bg2)+Math.abs(dd[q+2]-bb)>24){if(xx>mx)mx=xx;hit=true;break}}if(hit)my=yy}
+      var nw=Math.min(cw,Math.max(mx+14,760)),nh=Math.min(chh,Y0+my+12);
+      if(nw<cw-6||nh<chh-6){var c2=document.createElement('canvas');c2.width=nw;c2.height=nh;var g2=c2.getContext('2d');g2.fillStyle='rgb('+br+','+bg2+','+bb+')';g2.fillRect(0,0,nw,nh);g2.drawImage(canvas,0,0,nw,nh,0,0,nw,nh);
+        g2.fillStyle='#163a7a';g2.fillRect(0,0,nw,40);g2.fillStyle='#fff';g2.textBaseline='middle';g2.font='700 16px system-ui,sans-serif';g2.fillText(__bt[0],14,21);g2.font='500 13px system-ui,sans-serif';g2.textAlign='right';g2.fillText(__bt[1],nw-14,21);canvas=c2}
+    }
+  }catch(e){}
   var H=canvas.height,Wd=canvas.width,k=Math.min(2,15000/H,15000/Wd),cv=canvas;
   if(Math.abs(k-1)>0.05){cv=document.createElement('canvas');cv.width=Math.round(Wd*k);cv.height=Math.round(H*k);var g=cv.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(canvas,0,0,cv.width,cv.height)}
   var base=fname(title)+'_'+(new Date().toISOString().slice(5,10).replace('-',''));
