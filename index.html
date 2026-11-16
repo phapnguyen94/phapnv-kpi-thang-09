@@ -3001,8 +3001,7 @@ function v11Combo(){
  const prr=PR.map(p=>{const A=C.filter(x=>has(x,p[0])),G=A.filter(x=>x.got[p[0]]);return {n:p[1],a:A.length,g:G.length,s:sm(G,x=>x.got[p[0]][0]),ds:sm(G,'ds')}});
  const TA=C.filter(x=>x.prog.length),TG=C.filter(x=>Object.keys(x.got).length),TS=prr.reduce((t,r)=>t+r.s,0),TD=sm(TG,'ds');
  const tc=(t,sub,col,A,G,su)=>`<div class="pc"><div class="hd" style="background:${col}"><b>${t}</b><span>${sub}</span></div><div class="bd"><div class="st"><div><b>${N0(A)}</b><small>KH áp dụng</small></div><div><b>${N0(G)}</b><small>KH đã nhận combo</small></div><div><b>${N0(su)}</b><small>Suất tặng</small></div><div><b>${P1(A?G/A:0)}</b><small>KH tham gia</small></div></div></div></div>`;
- const totBlock=`<div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(330px,1fr))">`+
-  tc('TỔNG COMBO','OFF + ON + L2 · '+scopeLabel(),'linear-gradient(90deg,#0f766e,#0b3b3a)',TA.length,TG.length,TS)+
+ const totBlock=`<div class="cards" style="grid-template-columns:1fr"><div class="pc"><div class="hd" style="background:linear-gradient(90deg,#0f766e,#0b3b3a)"><b>TỔNG CHƯƠNG TRÌNH COMBO</b><span>KH lẻ L1 OFF · Total KH L1 ON · L2 Quán ăn + Nhà hàng · ${scopeLabel()}</span></div><div class="bd"><div class="st"><div><b>${N0(TA.length)}</b><small>KH áp dụng</small></div><div><b>${N0(TG.length)}</b><small>KH đã nhận combo</small></div><div><b>${N0(TS)}</b><small>Suất tặng</small></div><div><b>${P1(TA.length?TG.length/TA.length:0)}</b><small>KH tham gia</small></div></div></div></div></div><div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">`+
   tc('TOTAL NHÓM OFF','KH lẻ L1 OFF','linear-gradient(90deg,#1c3fb5,#10183a)',prr[0].a,prr[0].g,prr[0].s)+
   tc('TOTAL NHÓM ON','Total KH L1 ON','linear-gradient(90deg,#6a2fe0,#2a1070)',prr[1].a,prr[1].g,prr[1].s)+
   tc('L2 QUÁN ĂN + NHÀ HÀNG','VIP2 · VIP3','linear-gradient(90deg,#c2500c,#6a2a00)',prr[2].a,prr[2].g,prr[2].s)+`</div>`;
