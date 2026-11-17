@@ -2998,7 +2998,7 @@ function v11CombTop(){
 function v11Combo(){
  const D=window.T11_DATA,C=D.cust.filter(inScope).filter(x=>x.prog.length||Object.keys(x.got).length),cp=D.meta.combo;
  const has=(x,p)=>x.prog.includes(p);
- const card=(k,name,sub,col,gift,rule,mx)=>{const A=C.filter(x=>has(x,k)),G=A.filter(x=>x.got[k]),su=sm(G,x=>x.got[k][0]);return `<div class="pc"><div class="hd" style="background:${col}"><b>${name}</b><span>${sub}</span></div><div class="bd"><div class="gift">${gift}</div><div class="rule">${rule}</div><div class="mx">${mx}</div><div class="st"><div><b>${N0(A.length)}</b><small>KH áp dụng</small></div><div><b>${N0(G.length)}</b><small>KH đã nhận combo</small></div><div><b>${N0(su)}</b><small>Suất tặng</small></div><div><b>${P1(A.length?G.length/A.length:0)}</b><small>KH tham gia</small></div></div></div></div>`};
+ const card=(k,name,sub,col,gift,rule,mx)=>{const A=C.filter(x=>has(x,k)),G=A.filter(x=>x.got[k]),su=sm(G,x=>x.got[k][0]);return `<div class="pc"><div class="hd" style="background:${col}"><b>${name}</b><span>${sub}</span></div><div class="bd"><div class="gift">${gift}</div><div class="rule">${rule}</div><div class="mx">${mx}</div></div></div>`};
  const a=cp.nh.a,b=cp.nh.b;
  const PR=[['off','KH lẻ L1 OFF'],['on','Total KH L1 ON'],['nh','L2 Quán ăn + Nhà hàng']];
  const prr=PR.map(p=>{const A=C.filter(x=>has(x,p[0])),G=A.filter(x=>x.got[p[0]]);return {n:p[1],a:A.length,g:G.length,s:sm(G,x=>x.got[p[0]][0]),ds:sm(G,'ds')}});
