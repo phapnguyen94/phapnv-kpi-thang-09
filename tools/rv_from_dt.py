@@ -39,7 +39,7 @@ def compute(S,day,params=None,manual=None,hist=False):
     mrows=[r for r in DT if r[44].endswith(mon) and _dt(r[44])<=dd]
     today=[r for r in mrows if r[44]==day]
     lastday=max((datetime.datetime.strptime(r[44],'%d/%m/%Y').date() for r in DT if r[44]),default=None)
-    MCP=[r for r in S['MCP'] if len(r)>L('BT') and r[0]!='' and str(r[L('C')]).startswith('SM-')]
+    MCP=[r for r in S['MCP'] if len(r)>L('BK') and r[0]!='' and str(r[L('C')]).startswith('SM-')]
     mcpm={str(r[0]):r for r in MCP}
     kp={}
     for r in S['RAW_KPI']:
