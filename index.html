@@ -4018,14 +4018,14 @@ function rvPhap(R,tg,n){
   const bd=[T,...RP.filter(Boolean)].filter(Boolean).map(r=>`<tr class="${r===T?'tot':''}"><td class="stk"><b>${esc2(r.n)}</b>${r.pos?`<small>${esc2(r.pos)}</small>`:''}</td>${gset.map(g=>[0,1,2,3,4,5,6].map(j=>cell(r,g,j)).join('')).join('')}${auxI.map(k=>{const x=r.v[57+k];return `<td class="${k===0||k===4?'grpL':''}">${x==null?'–':au(x)}</td>`}).join('')}</tr>`).join('');
   return `<table class="rvx"><thead>${h1}${h2}</thead><tbody>${bd}</tbody></table>`};
  window.__rvx={mk:p=>p===1?mk([0,1,2,3],[0,1,2,3]):p===2?mk([4,5,6,7],[4,5,6,7,8,9,10]):mk([0,1,2,3,4,5,6,7],[0,1,2,3,4,5,6,7,8,9,10]),title:R.date,parts:{1:'Doanh số → LPPC',2:'Hội viên → Trận Vàng'}};
- n++;out+=`<div class="sec"><b>${n}</b>CHI TIẾT THEO ĐDKD · SS NGUYỄN VĂN PHÁP (${RP.length} ĐDKD)</div><div class="rvx-shotbar shot-ignore"><button type="button" data-rvx-shot="1">📷 Chụp ảnh 1 · Doanh số → LPPC (4K)</button><button type="button" data-rvx-shot="2">📷 Chụp ảnh 2 · Hội viên → Trận Vàng (4K)</button></div><div class="rvx-det">${window.__rvx.mk(0)}</div>
+ n++;out+=`<div class="sec"><b>${n}</b>CHI TIẾT THEO ĐDKD · SS NGUYỄN VĂN PHÁP (${RP.length} ĐDKD)</div><div class="rvx-shotbar shot-ignore"><button type="button" data-rvx-shot="1">📋 Chụp & copy ảnh 1 · Doanh số → LPPC</button><button type="button" data-rvx-shot="2">📋 Chụp & copy ảnh 2 · Hội viên → Trận Vàng</button></div><div class="rvx-det">${window.__rvx.mk(0)}</div>
   <div class="rvx-leg"><span><i style="background:#16a34a"></i>Xanh = đạt mục tiêu ngày / đạt nhịp (≥ ${P(tg)} thời gian)</span><span><i style="background:#dc2626"></i>Đỏ = thiếu / chậm nhịp</span><span><i style="background:#d99a06"></i>% TH: vàng 90–99% mốc · xanh 100–109% · tím ≥110% · đỏ &lt;90%</span><span>Cột đậm = KQ ngày · Trượt ngang để xem đủ 8 nhóm KPI + cột phụ trợ</span></div>`;
  return [out,n]}
 
 if(!window.__rvxDayBound){window.__rvxDayBound=1;document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('[data-rvx-day]')){RVS.day=t.value;renderRv11()}});document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rvx-day-btn]');if(b){RVS.day=b.dataset.rvxDayBtn;renderRv11()}})}
 if(!window.__rvxBound){window.__rvxBound=1;document.addEventListener('click',async function(e){
  const b=e.target.closest&&e.target.closest('[data-rvx-shot]');if(!b||!window.__rvx||!window.html2canvas)return;
- e.preventDefault();e.stopPropagation();const part=+b.dataset.rvxShot,old=b.textContent;b.disabled=true;b.textContent='Đang chụp 4K…';
+ e.preventDefault();e.stopPropagation();const part=+b.dataset.rvxShot,old=b.textContent;b.disabled=true;b.textContent='Đang chụp 4K…';let _res,_rej;const _pr=new Promise((r,j)=>{_res=r;_rej=j});let _cp=null;try{if(navigator.clipboard&&window.ClipboardItem)_cp=navigator.clipboard.write([new ClipboardItem({'image/png':_pr})])}catch(_e){_cp=null}
  const wrap=document.createElement('div');wrap.id='v11';wrap.className='rvx-cap';wrap.style.cssText='position:absolute;left:-30000px;top:0;background:#fff;padding:22px 24px;width:max-content;font-family:inherit';
  wrap.innerHTML=`<div style="background:#14206b;color:#fff;padding:14px 20px;border-radius:12px;margin:0 0 12px;font:800 24px system-ui,sans-serif;display:flex;justify-content:space-between;gap:30px"><span>BÁO CÁO NGÀY · SS NGUYỄN VĂN PHÁP · ${esc2(window.__rvx.parts[part])}</span><span>${esc2(window.__rvx.title)}</span></div><div class="rvx-det" style="overflow:visible;max-height:none;border:0">${window.__rvx.mk(part)}</div>`;
  document.body.appendChild(wrap);
@@ -4036,11 +4036,13 @@ if(!window.__rvxBound){window.__rvxBound=1;document.addEventListener('click',asy
   await new Promise(r=>setTimeout(r,150));
   const W=wrap.scrollWidth,sc=Math.min(4,Math.max(2,3840/W));
   const cv=await html2canvas(wrap,{backgroundColor:'#ffffff',scale:sc,useCORS:true,logging:false,width:W,windowWidth:W+40,scrollX:0,scrollY:0});
-  const bl=await new Promise(r=>cv.toBlob(r,'image/png')),a=document.createElement('a');
+  const bl=await new Promise(r=>cv.toBlob(r,'image/png'));_res(bl);let okc=false;if(_cp){try{await _cp;okc=true}catch(_e){okc=false}}
+  if(okc){b.textContent='✔ Đã copy — dán vào Zalo (Ctrl+V)';await new Promise(r=>setTimeout(r,1800));window.__rvxLast=[cv.width,cv.height,'copied'];return}
+  const a=document.createElement('a');
   const d=(window.__rvx.title.match(/(\d{2})\/(\d{2})\/(\d{4})/)||[]);
   a.href=URL.createObjectURL(bl);a.download='BaoCaoNgay_'+(d[1]?d[1]+d[2]+d[3]:'')+'_phan'+part+'_4K.png';document.body.appendChild(a);a.click();a.remove();
   window.__rvxLast=[cv.width,cv.height];
- }catch(err){console.error(err);alert('Chụp lỗi: '+err.message)}finally{wrap.remove();b.disabled=false;b.textContent=old}
+ }catch(err){console.error(err);try{_rej(err)}catch(_e){}alert('Chụp lỗi: '+err.message)}finally{wrap.remove();b.disabled=false;b.textContent=old}
 },true)}
 
 function renderRv11(){
