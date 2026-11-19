@@ -23,7 +23,7 @@ def workdays(a,b):
         if d.isoweekday()!=7:n+=1
         d+=datetime.timedelta(1)
     return n
-def compute(S,day,params=None,manual=None,hvcols=None):
+def compute(S,day,params=None,manual=None,hist=False):
     """day 'dd/mm/yyyy'. S: dict of sheets (RAW_KPI = KPI THÁNG new layout)."""
     P=dict(lppc=4.7,hv=0.8,combo=0.8,aso=0.8,pc=0.75)
     if params:P.update(params)
@@ -33,9 +33,10 @@ def compute(S,day,params=None,manual=None,hvcols=None):
     last=nm-datetime.timedelta(1)
     F4=workdays(first,dd);F5=workdays(first,last);I5=F5-F4+1
     wd=wd_name(dd);wk='Even Week' if dd.isocalendar()[1]%2==0 else 'Odd Week'
-    DT=[r for r in S['DT Onetech'] if len(r)>55 and str(r[6]).startswith('W-')]
+    DT=[r for r in S['DT Onetech'] if len(r)>55 and (r[6]!='' and str(r[44]).count('/')==2)]
     mon='/%s/%s'%(day[3:5],day[6:])
-    mrows=[r for r in DT if r[44].endswith(mon)]
+    _dt=lambda x:datetime.datetime.strptime(x,'%d/%m/%Y').date()
+    mrows=[r for r in DT if r[44].endswith(mon) and _dt(r[44])<=dd]
     today=[r for r in mrows if r[44]==day]
     lastday=max((datetime.datetime.strptime(r[44],'%d/%m/%Y').date() for r in DT if r[44]),default=None)
     MCP=[r for r in S['MCP'] if len(r)>L('BT') and r[0]!='' and str(r[L('C')]).startswith('SM-')]
@@ -120,6 +121,31 @@ def compute(S,day,params=None,manual=None,hvcols=None):
         return {c for c in a if a[c]>=0.5 and b.get(c,0)>=1.0}
     xa=xanh_set(mrows);xb=xanh_set(rows_not_today)
     newq={str(r[L('BK')]) for r in MCP if r[L('BK')]!=''} 
+    cum={}
+    if hist:
+        days=sorted({r[44] for r in mrows},key=_dt)
+        cto=collections.defaultdict(float);cpc=collections.Counter();cln=collections.Counter();ccb=collections.Counter()
+        seen=collections.defaultdict(set);hvbuy=collections.defaultdict(set)
+        hvset={str(r[1]):r[4] for r in HV}
+        for dday in days:
+            rs=[r for r in mrows if r[44]==dday]
+            bo=collections.defaultdict(list)
+            for r in rs: bo[r[6]].append(r)
+            cdd=collections.defaultdict(float)
+            for k_,x in bo.items():
+                c=str(x[0][16]);m=mcpm.get(c)
+                if not m or (m[L('BI')] or 0)==1: continue
+                cdd[(x[0][5],c)]+=sum(r[55] or 0 for r in x if r[21]!='Processed Meats')
+            for (ps,c),l in cdd.items():
+                if l>0: cpc[ps]+=1;cln[ps]+=l
+            for r in rs:
+                cto[r[5]]+=r[32] or 0
+                c=str(r[16]);m=mcpm.get(c)
+                if m and (m[L('BI')] or 0)==0 and (r[35] or 0)>0: seen[r[5]].add(c)
+                if c in hvset and r[21]!='Beer' and r[43]!='NET' and (r[35] or 0)>0: hvbuy[hvset[c]].add(c)
+            for rep_,pos_ in reps:
+                ccb[rep_]+=combo_cnt(rs,rep_)
+        cum=dict(to=cto,pc=cpc,ln=cln,cb=ccb,seen=seen,hvbuy=hvbuy)
     out={}
     for rep,pos in reps:
         r=kp[rep];k={}
@@ -168,8 +194,14 @@ def compute(S,day,params=None,manual=None,hvcols=None):
         k['BM']=len(gm)
         k['BC']=g(r,'BA');k['BD']=g(r,'AZ');k['BA']=k['BC']-k['BM'];k['AZ']=max(0,k['BD']-(k['BC']-k['BA']))/I5
         k['BR']=BR
+        if hist:
+            k['F']=cum['to'][pos]/1e6;k['C']=max(0,k['G']-(k['F']-k['D']))/I5
+            k['T']=cum['pc'][pos];k['BJ']=k['T'];k['BK']=cum['ln'][pos];k['AA']=(k['BK']/k['BJ']) if k['BJ'] else None
+            k['M']=len(cum['seen'][pos]);k['BQ']=len(cum['hvbuy'][rep]);k['AO']=cum['cb'][rep]
+            k['AL']=max(0,k['AP']-(k['AO']-k['AM']))/I5
+            k['AH']=None;k['AG']=None;k['AV']=None;k['BC']=None;k['BA']=None;k['AZ']=None
         out[rep]=k
-    cal=dict(F4=F4,F5=F5,I5=I5,wd=wd,wk=wk,date=dd,last=lastday,B5=F4/F5)
+    cal=dict(hist=hist,F4=F4,F5=F5,I5=I5,wd=wd,wk=wk,date=dd,last=lastday,B5=F4/F5)
     return out,cal
 
 from decimal import Decimal,ROUND_HALF_UP
@@ -177,9 +209,9 @@ def _r(x,d):return float(Decimal(repr(x)).quantize(Decimal(1).scaleb(-d),roundin
 def fmt1(x):return f'{_r(x,1):,.1f}'
 def fmt0(x):return f'{_r(x,0):,.0f}'
 LET=lambda s:L(s)-2
-def build_rv2(S,old,day=None,params=None,manual=None):
+def build_rv2(S,old,day=None,params=None,manual=None,hist=False):
     """S: sheets dict (needs DT Onetech, MCP, HỘI VIÊN, RAW_KPI, _reps). old: previous rv dict (labels, du...)."""
-    DT=[r for r in S['DT Onetech'] if len(r)>55 and str(r[6]).startswith('W-')]
+    DT=[r for r in S['DT Onetech'] if len(r)>55 and (r[6]!='' and str(r[44]).count('/')==2)]
     if day is None:
         ds=[datetime.datetime.strptime(r[44],'%d/%m/%Y').date() for r in DT if r[44]]
         d=max(ds);day=d.strftime('%d/%m/%Y')
@@ -190,10 +222,11 @@ def build_rv2(S,old,day=None,params=None,manual=None):
     # carry old manual xanh MT ngày from previous det
     for r in old['det']:
         if r['n'] in S['_repnames'] and r['v'][LET('AS')] is not None and r['n'] not in man['xanh']: man['xanh'][r['n']]=r['v'][LET('AS')]
-    out,cal=compute(S,day,P,man)
+    out,cal=compute(S,day,P,man,hist)
     reps=[n for n,_ in S['_reps']]
     I5=cal['I5'];B5=cal['B5'];F4=cal['F4'];F5=cal['F5']
     div=lambda a,b:(a/b) if (a is not None and b) else None
+    sb=lambda a,b:None if a is None or b is None else a-b
     det=[];tot={}
     keys=['C','D','F','G','J','K','M','N','Q','R','T','U','AE','AF','AG','AH','AI','AL','AM','AO','AP','AS','AT','AV','AW','AZ','BA','BC','BD','BH','BI','BJ','BK','BM','BL','BN','BO','BP','BQ','BR']
     for rep in reps:
@@ -203,22 +236,24 @@ def build_rv2(S,old,day=None,params=None,manual=None):
         k['S']=k['R']-k['Q'];k['V']=div(k['T'],k['U']);k['W']=k['T']-k['U']
         k['Z']=None if k['Y'] is None else k['Y']-k['X']
         k['AC']=None if k['AA'] is None else k['AA']/k['AB'];k['AD']=None if k['AA'] is None else k['AA']-k['AB']
-        k['AJ']=div(k['AH'],k['AI']);k['AK']=k['AH']-k['AI']
+        k['AJ']=div(k['AH'],k['AI']);k['AK']=sb(k['AH'],k['AI'])
         k['AN']=k['AM']-k['AL'];k['AQ']=div(k['AO'],k['AP']);k['AR']=k['AO']-k['AP']
-        k['AU']=None if k['AS'] is None else k['AT']-k['AS']
-        k['AX']=div(k['AV'],k['AW']);k['AY']=k['AV']-k['AW']
-        k['BB']=k['BA']-k['AZ'];k['BE']=div(k['BC'],k['BD']);k['BF']=k['BC']-k['BD']
+        k['AU']=sb(k['AT'],k['AS'])
+        k['AX']=div(k['AV'],k['AW']);k['AY']=sb(k['AV'],k['AW'])
+        k['BB']=sb(k['BA'],k['AZ']);k['BE']=div(k['BC'],k['BD']);k['BF']=sb(k['BC'],k['BD'])
     T={}
     for c in keys: T[c]=sum((out[r].get(c) or 0) for r in reps)
+    if hist:
+        for c in ('AG','AH','AV','BC','BA','AZ'): T[c]=None
     T['E']=T['D']-T['C'];T['H']=div(T['F'],T['G']);T['I']=T['F']-T['G']
     T['L']=T['K']-T['J'];T['O']=div(T['M'],T['N']);T['P']=T['M']-T['N']
     T['S']=T['R']-T['Q'];T['V']=div(T['T'],T['U']);T['W']=T['T']-T['U']
     T['X']=P['lppc'];T['Y']=div(T['BI'],T['BH']);T['Z']=None if T['Y'] is None else T['Y']-T['X']
     T['AA']=div(T['BK'],T['BJ']);T['AB']=P['lppc'];T['AC']=None if T['AA'] is None else T['AA']/T['AB'];T['AD']=None if T['AA'] is None else T['AA']-T['AB']
-    T['AJ']=div(T['AH'],T['AI']);T['AK']=T['AH']-T['AI']
+    T['AJ']=div(T['AH'],T['AI']);T['AK']=sb(T['AH'],T['AI'])
     T['AN']=T['AM']-T['AL'];T['AQ']=div(T['AO'],T['AP']);T['AR']=T['AO']-T['AP']
-    T['AU']=T['AT']-T['AS'];T['AX']=div(T['AV'],T['AW']);T['AY']=T['AV']-T['AW']
-    T['BB']=T['BA']-T['AZ'];T['BE']=div(T['BC'],T['BD']);T['BF']=T['BC']-T['BD']
+    T['AU']=T['AT']-T['AS'];T['AX']=div(T['AV'],T['AW']);T['AY']=sb(T['AV'],T['AW'])
+    T['BB']=sb(T['BA'],T['AZ']);T['BE']=div(T['BC'],T['BD']);T['BF']=sb(T['BC'],T['BD'])
     order=[chr(0)]
     import string
     def cols(a,b):
@@ -258,11 +293,11 @@ def build_rv2(S,old,day=None,params=None,manual=None):
     rv['title']=old['title'];rv['date']=f'BÁO CÁO NGÀY  {day}  ·  {wd}'
     last=cal['last'];lastS=last.strftime('%d/%m/%Y') if last else ''
     rv['src']=f'Nguồn: DT Onetech / MCP / HỘI VIÊN / KPI THÁNG  |  Ngày tính: {day} ({wd})  |  Đơn mới nhất: {lastS}'
-    rv['ok']='✔ Dữ liệu khớp ngày báo cáo' if last==dd else ('⚠ Ngày báo cáo sau ngày dữ liệu mới nhất → KQ ngày = 0, cần nạp thêm đơn' if dd>last else f'ℹ Cộng dồn lấy toàn bộ dữ liệu đã nạp (đến {last:%d/%m})')
+    rv['ok']=('ℹ Xem lại ngày '+day[:5]+': cộng dồn tính từ DT Onetech đến ngày này; HV đạt, Trận Xanh, Trận Vàng cộng dồn chỉ có ở ngày mới nhất') if hist else '✔ Dữ liệu khớp ngày báo cáo' if last==dd else ('⚠ Ngày báo cáo sau ngày dữ liệu mới nhất → KQ ngày = 0, cần nạp thêm đơn' if dd>last else f'ℹ Cộng dồn lấy toàn bộ dữ liệu đã nạp (đến {last:%d/%m})')
     rv['info']={'Giám sát':'Nguyễn Văn Pháp','Ngày báo cáo':dd.strftime('%Y-%m-%d')+' 00:00:00','Chuỗi ngày DT Onetech':day,'CT LPPC (không Meat/Bia)':str(P['lppc']),'Tổng ĐDKD':str(nrep),'Ngày đã qua':str(F4),'Thứ (lịch Visit MCP)':wd,'% Target Hội viên / tổng HV':str(P['hv']),'% Times gone':str(B5),'Tổng ngày kỳ':str(F5),'Ngày công còn lại*':str(I5),'Tuần MCP':cal['wk'],'% Target Combo OFF / mục tiêu':str(P['combo']),rv['ok']:'','Đơn mới nhất':last.strftime('%Y-%m-%d')+' 00:00:00','% Target PC / call':str(P['pc']),'% Target ASO OFF+ON / call':str(P['aso'])}
     rv['cards']=cards;rv['summ']=summ
     notes=list(old['notes'])
-    notes[0]=f"Hội viên hôm nay: đi {fmt0(T['AE'])} quầy  |  thực hiện {fmt0(T['AF'])} quầy  |  đạt hội viên trong ngày {fmt0(T['AG'])} quầy  |  cộng dồn đạt {fmt0(T['AH'])} / {fmt0(T['AI'])} quầy"
+    notes[0]=f"Hội viên hôm nay: đi {fmt0(T['AE'])} quầy  |  thực hiện {fmt0(T['AF'])} quầy  |  đạt hội viên trong ngày {fmt0(T['AG'] or 0)} quầy  |  cộng dồn đạt {fmt0(T['AH'] or 0)} / {fmt0(T['AI'])} quầy"
     notes[4]='* Ngày công còn lại tính cả hôm nay. Báo cáo tự tính từ sheet DT Onetech (ngày đơn mới nhất) kết hợp KPI THÁNG, MCP, HỘI VIÊN; Trận Xanh "MT ngày" là số nhập tay (rv.manual.xanh).'
     rv['notes']=notes;rv['det']=det
     rv['manual']=man;rv['params']=P;rv['calc']='DT Onetech'
@@ -291,6 +326,16 @@ def main():
         S['_repnames']={n for n,_ in S['_reps']}
         rv=build_rv2(S,old,day)
         D['rv']=rv
+        # xem lại các ngày trước trong tháng
+        cur=rv['info']['Chuỗi ngày DT Onetech']
+        mon=cur[3:]
+        days=sorted({r[44] for r in S['DT Onetech'] if len(r)>55 and (r[6]!='' and str(r[44]).count('/')==2) and str(r[44]).endswith(mon)},key=lambda x:x[:2])
+        KEYS=('title','date','src','ok','info','cards','summ','notes','det','heads','sub','aux')
+        rvd={}
+        for dday in days:
+            x=rv if dday==cur else build_rv2(S,old,dday,manual=rv.get('manual'),hist=True)
+            rvd[dday]={k:x[k] for k in KEYS if k in x}
+        D['rvd']=rvd
         s=s[:i]+json.dumps(D,ensure_ascii=False,separators=(',',':'))+s[i+e:]
         open(p,'w',encoding='utf8').write(s)
         print('rv cập nhật',p,rv['date'])
