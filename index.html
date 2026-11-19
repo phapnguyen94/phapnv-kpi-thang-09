@@ -3589,13 +3589,48 @@ function fxMcp11(){
 }
 /* ===== MCP: KH CHƯA MUA HÀNG T8–T10 · OFF / ON · SS → ĐDKD → KH ===== */
 const NBS={ch:'off',open:new Set(),q:'',ss:'all'};
+function nbCss(){if(document.getElementById('nb-css'))return;const s=document.createElement('style');s.id='nb-css';s.textContent=`
+.fxnb{margin:14px 0 18px;background:#fff;border:1px solid #dfe5f5;border-radius:16px;box-shadow:0 4px 18px rgba(34,63,156,.08);overflow:hidden;font-family:inherit}
+.fxnb .nb-hd{background:linear-gradient(120deg,#1e2a78,#3a55d6);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px}
+.fxnb .nb-hd .ic{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:19px}
+.fxnb .nb-hd h3{margin:0;font-size:17px;letter-spacing:.2px;color:#fff!important}.fxnb .nb-hd p{margin:3px 0 0;font-size:12.5px;opacity:.88;color:#fff!important}
+.fxnb .nb-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 20px 4px}
+.fxnb .seg{display:inline-flex;background:#eef1fb;border-radius:12px;padding:3px}
+.fxnb .seg .btn{border:0;background:transparent;border-radius:9px;padding:7px 18px;font-size:13px;font-weight:800;color:#4a5784;cursor:pointer}
+.fxnb .seg .btn.on{background:#fff;color:#2b45c9;box-shadow:0 1px 5px rgba(43,69,201,.25)}
+.fxnb .nb-bar .btn.ghost{border:1.5px solid #d5ddf3;background:#fff;border-radius:10px;padding:6px 14px;font-size:12.5px;font-weight:700;color:#3a4a85;cursor:pointer}
+.fxnb .nb-bar .btn.ghost:hover{background:#f1f4ff}
+.fxnb .nb-bar .inp{margin-left:auto;border:1.5px solid #d5ddf3;border-radius:10px;padding:7px 12px;font-size:13px;outline:none;background:#f9faff;color:#1b2340}
+.fxnb .nb-bar .inp:focus{border-color:#3a55d6;background:#fff}
+.fxnb .nb-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:10px 20px 14px}
+.fxnb .nb-c{border-radius:14px;padding:12px 16px;border:1px solid #e3e8f7;background:#f8faff}
+.fxnb .nb-c small{display:block;font-size:12px;font-weight:700;color:#5a6690}.fxnb .nb-c b{display:block;font-size:26px;line-height:1.25;margin:2px 0;color:#12204f}
+.fxnb .nb-c span{font-size:12px;color:#6a7599}
+.fxnb .nb-c.r{background:#fff1f3;border-color:#ffd3da}.fxnb .nb-c.r b{color:#c4163a}
+.fxnb .nb-c.g{background:#effaf3;border-color:#c9f0d8}.fxnb .nb-c.g b{color:#0d7a45}
+.fxnb .nb-c.o{background:#fff7e6;border-color:#ffe3a8}.fxnb .nb-c.o b{color:#b36200}
+.fxnb .wrap{padding:0 20px 18px;overflow-x:auto}
+.fxnb table.fxt{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1px solid #e3e8f7;border-radius:12px;overflow:hidden}
+.fxnb table.fxt th{background:#223f9c!important;color:#fff!important;font-weight:800;padding:9px 10px;text-align:center;font-size:12.5px}
+.fxnb table.fxt th.red{background:#d6244f!important;color:#fff!important}.fxnb table.fxt th.nm{text-align:left}
+.fxnb table.fxt td{padding:8px 10px;text-align:center;border-top:1px solid #edf0fa;color:#1b2340!important;background:#fff!important}
+.fxnb table.fxt td.nm{text-align:left;font-weight:700}
+.fxnb table.fxt tr[data-nb-r]:hover td{background:#f3f6ff!important}
+.fxnb table.fxt tr.ssr td{background:#fff2c9!important;font-weight:800;color:#12204f;text-align:left}
+.fxnb table.fxt tr.tot td{background:#dde6fb!important;font-weight:900}
+.fxnb .det{background:#f6f8ff;padding:10px 12px;border-radius:10px;margin:6px 8px}
+.fxnb .det .tools .lb{display:block;margin:0 0 8px;font-size:13px;color:#223f9c}
+.fxnb .det table.fxt th{background:#5a6fc4!important}.fxnb .det table.fxt td{background:#fff!important}.fxnb .det td.nm{font-weight:600}
+.fxnb .gn{color:#0d7a45}.fxnb .fxd.r{display:inline-block;background:#ffe3e8;color:#c4163a;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800}
+@media(max-width:760px){.fxnb .nb-cards{grid-template-columns:1fr}.fxnb .nb-bar .inp{margin-left:0;width:100%}}
+`;document.head.appendChild(s)}
 function nbHtml(){
- const D=window.T11_DATA;if(!D.fx||!D.fx.nb)return '';fxCss();
+ const D=window.T11_DATA;if(!D.fx||!D.fx.nb)return '';fxCss();nbCss();
  const N=D.fx.nb,R=N.reps.filter(r=>!D.fxScope||r.ss===D.fxScope),names=new Set(R.map(r=>r.name)),ch=NBS.ch,L=N.list.filter(a=>names.has(a.rep)&&a.ch===ch);
  const sss=[...new Set(R.map(r=>r.ss))],sum=(Q,k)=>Q.reduce((s,r)=>s+r[k],0),k=ch==='off'?['off','offBuy','offMcp']:['on','onBuy','onMcp'];
  const nb=sum(R,k[0]),bu=sum(R,k[1]),mc=sum(R,k[2]);
- const card=(c,t,b,s)=>`<div class="kc ${c}"><small>${t}</small><b>${b}</b><span>${s}</span></div>`;
- const cards=`<div class="cards">${card(ch==='off'?'':'c2','KH '+ch.toUpperCase()+' chưa mua T8–T10',N0(nb)+' KH',`trên ${N0(mc)} KH MCP ${ch.toUpperCase()} · ${P1(mc?nb/mc:0)}`)}${card('c3','Đã mua lại trong T11',N0(bu)+' KH',`${P1(nb?bu/nb:0)} nhóm này · còn ${N0(nb-bu)} KH chưa lên đơn T11`)}${card('c4','Chưa mua cả T8–T10 và T11',N0(nb-bu)+' KH','ưu tiên kéo về đơn đầu tiên')}</div>`;
+ const card=(c,t,b,s)=>`<div class="nb-c ${c}"><small>${t}</small><b>${b}</b><span>${s}</span></div>`;
+ const cards=`<div class="nb-cards">${card('o','KH '+ch.toUpperCase()+' chưa mua T8–T10',N0(nb)+' KH',`trên ${N0(mc)} KH MCP ${ch.toUpperCase()} · ${P1(mc?nb/mc:0)}`)}${card('g','Đã mua lại trong T11',N0(bu)+' KH',`${P1(nb?bu/nb:0)} nhóm này · còn ${N0(nb-bu)} KH chưa lên đơn T11`)}${card('r','Chưa mua cả T8–T10 và T11',N0(nb-bu)+' KH','ưu tiên kéo về đơn đầu tiên')}</div>`;
  const q=NBS.q.trim().toLowerCase();
  const detail=r=>{const Q=L.filter(a=>a.rep===r.name&&(!q||(a.n+a.c+a.a+a.w).toLowerCase().includes(q))).sort((a,b)=>(a.th>0)-(b.th>0)||a.w.localeCompare(b.w)||a.n.localeCompare(b.n));
   const rows=Q.map((a,i)=>`<tr><td>${i+1}</td><td class="nm">${esc2(a.n)}<br><small style="color:#7a84a0">${esc2(a.c)} · ${esc2(a.a)}</small></td><td>${esc2(a.w)}</td><td>${esc2(a.l2)}</td><td>${esc2(a.ty)}</td><td>${esc2(a.cr)}</td><td>${a.tg?N0(a.tg/1e3)+'k':'–'}</td><td>${a.th>0?'<b class="gn">'+N0(a.th/1e3)+'k</b>':'<span class="fxd r">Chưa mua</span>'}</td></tr>`).join('');
@@ -3604,7 +3639,7 @@ function nbHtml(){
  let body='';sss.forEach(s=>{const Q=R.filter(r=>r.ss===s);body+=`<tr class="ssr"><td colspan="6">SS ${esc2(s)} · ${Q.length} ĐDKD · ${N0(sum(Q,k[0]))} KH chưa mua</td></tr>`+Q.map(row).join('')});
  body+=`<tr class="tot"><td class="nm">TỔNG</td><td><b>${N0(mc)}</b></td><td><b>${N0(nb)}</b></td><td><b>${P1(mc?nb/mc:0)}</b></td><td><b>${N0(bu)}</b></td><td><b>${N0(nb-bu)}</b></td></tr>`;
  const tb=(c,t)=>`<button class="btn ${ch===c?'on':''}" data-nb-ch="${c}">${t}</button>`;
- return `<div class="fxnb"><div class="sec o"><b>★</b>KH CHƯA MUA HÀNG THÁNG 8, 9, 10 · THEO SS / ĐDKD</div><div class="sub">Nguồn: cột DS 3 tháng trên MCP = 0 (không phát sinh doanh số T8–T10). Bấm tên ĐDKD để xem danh sách KH.</div><div class="tools">${tb('off','KÊNH OFF')}${tb('on','KÊNH ON')}<button class="btn" data-nb-all="1">Mở hết ĐDKD</button><button class="btn" data-nb-all="0">Thu gọn</button><input class="inp" data-nb-q placeholder="Tìm tên / mã / địa chỉ KH..." value="${esc2(NBS.q)}" style="min-width:230px"></div>${cards}<div class="wrap"><table class="fxt"><thead><tr><th class="nm g5" style="min-width:200px">SS / ĐDKD</th><th>KH MCP ${ch.toUpperCase()}</th><th class="red">Chưa mua T8–T10</th><th>% MCP</th><th>Đã mua lại T11</th><th>Chưa mua T11</th></tr></thead><tbody>${body}</tbody></table></div></div>`}
+ return `<div class="fxnb"><div class="nb-hd"><div class="ic">★</div><div><h3>KH CHƯA MUA HÀNG THÁNG 8, 9, 10</h3><p>Theo SS / ĐDKD · nguồn: cột DS 3 tháng trên MCP = 0 (không phát sinh doanh số T8–T10). Bấm tên ĐDKD để xem danh sách KH.</p></div></div><div class="nb-bar"><div class="seg">${tb('off','KÊNH OFF')}${tb('on','KÊNH ON')}</div><button class="btn ghost" data-nb-all="1">Mở hết ĐDKD</button><button class="btn ghost" data-nb-all="0">Thu gọn</button><input class="inp" data-nb-q placeholder="Tìm tên / mã / địa chỉ KH..." value="${esc2(NBS.q)}" style="min-width:230px"></div>${cards}<div class="wrap"><table class="fxt"><thead><tr><th class="nm g5" style="min-width:200px">SS / ĐDKD</th><th>KH MCP ${ch.toUpperCase()}</th><th class="red">Chưa mua T8–T10</th><th>% MCP</th><th>Đã mua lại T11</th><th>Chưa mua T11</th></tr></thead><tbody>${body}</tbody></table></div></div>`}
 function fxNb(){
  const D=window.T11_DATA;if(!D.fx||!D.fx.nb)return;const c=(typeof V11==='object'&&V11.fxHost)?V11.fxHost():el('content');if(!c)return;
  const old=c.querySelector('.fxnb');const t=document.createElement('div');t.innerHTML=nbHtml();const nw=t.firstChild;
@@ -4385,7 +4420,6 @@ function renderMcp(){
  `<div class="cards mcp-scope-cards">${metricCard(`KH ${scopeName}`,fmtNumber(total),`${fmtNumber(purchased)} đã mua • ${fmtNumber(total-purchased)} chưa mua`,purchased/(total||1),'◎')}${metricCard('MCP OFF ĐÃ MUA',`${fmtNumber(offPurchased)} / ${fmtNumber(offCount)}`,`${fmtMoney(offSales)} • ${fmtPct(offPurchased/(offCount||1))}`,offPurchased/(offCount||1),'OF')}${metricCard('MCP ON ĐÃ MUA',`${fmtNumber(onPurchased)} / ${fmtNumber(onCount)}`,`${fmtMoney(onSales)} • ${fmtPct(onPurchased/(onCount||1))}`,onPurchased/(onCount||1),'ON')}${metricCard('DOANH SỐ PHẠM VI',fmtMoney(sales),`${fmtNumber(purchased)} KH đã mua`,null,'₫')}</div>${DATA.meta.salesReconciliation?`<p class="sales-source-note">Nguồn doanh số tại quầy: TOTAL_DS_MCP, sheet MCP · Tổng Sell Out: sheet KPI THÁNG. Chênh lệch toàn Team giữa hai nguồn trong workbook: ${fmtMoney(Math.round(DATA.meta.salesReconciliation.difference))}.</p>`:''}${quickResult}${mcpTea365Controls(programRows)}`+
  `<section class="panel mcp-history-panel"><div class="panel-head"><div><h3>Khách hàng sinh nhật tháng ${DATA.meta.monthNumber||10}</h3><span class="panel-note">Nhấn để lọc danh sách • Áp dụng theo kênh ${esc(scopeName)}</span></div><button class="program-filter-clear ${state.mcpHistory==='all'&&!state.mcpUnpurchased?'active':''}" data-mcp-history="all">Tất cả</button></div><div class="mcp-history-grid single"><button class="mcp-history-card birthday ${state.mcpHistory==='birthday'?'active':''}" data-mcp-history="birthday"><span>🎁 SINH NHẬT THÁNG ${DATA.meta.monthNumber||10}</span><strong>${fmtNumber(birthdayCount)} KH</strong><small>Có ghi chú sau tên quầy</small></button></div></section>`+
  `<section class="panel mcp-program-panel"><div class="panel-head"><div><h3>Tất cả chương trình đang có tại quầy</h3><span class="panel-note">Số khách hàng MCP có mặt trong từng chương trình</span></div><button class="program-filter-clear ${state.mcpProgram==='all'?'active':''}" data-mcp-program="all">Tất cả</button></div><div class="mcp-program-grid">${programCounts.map(program=>`<button class="mcp-program-card ${state.mcpProgram===program.key?'active':''}" data-mcp-program="${program.key}"><span class="mcp-program-title"><i class="section-glyph" data-accent="${visualIdentity(program.label).accent}">${uiIcon(visualIdentity(program.label).icon)}</i>${esc(program.label)}</span><strong>${fmtNumber(program.count)} KH</strong><small>${fmtPct(program.count/(base.length||1))} MCP</small></button>`).join('')}</div></section>`+
- `<section class="panel mcp-rep-panel"><div class="panel-head"><div><h3>Review 360° theo DDKD</h3><span class="panel-note">Tình trạng mua hàng và độ phủ chương trình của từng DDKD</span></div><span class="badge">${repRows.length} DDKD</span></div><div class="mcp-rep-grid">${repRows.map(item=>`<article><div>${repNameLink(item.rep)}<strong>${fmtNumber(item.bought)} / ${fmtNumber(item.total)} đã mua</strong></div><p>${fmtNumber(item.programCustomers)} KH có chương trình • ${item.programCount} loại CT</p></article>`).join('')}</div></section>`+
  pager+table(['Kênh','Mã KH','Khách hàng','Địa chỉ','Phường / Xã','Thứ','DDKD','Chương trình đang có','Tần suất · Thứ','Số đơn trong tháng','Đơn gần nhất','DS 3 tháng','DS tháng',...(hasMcpTea365()?['DS Tea365']:[]),hasMcpTea365()?'Mua hàng chung':'Trạng thái'],pageRows.map(d=>`<tr><td><span class="channel-pill ${String(d.channel||'OFF').toLowerCase()}">${esc(d.channel||'OFF')}</span></td><td>${customerCodeLink(d)}</td><td class="person customer-cell" title="${esc(d.customer)}">${customerNameLink(d)}</td><td class="muted address-cell" title="${esc(d.address)}">${esc(d.address)}</td><td>${esc(d.ward)}</td><td>${esc(d.routeDay)}</td><td>${repNameLink(d.rep)}</td><td>${programTagsForCustomer(d.customerCode)}</td>${orderFreqCells(d)}<td class="money">${fmtFull(d.threeMonthSales)}</td><td class="money">${fmtFull(d.totalSales)}</td>${hasMcpTea365()?`<td class="money tea365-sales-cell">${d.tea365Sales==null?'—':fmtFull(d.tea365Sales)}</td>`:''}<td><span class="status-pill ${d.purchased?'green':'red'}">${d.purchased?(state.mcpTea365==='unpurchased'?'Đã mua SP khác':'Đã mua'):'Chưa mua'}</span></td></tr>`),'mcp-360-table')+pager;
  try{injectMcpTypePanel()}catch(e){console.error(e)}
  document.querySelectorAll('[data-mcp-page]').forEach(b=>b.onclick=()=>{state.mcpPage+=(b.dataset.mcpPage==='next'?1:-1);render();document.querySelector('.mcp-pager')?.scrollIntoView({block:'start'})});
