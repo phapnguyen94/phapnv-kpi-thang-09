@@ -4114,7 +4114,7 @@ function renderRv11(){
  H.onclick=e=>{const b=e.target.closest('[data-rv-k]');if(b){const [a,k]=b.dataset.rvK.split(':');RVS[a]=k;renderRv11()}};
 }
 /* ===== DANH SÁCH 25 QUẦY BAO PHỦ TRẬN XANH / ĐDKD ===== */
-const TX25={open:new Set(),f:'all',all:false};
+const TX25={open:new Set(),f:'all',all:false,o3:new Set()};
 function tx25Sel(rep){
  const D=window.T11_DATA,C=D.cust.filter(c=>c.rep===rep&&wkOk(c)&&c.ch==='Kênh Off Premise'&&c.vt!=='Trong chợ'&&c.type!=='VIPSI'&&c.m30>0);
  const by=(a,b)=>(b.tgt||0)-(a.tgt||0),used=new Set(),out=[];
@@ -4122,6 +4122,15 @@ function tx25Sel(rep){
  take(C.filter(c=>c.dsu&&c.dsu.length).sort(by),1,25);
  take(C.filter(c=>c.type==='VIP3'||c.type==='VIP5').sort(by),2,25);
  take(C.filter(c=>c.type==='LẺ').sort(by),3,25);
+ return out;
+}
+function tx25All(rep){
+ const D=window.T11_DATA,C=D.cust.filter(c=>c.rep===rep&&wkOk(c)&&c.ch==='Kênh Off Premise'&&c.vt!=='Trong chợ'&&c.type!=='VIPSI'&&c.m30>0);
+ const by=(a,b)=>(b.tgt||0)-(a.tgt||0),used=new Set(),out=[];
+ const take=(arr,g)=>{for(const c of arr){if(used.has(c.c))continue;used.add(c.c);out.push({...c,g})}};
+ take(C.filter(c=>c.dsu&&c.dsu.length).sort(by),1);
+ take(C.filter(c=>c.type==='VIP3'||c.type==='VIP5').sort(by),2);
+ take(C.filter(c=>c.type==='LẺ').sort(by),3);
  return out;
 }
 function tx25St(c){const has=c.cq!=null;return {has,ch:has&&c.cq>=0.4999,te:has&&c.tq>=0.9999,both:!!c.tx}}
@@ -4152,8 +4161,16 @@ function renderTx25(){
  <div class="sec"><b>1</b>TỔNG QUAN BAO PHỦ TRẬN XANH</div>${cardsH}
  <div class="sec"><b>2</b>DANH SÁCH QUẦY THEO ĐDKD (ĐẠI SỨ + VIP 3-5, BÙ LẺ LỚN CHO ĐỦ 25)</div><div class="tools" style="margin:6px 0 10px"><button class="btn" data-tx-all="1">${TX25.all?'Thu gọn':'Mở hết ĐDKD'}</button>${btn('all','Tất cả')}${btn('chua','⭕ Chưa mua cả 2')}${btn('da','✅ Đã mua cả 2')}${btn('tch','Thiếu Chanté Tết')}${btn('tte','Thiếu Tea365 Tết')}</div>
  <div class="ttl">Bao phủ Trận Xanh · Đại sứ + VIP 3-5 (+ lẻ lớn bù đủ 25) / ĐDKD<small>(bấm tên ĐDKD để xem chi tiết từng quầy)</small></div><div class="wrap"><table class="t25"><thead><tr><th class="g5" style="text-align:left">ĐDKD</th><th class="g1">Đại sứ TB</th><th class="g1">VIP 3-5</th><th class="g1">Lẻ lớn bù</th><th class="g1">Tổng quầy</th><th class="g3" style="background:#9d174d!important">Chanté Tết đã mua</th><th class="g3" style="background:#0e7490!important">Tea365 Tết đã mua</th><th class="g2">Đã mua cả 2</th><th class="g2">Chưa mua cả 2</th><th class="g2">% cả 2</th></tr></thead><tbody><tr class="tot"><td class="nm">TỔNG (${rows.length} ĐDKD)</td><td>${T.g[0]}</td><td>${T.g[1]}</td><td>${T.g[2]}</td><td><b>${T.n}</b></td><td><b style="color:#9d174d">${T.ch}</b></td><td><b style="color:#0e7490">${T.te}</b></td><td><b style="color:#15803d">${T.b}</b></td><td><b style="color:#dc2626">${T.n-T.b}</b></td><td>${pc(T.b,T.n)}</td></tr>${body}</tbody></table></div>
- <div class="note">Chanté Tết = tổng thùng 3 mã Chanté Tết (04HP00636/637/638) ≥ 0,5 thùng · Tea365 Tết = tổng thùng Trà Búp Non TEA365 ≥ 1 thùng (MOQ CV26). Đã mua cả 2 = cờ ASO FOCUS TẾT trên MCP (không tính quầy mới). Số thùng lấy từ đơn T11 của Team SS Pháp; quầy SS Dự chưa có số thùng ("–") do file chưa có đơn Dự.</div></div>`;
- H.onclick=e=>{let b=e.target.closest('[data-tx-f]');if(b){TX25.f=b.dataset.txF;renderTx25();return}b=e.target.closest('[data-tx-all]');if(b){TX25.all=!TX25.all;renderTx25();return}b=e.target.closest('[data-tx-r]');if(b){const n=b.dataset.txR;TX25.open.has(n)?TX25.open.delete(n):TX25.open.add(n);renderTx25()}};
+ ${(()=>{const R3=reps.map(r=>({r,L:tx25All(r.name)}));const g=(L,n)=>L.filter(c=>c.g===n);const m=L=>({n:L.length,ch:L.filter(c=>tx25St(c).ch).length,te:L.filter(c=>tx25St(c).te).length,b:L.filter(c=>c.tx).length});
+ const cl=(k)=>`<td><b>${k.n}</b></td><td><b style="color:#9d174d">${k.ch}</b></td><td><b style="color:#0e7490">${k.te}</b></td><td><b style="color:#15803d">${k.b}</b></td><td>${pc(k.b,k.n)}</td>`;
+ const row=(lab,L,cls,o)=>`<tr class="${cls||'rp'}" ${cls?'':`data-tx-r3="${esc2(lab)}"`}><td class="nm">${cls?'':(o?'▾ ':'▸ ')}${esc2(lab)}</td>${[1,2,3].map(n=>cl(m(g(L,n)))).join('')}${cl(m(L))}</td></tr>`.replace('</td></tr>','</tr>');
+ const all=R3.flatMap(x=>x.L);
+ const hd=(t,c)=>`<th colspan="5" class="${c}">${t}</th>`,h5=['Quầy','Chanté','Tea365','Cả 2','%'].map(x=>`<th>${x}</th>`).join('');
+ const det=x=>detail({L:x.L});
+ const b3=R3.map(x=>{const o=TX25.o3.has(x.r.name);return row(x.r.name,x.L,'',o)+(o?`<tr class="dt"><td colspan="21">${det(x)}</td></tr>`:'')}).join('');
+ return `<div class="sec"><b>3</b>TOÀN BỘ QUẦY OFF THEO NHÓM · ĐẠI SỨ ĐANG TRƯNG BÀY / VIP 3-5 / LẺ CÓ MUA HÀNG (KHÔNG GIỚI HẠN 25)</div><div class="ttl">Chi tiết từng ĐDKD · số quầy và tình trạng mua Chanté Tết, Tea365 Tết<small>(bấm tên ĐDKD để xem danh sách quầy)</small></div><div class="wrap"><table class="t25"><thead><tr><th class="g5" rowspan="2" style="text-align:left">ĐDKD</th>${hd('ĐẠI SỨ ĐANG TRƯNG BÀY','g1')}${hd('VIP 3-5','g3')}${hd('LẺ CÓ MUA HÀNG','g2')}${hd('TỔNG','g5')}</tr><tr>${h5}${h5}${h5}${h5}</tr></thead><tbody>${row('TỔNG ('+R3.length+' ĐDKD)',all,'tot')}${b3}</tbody></table></div><div class="note">Mỗi quầy chỉ tính 1 nhóm theo thứ tự ưu tiên: ① Đại sứ đang trưng bày → ② VIP 3-5 → ③ Lẻ có mua hàng trong tháng. Chỉ kênh Off, loại "Trong chợ", loại VIP Sỉ và quầy chưa mua hàng đầu tháng đến giờ.</div>`})()}
+<div class="note">Chanté Tết = tổng thùng 3 mã Chanté Tết (04HP00636/637/638) ≥ 0,5 thùng · Tea365 Tết = tổng thùng Trà Búp Non TEA365 ≥ 1 thùng (MOQ CV26). Đã mua cả 2 = cờ ASO FOCUS TẾT trên MCP (không tính quầy mới). Số thùng lấy từ đơn T11 của Team SS Pháp; quầy SS Dự chưa có số thùng ("–") do file chưa có đơn Dự.</div></div>`;
+ H.onclick=e=>{let b=e.target.closest('[data-tx-f]');if(b){TX25.f=b.dataset.txF;renderTx25();return}b=e.target.closest('[data-tx-all]');if(b){TX25.all=!TX25.all;renderTx25();return}b=e.target.closest('[data-tx-r3]');if(b){const n=b.dataset.txR3;TX25.o3.has(n)?TX25.o3.delete(n):TX25.o3.add(n);renderTx25();return}b=e.target.closest('[data-tx-r]');if(b){const n=b.dataset.txR;TX25.open.has(n)?TX25.open.delete(n):TX25.open.add(n);renderTx25()}};
 }
 /* ============ TRƯNG BÀY (Team → ĐDKD → KH) ============ */
 function dpAll(){const D=window.T11_DATA;return D.dp.filter(inScope).map(x=>({c:x.c,n:x.n,rep:x.rep,team:x.team,visit:x.visit,pg:dpName(x.prog),lvl:String(x.lvl||''),el:!!x.el,tgt:x.el?x.tgd:0,th:x.el?x.thd:0,cap:x.cap||0,rcap:x.shots||0,ok:x.ok||0,six:!!x.six,mx:x.max||0,addr:x.addr,ward:x.ward}))}
