@@ -5671,7 +5671,20 @@ s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 td.l{min-wi
 +':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-r>td.l .t-in>i{font-size:14px;color:#26356f;width:16px}'
 +':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-r:not(.t-tot)>td:not(.l){text-align:center}'
 ;
-document.head.appendChild(s)}
+
+s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-r>td{border-bottom:1px solid #e8edf6!important;font-size:13px!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td{background:#eef2fb!important;font-size:13.5px!important;font-weight:700!important;color:#1d2b5c!important;border-top:0!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td.l{border-left:4px solid #34478a!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td{background:#f6f8fd!important;font-size:13px!important;font-weight:600!important;color:#2c3a6b!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td.l{border-left:4px solid #8ea3d8!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td{background:#fbfcfe!important;font-size:13px!important;font-weight:600!important;color:#33406b!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td.l{border-left:4px solid #c3cfec!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td{background:#fff!important;font-size:12.5px!important;font-weight:400!important;color:#4a5578!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td.l{border-left:4px solid #eef1f8!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td.l .t-in::after,:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td.l .t-in::after,:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td.l .t-in::after{background:#e3e9f8!important;color:#34478a!important;font-weight:700!important;font-size:9.5px!important;padding:2px 6px!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-tot>td{background:#e3e9f8!important;font-weight:800!important;border-bottom:2px solid #b9c6e8!important}'
+;
+s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td.l .t-in{margin-left:22px}';document.head.appendChild(s)}
 function segKey(c){if(S.dim==='grp')return c.g==='A'||c.g==='B'||c.g==='C'?c.g:null;if(S.dim==='type')return c.t;return c.ch}
 function segList(){if(S.dim==='grp')return [['A','A · 50% DS đầu (trọng số)'],['B','B · 30% DS kế'],['C','C · 20% DS cuối']];if(S.dim==='type')return [['VIP5','VIP5'],['VIP3','VIP3'],['VIPSI','VIP SI'],['LẺ','Lẻ']];return [['OFF','Kênh OFF'],['ON','Kênh ON']]}
 function agg(list){var ds=[0,0,0,0],as=[0,0,0,0];list.forEach(function(c){for(var i=0;i<4;i++){ds[i]+=c.d[i];if(c.d[i]>0)as[i]++}});return {n:list.length,ds:ds,aso:as}}
