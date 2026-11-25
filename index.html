@@ -3328,7 +3328,7 @@ function v11Fund(onlySpec){
   M('ASO Trận Xanh','g3','ASO Trận Xanh • Focus Tết'),M('ASO Trận Vàng','g4','ASO Trận Vàng • Hạt nêm Chinsu'),
   M('PC OFF','g2','PC OFF • Total sản phẩm'),M('PC ON','g1','PC ON • Tất cả đơn ON'),
   lp('LPPC trừ Meat','g5','LPPC trừ Meat & Beer • BS',4.5),lp('LPPC Meat','g4','LPPC Meat • BT',3.8),
-  {t:'PC / Call',cls:'g3',tip:'KH có lịch viếng thăm trong ngày (20/11 T6, tuần lẻ) có đơn / KH có lịch viếng thăm trong ngày',cols:[{h:'Tổng',f:(L,u)=>cl(L,u,['off','on'],.6)},{h:'OFF',f:(L,u)=>cl(L,u,['off'],.65)},{h:'ON',f:(L,u)=>cl(L,u,['on'],.5)}]},
+  {t:'PC / Call (%TH/CT theo file KPI)',cls:'g3',tip:'% đạt PC = TH/CT lấy từ sheet KPI THÁNG (CT = Call × 65% OFF, 50% ON). Tổng = OFF+ON',cols:[{h:'Tổng',f:(L,u)=>pc(u.dv(u.S(L,'pcActual')+u.S(L,'pcOnActual'),u.S(L,'pcTarget')+u.S(L,'pcOnTarget')),prog)},{h:'OFF',f:(L,u)=>pc(u.dv(u.S(L,'pcActual'),u.S(L,'pcTarget')),prog)},{h:'ON',f:(L,u)=>pc(u.dv(u.S(L,'pcOnActual'),u.S(L,'pcOnTarget')),prog)}]},
   CH('Tổng kênh · ALL CAT','all','g2'),CH('Tổng kênh · -Meat/Bia','xm','g6'),CH('Kênh OFF · ALL CAT','offall','g4'),CH('Kênh OFF · -Meat/Bia','off','g5')
  ].filter(Boolean);
  if(onlySpec)return {A,rows,callMap};
