@@ -5802,9 +5802,9 @@ function tSec2(){var d=D(),g=S.tG||'',mode=S.tMode||'all',cbg=(d.cb||{})[g||'ALL
  var L0=Object.keys(ngs).map(function(k){var n=ngs[k],asoN=g?A('n|'+k):(nga[k]||null);return {n:n,r:t2Row(0,'n|'+k,k,'',n.ds,asoN,true)}}).filter(function(x){return keep(x.r.m)}).sort(function(a,b){return srt(a.r,b.r)});
  var out=t2Row(0,'tot',(g?'TỔNG NHÓM '+g:'TỔNG TEAM'),'',tds,taso,false).html.replace('class="t-r t0"','class="t-r t0 t-tot"');
  L0.forEach(function(x){out+=x.r.html;if(!(S.tOpen&&S.tOpen['n|'+x.n.ng]))return;
-  var L1=x.n.br.map(function(e){return {e:e,r:t2Row(1,'b|'+x.n.ng+'|'+e.br,e.br,'Nhãn hàng',e.ds,g?A('b|'+x.n.ng+'|'+e.br):e.aso,true)}}).filter(function(y){return keep(y.r.m)}).sort(function(a,b){return srt(a.r,b.r)});
+  var L1=x.n.br.map(function(e){return {e:e,r:t2Row(1,'b|'+x.n.ng+'|'+e.br,e.br,'',e.ds,g?A('b|'+x.n.ng+'|'+e.br):e.aso,true)}}).filter(function(y){return keep(y.r.m)}).sort(function(a,b){return srt(a.r,b.r)});
   L1.forEach(function(y){out+=y.r.html;var k1='b|'+x.n.ng+'|'+y.e.br;if(!(S.tOpen&&S.tOpen[k1]))return;
-   var L2=[];d.reps.forEach(function(r){var e=((cbg[r]||[]).filter(function(z){return z.ng===x.n.ng&&z.br===y.e.br})[0]);if(e)L2.push({r:r,e:e,rr:t2Row(2,k1+'|'+r,r,'ĐDKD',e.ds,g?A('r|'+x.n.ng+'|'+y.e.br+'|'+r):e.aso,true)})});
+   var L2=[];d.reps.forEach(function(r){var e=((cbg[r]||[]).filter(function(z){return z.ng===x.n.ng&&z.br===y.e.br})[0]);if(e)L2.push({r:r,e:e,rr:t2Row(2,k1+'|'+r,r,'',e.ds,g?A('r|'+x.n.ng+'|'+y.e.br+'|'+r):e.aso,true)})});
    L2=L2.filter(function(z){return keep(z.rr.m)}).sort(function(a,b){return srt(a.rr,b.rr)});
    L2.forEach(function(z){out+=z.rr.html;var k2=k1+'|'+z.r;if(!(S.tOpen&&S.tOpen[k2]))return;
     var K=((d.kh||{})[z.r+'|'+x.n.ng+'|'+y.e.br]||[]).filter(function(k){return !g||k[3]===g}).map(function(k){var base=(k[4]+k[5]+k[6])/3*1000,cur=k[7]*1000,fc=cur*fdv,gap=fc-base,st;if(base>0&&cur===0)st=['rn','Chưa mua T11'];else if(base===0)st=['up','Mới mua T11'];else{var i=fc/base;st=i<.85?['rn','Giảm mạnh']:i<.95?['rv','Giảm nhẹ']:i<1.05?['ok','Ổn định']:['up','Tăng']}return {k:k,base:base,cur:cur,fc:fc,gap:gap,st:st}}).filter(function(q){return mode==='dn'?q.gap<0:mode==='up'?q.gap>0:true}).sort(function(a,b){return mode==='up'?b.gap-a.gap:a.gap-b.gap});
