@@ -5684,7 +5684,17 @@ s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-r>td{b
 +':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td.l .t-in::after,:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td.l .t-in::after,:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td.l .t-in::after{background:#e3e9f8!important;color:#34478a!important;font-weight:700!important;font-size:9.5px!important;padding:2px 6px!important}'
 +':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t-tot>td{background:#e3e9f8!important;font-weight:800!important;border-bottom:2px solid #b9c6e8!important}'
 ;
-s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td.l .t-in{margin-left:22px}';document.head.appendChild(s)}
+s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td.l .t-in{margin-left:22px}';
+s.textContent+=':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td{background:#e4ecfc!important}:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td.l{border-left:5px solid #3f62c4!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td{background:#e3f4ee!important}:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td.l{border-left:5px solid #2f9e7d!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td{background:#fdf1de!important}:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td.l{border-left:5px solid #e0993a!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td{background:#fff!important}:is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3>td.l{border-left:5px solid #d3d9e6!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t0:not(.t-tot)>td.l .t-in::after{background:#cfdcf8!important;color:#27449a!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t1>td.l .t-in::after{background:#c6e8dc!important;color:#1d6f57!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t2>td.l .t-in::after{background:#f8dfb8!important;color:#9a5c0c!important}'
++':is(#asoDrillHost,.section-focus-content) table.w-t2 tr.t3:hover>td{background:#f4f7fd!important}'
+;
+document.head.appendChild(s)}
 function segKey(c){if(S.dim==='grp')return c.g==='A'||c.g==='B'||c.g==='C'?c.g:null;if(S.dim==='type')return c.t;return c.ch}
 function segList(){if(S.dim==='grp')return [['A','A · 50% DS đầu (trọng số)'],['B','B · 30% DS kế'],['C','C · 20% DS cuối']];if(S.dim==='type')return [['VIP5','VIP5'],['VIP3','VIP3'],['VIPSI','VIP SI'],['LẺ','Lẻ']];return [['OFF','Kênh OFF'],['ON','Kênh ON']]}
 function agg(list){var ds=[0,0,0,0],as=[0,0,0,0];list.forEach(function(c){for(var i=0;i<4;i++){ds[i]+=c.d[i];if(c.d[i]>0)as[i]++}});return {n:list.length,ds:ds,aso:as}}
