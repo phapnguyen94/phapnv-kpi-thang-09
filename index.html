@@ -5556,7 +5556,9 @@ html body.theme-original.design-108 #content section.panel:not(.welcome):not(.rk
  var css=document.createElement('style');css.textContent='html body #content table td.stk-n,html body #content table th.stk-n,html body .section-focus-content table td.stk-n,html body .section-focus-content table th.stk-n{position:sticky!important;left:0!important;z-index:3!important;box-shadow:2px 0 0 rgba(120,135,175,.28)}html body #content table th.stk-n,html body .section-focus-content table th.stk-n{z-index:6!important}'
  +'.section-focus-content .stk-fw.stk-fw{max-height:none!important;overflow:visible!important}.section-focus-content table.stk-ft{overflow:visible!important}.section-focus-content th.stk-fh.stk-fh{position:sticky!important;z-index:5!important}.section-focus-content th.stk-fh.stk-n{z-index:8!important}'
  +'.section-focus-dialog .section-focus-header h2{font-size:30px!important;letter-spacing:-.01em}.section-focus-dialog .section-focus-header small{font-size:12px!important}.section-focus-content h2,.section-focus-content h3{font-size:24px!important}.section-focus-content h4{font-size:17px!important}.section-focus-content table th{font-size:12.5px!important}.section-focus-content table td{font-size:14.5px!important;padding-top:11px!important;padding-bottom:11px!important}.section-focus-content .ad-note,.section-focus-content .ad-leg{font-size:14px!important}.section-focus-content .ad-h h3{font-size:24px!important}'
- +'html body.theme-original.design-108 .section-focus-button{background:#fff!important;color:#26356f!important;border:1px solid #cfd8ef!important}';
+  +'.stk-full{position:fixed!important;inset:12px!important;z-index:100000!important;background:#fff!important;overflow:auto!important;border-radius:14px!important;padding:0 22px 22px!important;margin:0!important;box-shadow:0 0 0 100vmax rgba(15,25,60,.55)!important;--stkb:78px;max-width:none!important;width:auto!important;height:auto!important}body.stk-lock{overflow:hidden!important}.stk-full>.stk-tools,.stk-full>.section-focus-tools{display:none!important}.stk-fbar{position:sticky;top:0;z-index:30;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 2px;border-bottom:1px solid #dfe5f3;margin:0 0 14px;height:78px;box-sizing:border-box}.stk-fbar small{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;color:#55607f}.stk-fbar h2{margin:3px 0 0;font-size:28px;color:#14224f;letter-spacing:-.01em}'
+ +'.stk-full .stk-fw.stk-fw{max-height:none!important;overflow:visible!important}.stk-full table.stk-ft{overflow:visible!important}.stk-full th.stk-fh.stk-fh{position:sticky!important;z-index:5!important}.stk-full th.stk-fh.stk-n{z-index:8!important}.stk-full table th{font-size:12.5px!important}.stk-full table td{font-size:14.5px!important;padding-top:11px!important;padding-bottom:11px!important}.stk-full h3,.stk-full .sec{font-size:22px!important}'
++'html body.theme-original.design-108 .section-focus-button{background:#fff!important;color:#26356f!important;border:1px solid #cfd8ef!important}';
  document.head.appendChild(css);
  function bg(el){var L=[],t=el;while(t&&t.nodeType===1){if(t===document.body||t===document.documentElement)break;var cs=getComputedStyle(t),m=(cs.backgroundColor||'').match(/[\d.]+/g);if(cs.backgroundImage&&cs.backgroundImage!=='none'&&(!m||m.length<4||+m[3]===0)){L.length=0;break}if(m&&m.length>=3){var al=m.length>3?+m[3]:1;if(al>0){L.push([+m[0],+m[1],+m[2],al]);if(al>=1)break}}t=t.parentElement}var r=255,g=255,b=255;for(var i=L.length-1;i>=0;i--){var x=L[i];r=x[0]*x[3]+r*(1-x[3]);g=x[1]*x[3]+g*(1-x[3]);b=x[2]*x[3]+b*(1-x[3])}return 'rgb('+Math.round(r)+','+Math.round(g)+','+Math.round(b)+')'}
  function doHost(host,focus){
@@ -5579,14 +5581,39 @@ html body.theme-original.design-108 #content section.panel:not(.welcome):not(.rk
      w.classList.add('stk-fw');tb.classList.add('stk-ft');
      var hr=tb.tHead&&tb.tHead.rows.length?[].slice.call(tb.tHead.rows):[];
      if(!hr.length){for(var u=0;u<rs.length&&u<3;u++){var cs=rs[u].cells,allth=cs.length>0;for(var v=0;v<cs.length;v++)if(cs[v].tagName!=='TH')allth=false;if(!allth)break;hr.push(rs[u])}}
-     var acc=0;for(var q=0;q<hr.length;q++){var hh=hr[q].getBoundingClientRect().height;for(var z=0;z<hr[q].cells.length;z++){var th=hr[q].cells[z];th.classList.add('stk-fh');th.style.top=acc+'px'}acc+=hh}
+     var acc=0;for(var q=0;q<hr.length;q++){var hh=hr[q].getBoundingClientRect().height;for(var z=0;z<hr[q].cells.length;z++){var th=hr[q].cells[z];th.classList.add('stk-fh');th.style.top='calc('+acc+'px + var(--stkb,0px))'}acc+=hh}
     }
    }
   });
  }
+
+ function stkClose(){var n=document.querySelector('.stk-full');if(!n)return;n.classList.remove('stk-full');var b=n.querySelector(':scope > .stk-fbar');if(b)b.remove();document.body.classList.remove('stk-lock');n.querySelectorAll('.stk-fw').forEach(function(w){w.classList.remove('stk-fw')});n.querySelectorAll('.stk-fh').forEach(function(w){w.classList.remove('stk-fh');w.style.top=''})}
+ function stkFull(node,title){stkClose();node.classList.add('stk-full');document.body.classList.add('stk-lock');
+  var bar=document.createElement('div');bar.className='stk-fbar';bar.innerHTML='<div><small>CHẾ ĐỘ TẬP TRUNG</small><h2></h2></div><button type="button" class="section-focus-close">✕ Quay lại</button>';bar.querySelector('h2').textContent=title;bar.querySelector('button').onclick=stkClose;node.prepend(bar);node.scrollTop=0;sched()}
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')stkClose()});
+ function addFocus(h){
+  if(typeof openSectionFocus!=='function')return;
+  h.querySelectorAll('table').forEach(function(tb){
+   if(tb.rows.length<7)return;
+   if(tb.closest('[data-focus-section],[data-stk-focus]'))return;
+   if(tb.closest('.section-focus-content'))return;
+   var node=tb.closest('#v11')||tb.closest('#vt22')||tb.closest('.rk11')||tb.closest('section')||tb.closest('.card')||tb.closest('.wrap');
+   if(!node||node===h||node.contains(h))return;
+   if(node.querySelector(':scope > .section-focus-tools'))return;
+   var t=node.querySelector('.sec,h2,h3,h4');var title=(t?t.textContent:'').replace(/[★⛶📷]/g,'').replace(/Tập trung/g,'').replace(/^\s*\d{1,2}(?=\D)/,'').trim();
+   if(!title){var nv=document.querySelector('.nav-item.active,.nav-item[aria-current]');title=nv?nv.textContent.trim():'Chi tiết đang xem'}
+   node.setAttribute('data-stk-focus','1');
+   var hid=document.createElement('h3');hid.style.display='none';hid.textContent=title.slice(0,90);hid.className='stk-ttl';node.prepend(hid);
+   var tools=document.createElement('div');tools.className='section-focus-tools stk-tools';
+   var btn=document.createElement('button');btn.type='button';btn.className='section-focus-button';btn.textContent='⛶ Tập trung';btn.title='Mở riêng '+title;
+   btn.onclick=function(e){e.preventDefault();e.stopPropagation();stkFull(node,title)};
+   tools.appendChild(btn);hid.after(tools);
+  });
+ }
  function run(){
   var h=document.getElementById('content');if(h)doHost(h,false);
-  document.querySelectorAll('.section-focus-content').forEach(function(f){doHost(f,true)});
+  if(h)addFocus(h);
+  document.querySelectorAll('.section-focus-content,.stk-full').forEach(function(f){doHost(f,true)});
  }
  var tm;function sched(){clearTimeout(tm);tm=setTimeout(run,120)}
  new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
@@ -5755,7 +5782,7 @@ function tSec2(){var d=D(),g=S.tG||'',mode=S.tMode||'all',cbg=(d.cb||{})[g||'ALL
    L2.forEach(function(z){out+=z.rr.html;var k2=k1+'|'+z.r;if(!(S.tOpen&&S.tOpen[k2]))return;
     var K=((d.kh||{})[z.r+'|'+x.n.ng+'|'+y.e.br]||[]).filter(function(k){return !g||k[3]===g}).map(function(k){var base=(k[4]+k[5]+k[6])/3*1000,cur=k[7]*1000,fc=cur*fdv,gap=fc-base,st;if(base>0&&cur===0)st=['rn','Chưa mua T11'];else if(base===0)st=['up','Mới mua T11'];else{var i=fc/base;st=i<.85?['rn','Giảm mạnh']:i<.95?['rv','Giảm nhẹ']:i<1.05?['ok','Ổn định']:['up','Tăng']}return {k:k,base:base,cur:cur,fc:fc,gap:gap,st:st}}).filter(function(q){return mode==='dn'?q.gap<0:mode==='up'?q.gap>0:true}).sort(function(a,b){return mode==='up'?b.gap-a.gap:a.gap-b.gap});
     var more=K.length>30&&!(S.tAll&&S.tAll[k2]);
-    K.slice(0,more?30:K.length).forEach(function(q){var k=q.k,mk=function(v){return v>0?'●':'–'};out+='<tr class="t-r t3"><td class="l"><span class="t-in" style="padding-left:'+(3*18)+'px"><i class="e"></i> <b>'+k[0]+'</b><small class="g">'+k[1]+' · '+k[2]+' · nhóm '+k[3]+'</small></span></td><td>'+tr(k[4]*1000,2)+'</td><td>'+tr(k[5]*1000,2)+'</td><td>'+tr(k[6]*1000,2)+'</td><td class="rr">'+tr(q.base,2)+'</td><td>'+tr(q.cur,2)+'</td><td class="rr">'+tr(q.fc,2)+'</td><td>'+(q.base>0?pill(q.fc/q.base):'<span class="ad-p ad-na">—</span>')+'</td><td class="'+(q.gap<0?'neg':'pos')+'">'+(q.gap>0?'+':'')+tr(q.gap,2)+'</td><td>'+mk(k[4])+'</td><td>'+mk(k[5])+'</td><td>'+mk(k[6])+'</td><td>'+mk(k[7])+'</td><td>—</td><td><span class="ad-p ad-'+q.st[0]+'" style="white-space:nowrap">'+q.st[1]+'</span></td></tr>'});
+    K.slice(0,more?30:K.length).forEach(function(q){var k=q.k,mk=function(v){return v>0?'1':'0'},af=((k[4]>0?1:0)+(k[5]>0?1:0)+(k[6]>0?1:0))/3,ap=af>0?pill((k[7]>0?1:0)/af):'<span class="ad-p ad-na">—</span>';out+='<tr class="t-r t3"><td class="l"><span class="t-in" style="padding-left:'+(3*18)+'px"><i class="e"></i> <b>'+k[0]+'</b><small class="g">'+k[1]+' · '+k[2]+' · nhóm '+k[3]+'</small></span></td><td>'+tr(k[4]*1000,2)+'</td><td>'+tr(k[5]*1000,2)+'</td><td>'+tr(k[6]*1000,2)+'</td><td class="rr">'+tr(q.base,2)+'</td><td>'+tr(q.cur,2)+'</td><td class="rr">'+tr(q.fc,2)+'</td><td>'+(q.base>0?pill(q.fc/q.base):'<span class="ad-p ad-na">—</span>')+'</td><td class="'+(q.gap<0?'neg':'pos')+'">'+(q.gap>0?'+':'')+tr(q.gap,2)+'</td><td>'+mk(k[4])+'</td><td>'+mk(k[5])+'</td><td>'+mk(k[6])+'</td><td>'+mk(k[7])+'</td><td>'+ap+'</td><td><span class="ad-p ad-'+q.st[0]+'" style="white-space:nowrap">'+q.st[1]+'</span></td></tr>'});
     if(more)out+='<tr class="t-r t3"><td colspan="15" class="l"><span class="t-in" style="padding-left:'+(3*18)+'px"><button class="ad-btn" data-t-all="'+k2+'">Xem thêm '+(K.length-30)+' cửa hàng</button></span></td></tr>';
     if(!K.length)out+='<tr class="t-r t3"><td colspan="15" class="l"><span class="t-in" style="padding-left:'+(3*18)+'px">Không có cửa hàng theo bộ lọc này.</span></td></tr>'})})});
  var bg=[['','Mọi nhóm KH'],['A','Chỉ nhóm A'],['B','Chỉ nhóm B'],['C','Chỉ nhóm C']].map(function(x){return '<button class="ad-btn'+(g===x[0]?' on':'')+'" data-ad-tg="'+x[0]+'">'+x[1]+'</button>'}).join('');
