@@ -4128,7 +4128,7 @@ function tx25All(rep){
  const D=window.T11_DATA,C=D.cust.filter(c=>c.rep===rep&&wkOk(c)&&c.ch==='Kênh Off Premise'&&c.vt!=='Trong chợ'&&c.type!=='VIPSI'&&c.m30>0);
  const by=(a,b)=>(b.tgt||0)-(a.tgt||0),used=new Set(),out=[];
  const take=(arr,g)=>{for(const c of arr){if(used.has(c.c))continue;used.add(c.c);out.push({...c,g})}};
- take(C.filter(c=>c.dsu&&c.dsu.length).sort(by),1);
+ take(C.filter(c=>c.dsu&&c.dsu.some(x=>!/Trọng\s*điểm/i.test(x))).sort(by),1);
  take(C.filter(c=>c.type==='VIP3'||c.type==='VIP5').sort(by),2);
  take(C.filter(c=>c.type==='LẺ').sort(by),3);
  return out;
